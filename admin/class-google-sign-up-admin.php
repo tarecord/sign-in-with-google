@@ -298,7 +298,20 @@ class Google_Sign_Up_Admin {
 	 * @since	1.0.0
 	 */
 	public function settings_page_render() {
+		
+		// check user capabilities
+		if ( ! current_user_can( 'manage_options' ) ) return;
 
+		// check if the user have submitted the settings.
+		// wordpress will add the "settings-updated" $_GET parameter to the url.
+		if ( isset( $_GET['settings-updated'] ) ) {
+		// add settings saved message with the class of "updated".
+		add_settings_error( 'google_sign_up_messages', 'google_sign_up_message', 'Settings Saved', 'updated' );
+		}
+
+		// show error/update messages.
+		settings_errors( 'google_sign_up_messages' );
+		
 		ob_start(); ?>
 		<div class="wrap">
         	<h2>Google Sign Up Settings</h2>
