@@ -1,0 +1,16 @@
+#loginform {
+	margin-top: 0px;
+}
+
+#google-sign-in {
+	margin-bottom: 20px;
+}
+
+#google-sign-in a {
+	display: inline-block;
+	text-align: center;
+}
+
+#google-sign-in img {
+	margin-left: -3px;
+}
