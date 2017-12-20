@@ -188,10 +188,10 @@ class Google_Sign_Up_Admin {
 			'google_sign_up_section'
 		);
 
-		register_setting( 'google_sign_up_settings', 'google_client_id' );
-		register_setting( 'google_sign_up_settings', 'google_client_secret' );
+		register_setting( 'google_sign_up_settings', 'google_client_id', array( $this, 'input_validation') );
+		register_setting( 'google_sign_up_settings', 'google_client_secret', array( $this, 'input_validation') );
 		register_setting( 'google_sign_up_settings', 'google_user_default_role' );
-		register_setting( 'google_sign_up_settings', 'google_domain_restriction' );
+		register_setting( 'google_sign_up_settings', 'google_domain_restriction', array( $this, 'domain_input_validation') );
 	}
 
 	/**
@@ -276,6 +276,42 @@ class Google_Sign_Up_Admin {
 	}
 
 	/**
+	 * Callback function for validating the form inputs.
+	 * 
+	 * @since 1.0.0
+	 */
+	public function input_validation( $input ) {
+			 
+		// Strip all HTML and PHP tags and properly handle quoted strings
+		$sanitized_input = strip_tags( stripslashes( $input ) );
+
+		return $sanitized_input;
+	}
+
+	/**
+	 * Callback function for validating the form inputs.
+	 * 
+	 * @since 1.0.0
+	 */
+	public function domain_input_validation( $input ) {
+			 
+		// Strip all HTML and PHP tags and properly handle quoted strings
+		$sanitized_input = strip_tags( stripslashes( $input ) );
+
+		if ( $sanitized_input !== '' && ! preg_match( '~^\s*(?:(?:\w+(?:-+\w+)*\.)+[a-z]+)\s*(?:,\s*(?:(?:\w+(?:-+\w+)*\.)+[a-z]+)\s*)*$~', $sanitized_input) ) {
+			
+			add_settings_error(
+				'google_sign_up_settings',
+				esc_attr( 'domain-error' ),
+				'Please make sure you have a proper comma separated list of domains.',
+				'error'
+			);
+		}
+		
+		return $sanitized_input;
+	}
+
+	/**
 	 * Render the settings page
 	 *
 	 * creates a checkbox true/false option. Other types are surely possible
@@ -354,7 +390,7 @@ class Google_Sign_Up_Admin {
 		// The user doesn't have the correct domain, don't authenticate them.
 		$domains = explode( ',', get_option('google_domain_restriction') );
 
-		if ( ! in_array( $user_email_data[1], $domains ) ){
+		if ( $domains[0] != '' && ! in_array( $user_email_data[1], $domains ) ){
 			wp_redirect( wp_login_url() . '?google_login=incorrect_domain' );
 			exit;
 		}
