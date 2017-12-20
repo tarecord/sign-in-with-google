@@ -338,17 +338,6 @@ class Google_Sign_Up_Admin {
 		// Strip all HTML and PHP tags and properly handle quoted strings
 		$sanitized_input = strip_tags( stripslashes( $input ) );
 
-		if ( $sanitized_input !== '' && preg_match( '~~', $sanitized_input ) ) {
-
-			add_settings_error(
-				'google_sign_up_settings',
-				esc_attr( 'custom-login-error' ),
-				'Please make sure you have an appropriate URL.',
-				'error'
-			);
-
-		}
-
 		return $sanitized_input;
 	}
 
