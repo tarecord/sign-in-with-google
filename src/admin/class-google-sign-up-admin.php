@@ -267,7 +267,7 @@ class Google_Sign_Up_Admin {
 
 		ob_start(); ?>
 
-		<input name="google_domain_restriction" id="google_domain_restriction" type="text" size="25" value="<?php echo get_option( 'google_domain_restriction' ); ?>" placeholder="<?php echo $domain; ?>">
+		<input name="google_domain_restriction" id="google_domain_restriction" type="text" size="50" value="<?php echo get_option( 'google_domain_restriction' ); ?>" placeholder="<?php echo $domain; ?>">
 		<p class="description">Enter the domain you would like to restrict new users to or leave blank to allow anyone with a google account. (Separate multiple domains with commas)</p>
 		<p class="description">Entering "<?php echo $domain; ?>" will only allow Google users with an @<?php echo $domain; ?> email address to sign up.</p>
 		<?php
