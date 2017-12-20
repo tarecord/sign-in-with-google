@@ -153,7 +153,7 @@ class Google_Sign_Up_Admin {
         	'google_sign_up_settings',				// The unique ID - that is, the slug - for this menu item.
 	        array( $this, 'settings_page_render' ),	// The name of the function to call when rendering this menu's page.
 			'dashicons-googleplus'					// The dashicon to use as the menu item's icon.
-	    );
+		);
 
 	}
 
