@@ -140,7 +140,23 @@ class Google_Sign_Up_Admin {
 	}
 
 	/**
-	 * Initialize the settings menu
+	 * Add the plugin settings link found on the plugin page.
+	 * 
+	 * @since    1.0.0
+	 */
+	public function add_action_links( $links ) {
+
+		error_log('add_settings_link');
+
+		$mylinks = array(
+					'<a href="' . admin_url( 'options-general.php?page=google_sign_up_settings' ) . '">Settings</a>',
+				);
+		
+		return array_merge( $links, $mylinks );
+	}
+
+	/**
+	 * Initialize the settings menu.
 	 *
 	 * @since 1.0.0
 	 */
