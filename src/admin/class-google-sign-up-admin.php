@@ -60,7 +60,6 @@ class Google_Sign_Up_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		$this->init();
 
 	}
 
@@ -111,48 +110,34 @@ class Google_Sign_Up_Admin {
 	}
 
 	/**
-	 * Initialize the necessary functions.
-	 *
-	 * @since 1.0.0
+	 * Add the plugin settings link found on the plugin page.
+	 * 
+	 * @since    1.0.0
 	 */
-	public function init() {
+	public function add_action_links( $links ) {
 
-		// Include Google's PHP Library
-		require_once( plugin_dir_path( __DIR__ ) . 'vendor/autoload.php' );
+		error_log('add_settings_link');
 
-		if ( isset($_GET['google_redirect']) ) {
-			add_action( 'template_redirect', array( $this, 'google_auth_redirect' ) );
-		}
-
-		// Handle Google's response before anything is rendered.
-		if ( isset($_GET['google_response']) && isset($_GET['code']) ) {
-			add_action( 'init', array( $this, 'authenticate_user' ) );
-		}
+		$mylinks = array(
+					'<a href="' . admin_url( 'options-general.php?page=google_sign_up_settings' ) . '">Settings</a>',
+				);
 		
-		// Check if domain restrictions have kept a user from logging in.
-		if ( isset($_GET['google_login']) ) {
-			add_filter( 'login_message', array( $this, 'domain_restriction_error'), 10, 1 );
-		}
-
-		add_action( 'admin_init', array( $this, 'settings_api_init' ) );
-		add_action( 'admin_menu', array( $this, 'settings_menu_init' ) );
-
+		return array_merge( $links, $mylinks );
 	}
 
 	/**
-	 * Initialize the settings menu
+	 * Initialize the settings menu.
 	 *
 	 * @since 1.0.0
 	 */
 	public function settings_menu_init() {
 
-		add_menu_page(
-	        'Google Sign Up',						// The title to be displayed on this menu's corresponding page.
-	        'Google Sign Up',						// The text to be displayed for this actual menu item.
-	        'administrator',						// Which type of users can see this menu.
+		add_options_page(
+			'Google Sign Up',						// The text to be displayed for this actual menu item.
+			'Google Sign Up',						// The title to be displayed on this menu's corresponding page.
+	        'manage_options',						// Which capability can see this menu.
         	'google_sign_up_settings',				// The unique ID - that is, the slug - for this menu item.
-	        array( $this, 'settings_page_render' ),	// The name of the function to call when rendering this menu's page.
-			'dashicons-googleplus'					// The dashicon to use as the menu item's icon.
+	        array( $this, 'settings_page_render' )	// The name of the function to call when rendering this menu's page.
 		);
 
 	}
@@ -203,10 +188,10 @@ class Google_Sign_Up_Admin {
 			'google_sign_up_section'
 		);
 
-		register_setting( 'google_sign_up_settings', 'google_client_id' );
-		register_setting( 'google_sign_up_settings', 'google_client_secret' );
+		register_setting( 'google_sign_up_settings', 'google_client_id', array( $this, 'input_validation') );
+		register_setting( 'google_sign_up_settings', 'google_client_secret', array( $this, 'input_validation') );
 		register_setting( 'google_sign_up_settings', 'google_user_default_role' );
-		register_setting( 'google_sign_up_settings', 'google_domain_restriction' );
+		register_setting( 'google_sign_up_settings', 'google_domain_restriction', array( $this, 'domain_input_validation') );
 	}
 
 	/**
@@ -282,12 +267,48 @@ class Google_Sign_Up_Admin {
 
 		ob_start(); ?>
 
-		<input name="google_domain_restriction" id="google_domain_restriction" type="text" size="25" value="<?php echo get_option( 'google_domain_restriction' ); ?>" placeholder="<?php echo $domain; ?>">
-		<p class="description">Enter the domain you would like to restrict new users to.</p>
+		<input name="google_domain_restriction" id="google_domain_restriction" type="text" size="50" value="<?php echo get_option( 'google_domain_restriction' ); ?>" placeholder="<?php echo $domain; ?>">
+		<p class="description">Enter the domain you would like to restrict new users to or leave blank to allow anyone with a google account. (Separate multiple domains with commas)</p>
 		<p class="description">Entering "<?php echo $domain; ?>" will only allow Google users with an @<?php echo $domain; ?> email address to sign up.</p>
 		<?php
 		// Send the markup to the browser
 		echo ob_get_clean();
+	}
+
+	/**
+	 * Callback function for validating the form inputs.
+	 * 
+	 * @since 1.0.0
+	 */
+	public function input_validation( $input ) {
+			 
+		// Strip all HTML and PHP tags and properly handle quoted strings
+		$sanitized_input = strip_tags( stripslashes( $input ) );
+
+		return $sanitized_input;
+	}
+
+	/**
+	 * Callback function for validating the form inputs.
+	 * 
+	 * @since 1.0.0
+	 */
+	public function domain_input_validation( $input ) {
+			 
+		// Strip all HTML and PHP tags and properly handle quoted strings
+		$sanitized_input = strip_tags( stripslashes( $input ) );
+
+		if ( $sanitized_input !== '' && ! preg_match( '~^\s*(?:(?:\w+(?:-+\w+)*\.)+[a-z]+)\s*(?:,\s*(?:(?:\w+(?:-+\w+)*\.)+[a-z]+)\s*)*$~', $sanitized_input) ) {
+			
+			add_settings_error(
+				'google_sign_up_settings',
+				esc_attr( 'domain-error' ),
+				'Please make sure you have a proper comma separated list of domains.',
+				'error'
+			);
+		}
+		
+		return $sanitized_input;
 	}
 
 	/**
@@ -301,13 +322,6 @@ class Google_Sign_Up_Admin {
 		
 		// check user capabilities
 		if ( ! current_user_can( 'manage_options' ) ) return;
-
-		// check if the user have submitted the settings.
-		// wordpress will add the "settings-updated" $_GET parameter to the url.
-		if ( isset( $_GET['settings-updated'] ) ) {
-		// add settings saved message with the class of "updated".
-		add_settings_error( 'google_sign_up_messages', 'google_sign_up_message', 'Settings Saved', 'updated' );
-		}
 
 		// show error/update messages.
 		settings_errors( 'google_sign_up_messages' );
@@ -374,7 +388,9 @@ class Google_Sign_Up_Admin {
 		$user_email_data = explode( '@', $user_email );
 
 		// The user doesn't have the correct domain, don't authenticate them.
-		if ( get_option('google_domain_restriction') != $user_email_data[1] ){
+		$domains = explode( ',', get_option('google_domain_restriction') );
+
+		if ( $domains[0] != '' && ! in_array( $user_email_data[1], $domains ) ){
 			wp_redirect( wp_login_url() . '?google_login=incorrect_domain' );
 			exit;
 		}
@@ -468,7 +484,7 @@ class Google_Sign_Up_Admin {
 	 * @since 	1.0.0
 	 */
 	public function domain_restriction_error( $message ) {
-		$message = '<div id="login_error">You must have an email with <strong>' . get_option('google_domain_restriction') . '</strong> to log in to this website using Google.</div>';
+		$message = '<div id="login_error">You must have an email with a required domain (<strong>' . get_option('google_domain_restriction') . '</strong>) to log in to this website using Google.</div>';
 		return $message;
 	}
 
