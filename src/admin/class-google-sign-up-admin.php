@@ -268,7 +268,7 @@ class Google_Sign_Up_Admin {
 		ob_start(); ?>
 
 		<input name="google_domain_restriction" id="google_domain_restriction" type="text" size="25" value="<?php echo get_option( 'google_domain_restriction' ); ?>" placeholder="<?php echo $domain; ?>">
-		<p class="description">Enter the domain you would like to restrict new users to.</p>
+		<p class="description">Enter the domain you would like to restrict new users to or leave blank to allow anyone with a google account. (Separate multiple domains with commas)</p>
 		<p class="description">Entering "<?php echo $domain; ?>" will only allow Google users with an @<?php echo $domain; ?> email address to sign up.</p>
 		<?php
 		// Send the markup to the browser
@@ -352,7 +352,9 @@ class Google_Sign_Up_Admin {
 		$user_email_data = explode( '@', $user_email );
 
 		// The user doesn't have the correct domain, don't authenticate them.
-		if ( get_option('google_domain_restriction') != $user_email_data[1] ){
+		$domains = explode( ',', get_option('google_domain_restriction') );
+
+		if ( ! in_array( $user_email_data[1], $domains ) ){
 			wp_redirect( wp_login_url() . '?google_login=incorrect_domain' );
 			exit;
 		}
@@ -446,7 +448,7 @@ class Google_Sign_Up_Admin {
 	 * @since 	1.0.0
 	 */
 	public function domain_restriction_error( $message ) {
-		$message = '<div id="login_error">You must have an email with <strong>' . get_option('google_domain_restriction') . '</strong> to log in to this website using Google.</div>';
+		$message = '<div id="login_error">You must have an email with a required domain (<strong>' . get_option('google_domain_restriction') . '</strong>) to log in to this website using Google.</div>';
 		return $message;
 	}
 
