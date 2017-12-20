@@ -60,7 +60,6 @@ class Google_Sign_Up_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		$this->init();
 
 	}
 
@@ -107,35 +106,6 @@ class Google_Sign_Up_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/google-sign-up-admin.js', array( 'jquery' ), $this->version, false );
-
-	}
-
-	/**
-	 * Initialize the necessary functions.
-	 *
-	 * @since 1.0.0
-	 */
-	public function init() {
-
-		// Include Google's PHP Library
-		require_once( plugin_dir_path( __DIR__ ) . 'vendor/autoload.php' );
-
-		if ( isset($_GET['google_redirect']) ) {
-			add_action( 'template_redirect', array( $this, 'google_auth_redirect' ) );
-		}
-
-		// Handle Google's response before anything is rendered.
-		if ( isset($_GET['google_response']) && isset($_GET['code']) ) {
-			add_action( 'init', array( $this, 'authenticate_user' ) );
-		}
-		
-		// Check if domain restrictions have kept a user from logging in.
-		if ( isset($_GET['google_login']) ) {
-			add_filter( 'login_message', array( $this, 'domain_restriction_error'), 10, 1 );
-		}
-
-		add_action( 'admin_init', array( $this, 'settings_api_init' ) );
-		add_action( 'admin_menu', array( $this, 'settings_menu_init' ) );
 
 	}
 

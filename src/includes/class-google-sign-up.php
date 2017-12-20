@@ -119,6 +119,11 @@ class Google_Sign_Up {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-google-sign-up-public.php';
 
+		/**
+		 * Include Google's PHP library.
+		 */
+		require_once plugin_dir_path( __DIR__ ) . 'vendor/autoload.php';
+
 		$this->loader = new Google_Sign_Up_Loader();
 
 	}
@@ -153,7 +158,24 @@ class Google_Sign_Up {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'settings_api_init' );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'settings_menu_init' );
+
+		if ( isset($_GET['google_redirect']) ) {
+			$this->loader->add_action( 'template_redirect', $plugin_admin, 'google_auth_redirect' );
+		}
+
+		// Handle Google's response before anything is rendered.
+		if ( isset($_GET['google_response']) && isset($_GET['code']) ) {
+			$this->loader->add_action( 'init', $plugin_admin, 'authenticate_user' );
+		}
+
 		$this->loader->add_filter( 'plugin_action_links_' . $this->plugin_name . '/' . $this->plugin_name . '.php', $plugin_admin, 'add_action_links' );
+
+		// Check if domain restrictions have kept a user from logging in.
+		if ( isset($_GET['google_login']) ) {
+			$this->loader->add_filter( 'login_message', $plugin_admin, 'domain_restriction_error' );
+		}
 
 	}
 
