@@ -170,6 +170,11 @@ class Google_Sign_Up {
 			$this->loader->add_action( 'init', $plugin_admin, 'authenticate_user' );
 		}
 
+		// Add custom URL param so we can add a custom login URL.
+		if ( isset($_GET[ get_option('custom_login_param') ]) ) {
+			$this->loader->add_action( 'init', $plugin_admin, 'google_auth_redirect' );
+		}
+
 		$this->loader->add_filter( 'plugin_action_links_' . $this->plugin_name . '/' . $this->plugin_name . '.php', $plugin_admin, 'add_action_links' );
 
 		// Check if domain restrictions have kept a user from logging in.
