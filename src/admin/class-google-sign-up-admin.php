@@ -146,13 +146,12 @@ class Google_Sign_Up_Admin {
 	 */
 	public function settings_menu_init() {
 
-		add_menu_page(
-	        'Google Sign Up',						// The title to be displayed on this menu's corresponding page.
-	        'Google Sign Up',						// The text to be displayed for this actual menu item.
-	        'administrator',						// Which type of users can see this menu.
+		add_options_page(
+			'Google Sign Up',						// The text to be displayed for this actual menu item.
+			'Google Sign Up',						// The title to be displayed on this menu's corresponding page.
+	        'manage_options',						// Which capability can see this menu.
         	'google_sign_up_settings',				// The unique ID - that is, the slug - for this menu item.
-	        array( $this, 'settings_page_render' ),	// The name of the function to call when rendering this menu's page.
-			'dashicons-googleplus'					// The dashicon to use as the menu item's icon.
+	        array( $this, 'settings_page_render' )	// The name of the function to call when rendering this menu's page.
 		);
 
 	}
