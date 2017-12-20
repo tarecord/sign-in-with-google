@@ -188,10 +188,19 @@ class Google_Sign_Up_Admin {
 			'google_sign_up_section'
 		);
 
+		add_settings_field(
+			'custom_login_param',
+			'Custom Login Parameter',
+			array( $this, 'custom_login_param' ),
+			'google_sign_up_settings',
+			'google_sign_up_section'
+		);
+
 		register_setting( 'google_sign_up_settings', 'google_client_id', array( $this, 'input_validation') );
 		register_setting( 'google_sign_up_settings', 'google_client_secret', array( $this, 'input_validation') );
 		register_setting( 'google_sign_up_settings', 'google_user_default_role' );
 		register_setting( 'google_sign_up_settings', 'google_domain_restriction', array( $this, 'domain_input_validation') );
+		register_setting( 'google_sign_up_settings', 'custom_login_param', array( $this, 'custom_login_input_validation') );
 	}
 
 	/**
@@ -276,6 +285,15 @@ class Google_Sign_Up_Admin {
 	}
 
 	/**
+	 * Callback function for Google Domain Restriction
+	 *
+	 * @since	1.0.0
+	 */
+	public function custom_login_param() {
+		echo '<input name="custom_login_param" id="custom_login_param" type="text" size="50" value="' . get_option( 'custom_login_param' ) . '"/>';
+	}
+
+	/**
 	 * Callback function for validating the form inputs.
 	 * 
 	 * @since 1.0.0
@@ -308,6 +326,29 @@ class Google_Sign_Up_Admin {
 			);
 		}
 		
+		return $sanitized_input;
+	}
+
+	/**
+	 * Callback function for validating custom login param input.
+	 * 
+	 * @since 1.0.0
+	 */
+	public function custom_login_input_validation( $input ) {
+		// Strip all HTML and PHP tags and properly handle quoted strings
+		$sanitized_input = strip_tags( stripslashes( $input ) );
+
+		if ( $sanitized_input !== '' && preg_match( '~~', $sanitized_input ) ) {
+
+			add_settings_error(
+				'google_sign_up_settings',
+				esc_attr( 'custom-login-error' ),
+				'Please make sure you have an appropriate URL.',
+				'error'
+			);
+
+		}
+
 		return $sanitized_input;
 	}
 
@@ -350,7 +391,18 @@ class Google_Sign_Up_Admin {
 	 * @since 1.0.0
 	 */
 	public function google_auth_redirect() {
-
+		$url = $this->build_google_redirect_url(); 
+		wp_redirect( $url ); 
+		exit; 
+  	}
+ 
+	/** 
+	 * Builds out the Google redirect URL 
+	 *  
+	 * @since 1.0.0 
+	 */ 
+	public function build_google_redirect_url() {
+		
 		// Build the API redirect url
 		$google_client_id = get_option( 'google_client_id' );
 		$base_url = 'https://accounts.google.com/o/oauth2/v2/auth';
@@ -364,12 +416,8 @@ class Google_Sign_Up_Admin {
 
 		$scope = urlencode( implode( ' ', $scopes ) );
 		$redirect_uri = urlencode( site_url( '?google_response' ) );
-
-		$url = $base_url . '?scope=' . $scope . '&redirect_uri=' . $redirect_uri . '&response_type=code&client_id=' . $google_client_id;
-
-		wp_redirect( $url );
-		exit;
-
+	
+		return $base_url . '?scope=' . $scope . '&redirect_uri=' . $redirect_uri . '&response_type=code&client_id=' . $google_client_id; 
 	}
 	
 	/**
