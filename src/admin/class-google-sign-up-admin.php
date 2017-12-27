@@ -196,11 +196,20 @@ class Google_Sign_Up_Admin {
 			'google_sign_up_section'
 		);
 
+		add_settings_field(
+			'show_on_login',
+			'Show Google Signup Button on Login Form',
+			array( $this, 'show_on_login' ),
+			'google_sign_up_settings',
+			'google_sign_up_section'
+		);
+
 		register_setting( 'google_sign_up_settings', 'google_client_id', array( $this, 'input_validation') );
 		register_setting( 'google_sign_up_settings', 'google_client_secret', array( $this, 'input_validation') );
 		register_setting( 'google_sign_up_settings', 'google_user_default_role' );
 		register_setting( 'google_sign_up_settings', 'google_domain_restriction', array( $this, 'domain_input_validation') );
 		register_setting( 'google_sign_up_settings', 'custom_login_param', array( $this, 'custom_login_input_validation') );
+		register_setting( 'google_sign_up_settings', 'show_on_login' );
 	}
 
 	/**
@@ -291,6 +300,17 @@ class Google_Sign_Up_Admin {
 	 */
 	public function custom_login_param() {
 		echo '<input name="custom_login_param" id="custom_login_param" type="text" size="50" value="' . get_option( 'custom_login_param' ) . '"/>';
+	}
+
+	/**
+	 * Callback function for Show Google Signup Button on Login Form
+	 *
+	 * @since	1.0.0
+	 */
+	public function show_on_login() {
+
+		echo '<input type="checkbox" name="show_on_login" id="show_on_login" value="1" ' . checked( get_option('show_on_login'), true, false ) . ' />';
+
 	}
 
 	/**

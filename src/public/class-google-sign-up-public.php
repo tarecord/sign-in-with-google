@@ -101,14 +101,18 @@ class Google_Sign_Up_Public {
 	}
 	
 	public function add_signup_button() {
-		
-		ob_start();
-		?>
-		<div id="google-sign-in">
-			<a href="<?php echo site_url( '?google_redirect', 'http' ); ?>" title="Sign in with Google"><img src="<?php echo plugin_dir_url( __FILE__ ); ?>img/sign_in.svg"></a>
-		</div>
-		<?php
-		echo ob_get_clean();
+
+		if ( get_option('show_on_login') ) {
+
+			ob_start();
+			?>
+				<div id="google-sign-in">
+					<a href="<?php echo site_url( '?google_redirect', 'http' ); ?>" title="Sign in with Google"><img src="<?php echo plugin_dir_url( __FILE__ ); ?>img/sign_in.svg"></a>
+				</div>
+			<?php
+			echo ob_get_clean();
+
+		}
 
 	}
 
