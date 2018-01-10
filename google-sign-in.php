@@ -9,7 +9,7 @@
  *
  * @link              http://www.northstarmarketing.com
  * @since             1.0.0
- * @package           Google_Sign_Up
+ * @package           Google_Sign_In
  *
  * @wordpress-plugin
  * Plugin Name:       Sign In With Google
@@ -20,7 +20,7 @@
  * Author URI:        http://www.northstarmarketing.com
  * License:           GPL-3.0+
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.txt
- * Text Domain:       google-sign-up
+ * Text Domain:       google-sign-in
  * Domain Path:       /languages
  */
 
@@ -31,30 +31,30 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-google-sign-up-activator.php
+ * This action is documented in includes/class-google-sign-in-activator.php
  */
-function activate_google_sign_up() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-google-sign-up-activator.php';
+function activate_google_sign_in() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-google-sign-in-activator.php';
 	Google_Sign_Up_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-google-sign-up-deactivator.php
+ * This action is documented in includes/class-google-sign-in-deactivator.php
  */
-function deactivate_google_sign_up() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-google-sign-up-deactivator.php';
+function deactivate_google_sign_in() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-google-sign-in-deactivator.php';
 	Google_Sign_Up_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_google_sign_up' );
-register_deactivation_hook( __FILE__, 'deactivate_google_sign_up' );
+register_activation_hook( __FILE__, 'activate_google_sign_in' );
+register_deactivation_hook( __FILE__, 'deactivate_google_sign_in' );
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-google-sign-up.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-google-sign-in.php';
 
 /**
  * Begins execution of the plugin.
@@ -67,7 +67,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-google-sign-up.php';
  */
 function run_google_sign_up() {
 
-	$plugin = new Google_Sign_Up();
+	$plugin = new Google_Sign_In();
 	$plugin->run();
 
 }

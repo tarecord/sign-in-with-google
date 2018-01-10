@@ -5,8 +5,8 @@
  * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
- * @package    Google_Sign_Up
- * @subpackage Google_Sign_Up/admin
+ * @package    Google_Sign_In
+ * @subpackage Google_Sign_In/admin
  */
 
 /**
@@ -15,11 +15,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Google_Sign_Up
- * @subpackage Google_Sign_Up/admin
+ * @package    Google_Sign_In
+ * @subpackage Google_Sign_In/admin
  * @author     Tanner Record <tanner.record@northstarmarketing.com>
  */
-class Google_Sign_Up_Admin {
+class Google_Sign_In_Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -81,7 +81,7 @@ class Google_Sign_Up_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/google-sign-up-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/google-sign-in-admin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -104,7 +104,7 @@ class Google_Sign_Up_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/google-sign-up-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/google-sign-in-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
 
@@ -119,7 +119,7 @@ class Google_Sign_Up_Admin {
 		error_log( 'add_settings_link' );
 
 		$mylinks = array(
-			'<a href="' . admin_url( 'options-general.php?page=google_sign_up_settings' ) . '">Settings</a>',
+			'<a href="' . admin_url( 'options-general.php?page=google_sign_in_settings' ) . '">Settings</a>',
 		);
 
 		return array_merge( $links, $mylinks );
@@ -134,10 +134,10 @@ class Google_Sign_Up_Admin {
 	public function settings_menu_init() {
 
 		add_options_page(
-			'Google Sign Up',                       // The text to be displayed for this actual menu item.
-			'Google Sign Up',                       // The title to be displayed on this menu's corresponding page.
+			'Google Sign In',                       // The text to be displayed for this actual menu item.
+			'Google Sign In',                       // The title to be displayed on this menu's corresponding page.
 			'manage_options',                       // Which capability can see this menu.
-			'google_sign_up_settings',              // The unique ID - that is, the slug - for this menu item.
+			'google_sign_in_settings',              // The unique ID - that is, the slug - for this menu item.
 			array( $this, 'settings_page_render' )  // The name of the function to call when rendering this menu's page.
 		);
 
@@ -151,66 +151,66 @@ class Google_Sign_Up_Admin {
 	public function settings_api_init() {
 
 		add_settings_section(
-			'google_sign_up_section',
+			'google_sign_in_section',
 			'',
-			array( $this, 'google_sign_up_section' ),
-			'google_sign_up_settings'
+			array( $this, 'google_sign_in_section' ),
+			'google_sign_in_settings'
 		);
 
 		add_settings_field(
 			'google_client_id',
 			'Client ID',
 			array( $this, 'google_client_id' ),
-			'google_sign_up_settings',
-			'google_sign_up_section'
+			'google_sign_in_settings',
+			'google_sign_in_section'
 		);
 
 		add_settings_field(
 			'google_client_secret',
 			'Client Secret',
 			array( $this, 'google_client_secret' ),
-			'google_sign_up_settings',
-			'google_sign_up_section'
+			'google_sign_in_settings',
+			'google_sign_in_section'
 		);
 
 		add_settings_field(
 			'google_user_default_role',
 			'Default New User Role',
 			array( $this, 'google_user_default_role' ),
-			'google_sign_up_settings',
-			'google_sign_up_section'
+			'google_sign_in_settings',
+			'google_sign_in_section'
 		);
 
 		add_settings_field(
 			'google_domain_restriction',
 			'Restrict To Domain',
 			array( $this, 'google_domain_restriction' ),
-			'google_sign_up_settings',
-			'google_sign_up_section'
+			'google_sign_in_settings',
+			'google_sign_in_section'
 		);
 
 		add_settings_field(
 			'custom_login_param',
 			'Custom Login Parameter',
 			array( $this, 'custom_login_param' ),
-			'google_sign_up_settings',
-			'google_sign_up_section'
+			'google_sign_in_settings',
+			'google_sign_in_section'
 		);
 
 		add_settings_field(
 			'show_on_login',
 			'Show Google Signup Button on Login Form',
 			array( $this, 'show_on_login' ),
-			'google_sign_up_settings',
-			'google_sign_up_section'
+			'google_sign_in_settings',
+			'google_sign_in_section'
 		);
 
-		register_setting( 'google_sign_up_settings', 'google_client_id', array( $this, 'input_validation' ) );
-		register_setting( 'google_sign_up_settings', 'google_client_secret', array( $this, 'input_validation' ) );
-		register_setting( 'google_sign_up_settings', 'google_user_default_role' );
-		register_setting( 'google_sign_up_settings', 'google_domain_restriction', array( $this, 'domain_input_validation' ) );
-		register_setting( 'google_sign_up_settings', 'custom_login_param', array( $this, 'custom_login_input_validation' ) );
-		register_setting( 'google_sign_up_settings', 'show_on_login' );
+		register_setting( 'google_sign_in_settings', 'google_client_id', array( $this, 'input_validation' ) );
+		register_setting( 'google_sign_in_settings', 'google_client_secret', array( $this, 'input_validation' ) );
+		register_setting( 'google_sign_in_settings', 'google_user_default_role' );
+		register_setting( 'google_sign_in_settings', 'google_domain_restriction', array( $this, 'domain_input_validation' ) );
+		register_setting( 'google_sign_in_settings', 'custom_login_param', array( $this, 'custom_login_input_validation' ) );
+		register_setting( 'google_sign_in_settings', 'show_on_login' );
 	}
 
 	/**
@@ -220,7 +220,7 @@ class Google_Sign_Up_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function google_sign_up_section() {
+	public function google_sign_in_section() {
 		echo '<p>Please paste in the necessary credentials so that we can authenticate your users.</p>';
 	}
 
@@ -340,7 +340,7 @@ class Google_Sign_Up_Admin {
 		// Strip all HTML and PHP tags and properly handle quoted strings.
 		$sanitized_input = strip_tags( stripslashes( $input ) );
 
-		if ( '' !== $sanitized_input && ! preg_match( '~^\s*(?:(?:\w+(?:-+\w+)*\.)+[a-z]+)\s*(?:,\s*(?:(?:\w+(?:-+\w+)*\.)+[a-z]+)\s*)*$~', $sanitized_input ) ) {
+		if ( '' !== $sanitized_input && ! $this->verify_domain_list( $sanitized_input ) ) {
 
 			add_settings_error(
 				'google_sign_up_settings',
@@ -379,15 +379,15 @@ class Google_Sign_Up_Admin {
 		}
 
 		// show error/update messages.
-		settings_errors( 'google_sign_up_messages' );
+		settings_errors( 'google_sign_in_messages' );
 
 		ob_start();
 		?>
 		<div class="wrap">
-			<h2>Google Sign Up Settings</h2>
+			<h2>Google Sign In Settings</h2>
 			<form method="post" action="options.php">
-				<?php settings_fields( 'google_sign_up_settings' ); ?>
-				<?php do_settings_sections( 'google_sign_up_settings' ); ?>
+				<?php settings_fields( 'google_sign_in_settings' ); ?>
+				<?php do_settings_sections( 'google_sign_in_settings' ); ?>
 				<p class="submit">
 					<input name="submit" type="submit" id="submit" class="button-primary" value="Save Changes" />
 				</p>
@@ -427,7 +427,7 @@ class Google_Sign_Up_Admin {
 		$scopes[] = 'https://www.googleapis.com/auth/userinfo.email';
 		$scopes[] = 'https://www.googleapis.com/auth/userinfo.profile';
 
-		apply_filters( 'google_sign_up_scopes', $scopes ); // Allow scopes to be adjusted.
+		apply_filters( 'google_sign_in_scopes', $scopes ); // Allow scopes to be adjusted.
 
 		$scope        = urlencode( implode( ' ', $scopes ) );
 		$redirect_uri = urlencode( site_url( '?google_response' ) );
@@ -471,7 +471,7 @@ class Google_Sign_Up_Admin {
 
 		$redirect = admin_url(); // Send users to the dashboard by default.
 
-		apply_filters( 'google_sign_up_auth_redirect', $redirect ); // Allow the redirect to be adjusted.
+		apply_filters( 'google_sign_in_auth_redirect', $redirect ); // Allow the redirect to be adjusted.
 
 		wp_redirect( $redirect );
 		exit;
@@ -547,6 +547,21 @@ class Google_Sign_Up_Admin {
 			return get_user_by( 'id', $new_user );
 		}
 
+	}
+
+	/**
+	 * Checks a string of comma separated domains to make sure they're in the correct format.
+	 *
+	 * @since    1.0.0
+	 * @param string $input A string of one or more comma dilimited domains.
+	 */
+	public function verify_domain_list( $input ) {
+
+		if ( preg_match( '~^\s*(?:(?:\w+(?:-+\w+)*\.)+[a-z]+)\s*(?:,\s*(?:(?:\w+(?:-+\w+)*\.)+[a-z]+)\s*)*$~', $input ) ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

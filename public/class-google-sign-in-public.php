@@ -5,8 +5,8 @@
  * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
- * @package    Google_Sign_Up
- * @subpackage Google_Sign_Up/public
+ * @package    Google_Sign_In
+ * @subpackage Google_Sign_In/public
  */
 
 /**
@@ -15,11 +15,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Google_Sign_Up
- * @subpackage Google_Sign_Up/public
+ * @package    Google_Sign_In
+ * @subpackage Google_Sign_In/public
  * @author     Tanner Record <tanner.record@northstarmarketing.com>
  */
-class Google_Sign_Up_Public {
+class Google_Sign_In_Public {
 
 	/**
 	 * The ID of this plugin.
@@ -72,7 +72,7 @@ class Google_Sign_Up_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/google-sign-up-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/google-sign-in-public.css', array(), $this->version, 'all' );
 
 	}
 
@@ -95,7 +95,7 @@ class Google_Sign_Up_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/google-sign-up-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/google-sign-in-public.js', array( 'jquery' ), $this->version, false );
 
 	}
 

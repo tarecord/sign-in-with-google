@@ -8,8 +8,8 @@
  * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
- * @package    Google_Sign_Up
- * @subpackage Google_Sign_Up/includes
+ * @package    Google_Sign_In
+ * @subpackage Google_Sign_In/includes
  */
 
 /**
@@ -22,11 +22,11 @@
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    Google_Sign_Up
- * @subpackage Google_Sign_Up/includes
+ * @package    Google_Sign_In
+ * @subpackage Google_Sign_In/includes
  * @author     Tanner Record <tanner.record@northstarmarketing.com>
  */
-class Google_Sign_Up {
+class Google_Sign_In {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -34,7 +34,7 @@ class Google_Sign_Up {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Google_Sign_Up_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Google_Sign_In_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -67,7 +67,7 @@ class Google_Sign_Up {
 	 */
 	public function __construct() {
 
-		$this->plugin_name = 'google-sign-up';
+		$this->plugin_name = 'google-sign-in';
 		$this->version     = '1.0.0';
 
 		$this->load_dependencies();
@@ -99,31 +99,31 @@ class Google_Sign_Up {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-google-sign-up-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-google-sign-in-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-google-sign-up-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-google-sign-in-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-google-sign-up-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-google-sign-in-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-google-sign-up-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-google-sign-in-public.php';
 
 		/**
 		 * Include Google's PHP library.
 		 */
 		require_once plugin_dir_path( __DIR__ ) . 'vendor/autoload.php';
 
-		$this->loader = new Google_Sign_Up_Loader();
+		$this->loader = new Google_Sign_In_Loader();
 
 	}
 
@@ -138,7 +138,7 @@ class Google_Sign_Up {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Google_Sign_Up_I18n();
+		$plugin_i18n = new Google_Sign_In_I18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -153,7 +153,7 @@ class Google_Sign_Up {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Google_Sign_Up_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Google_Sign_In_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -192,7 +192,7 @@ class Google_Sign_Up {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Google_Sign_Up_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Google_Sign_In_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'login_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'login_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
@@ -224,7 +224,7 @@ class Google_Sign_Up {
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     1.0.0
-	 * @return    Google_Sign_Up_Loader    Orchestrates the hooks of the plugin.
+	 * @return    Google_Sign_In_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;
