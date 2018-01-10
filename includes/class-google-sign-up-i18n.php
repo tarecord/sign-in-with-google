@@ -6,7 +6,7 @@
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  *
- * @link       http://www.tannerrecord.com
+ * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
  * @package    Google_Sign_Up
@@ -22,9 +22,9 @@
  * @since      1.0.0
  * @package    Google_Sign_Up
  * @subpackage Google_Sign_Up/includes
- * @author     Tanner Record <tanner.record@northstarmarketing.com>
+ * @author     North Star Marketing <tech@northstarmarketing.com>
  */
-class Google_Sign_Up_i18n {
+class Google_Sign_Up_I18n {
 
 
 	/**

@@ -3,7 +3,7 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       http://www.tannerrecord.com
+ * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
  * @package    Google_Sign_Up
@@ -50,7 +50,7 @@ class Google_Sign_Up_Public {
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 
 	}
 
@@ -99,10 +99,10 @@ class Google_Sign_Up_Public {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/google-sign-up-public.js', array( 'jquery' ), $this->version, false );
 
 	}
-	
+
 	public function add_signup_button() {
 
-		if ( get_option('show_on_login') ) {
+		if ( get_option( 'show_on_login' ) ) {
 
 			ob_start();
 			?>

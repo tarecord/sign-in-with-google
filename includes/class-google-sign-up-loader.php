@@ -3,7 +3,7 @@
 /**
  * Register all actions and filters for the plugin
  *
- * @link       http://www.tannerrecord.com
+ * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
  * @package    Google_Sign_Up
@@ -102,7 +102,7 @@ class Google_Sign_Up_Loader {
 			'component'     => $component,
 			'callback'      => $callback,
 			'priority'      => $priority,
-			'accepted_args' => $accepted_args
+			'accepted_args' => $accepted_args,
 		);
 
 		return $hooks;

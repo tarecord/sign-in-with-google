@@ -3,7 +3,7 @@
 /**
  * Fired during plugin activation
  *
- * @link       http://www.tannerrecord.com
+ * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
  * @package    Google_Sign_Up
