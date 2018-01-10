@@ -52,8 +52,8 @@ class Google_Sign_Up_Admin {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name   The name of this plugin.
-	 * @param      string    $version       The version of this plugin.
+	 * @param      string $plugin_name   The name of this plugin.
+	 * @param      string $version       The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
@@ -112,6 +112,7 @@ class Google_Sign_Up_Admin {
 	 * Add the plugin settings link found on the plugin page.
 	 *
 	 * @since    1.0.0
+	 * @param array $links The links to add to the plugin page.
 	 */
 	public function add_action_links( $links ) {
 
@@ -266,7 +267,7 @@ class Google_Sign_Up_Admin {
 		</select>
 
 		<?php
-		// Send the markup to the browser
+		// Send the markup to the browser.
 		echo ob_get_clean();
 	}
 
@@ -277,7 +278,7 @@ class Google_Sign_Up_Admin {
 	 */
 	public function google_domain_restriction() {
 
-		//get the TLD and domain
+		// Get the TLD and domain.
 		$urlparts    = parse_url( site_url() );
 		$domain      = $urlparts['host'];
 		$domainparts = explode( '.', $domain );
@@ -290,7 +291,7 @@ class Google_Sign_Up_Admin {
 		<p class="description">Enter the domain you would like to restrict new users to or leave blank to allow anyone with a google account. (Separate multiple domains with commas)</p>
 		<p class="description">Entering "<?php echo $domain; ?>" will only allow Google users with an @<?php echo $domain; ?> email address to sign up.</p>
 		<?php
-		// Send the markup to the browser
+		// Send the markup to the browser.
 		echo ob_get_clean();
 	}
 
@@ -318,10 +319,11 @@ class Google_Sign_Up_Admin {
 	 * Callback function for validating the form inputs.
 	 *
 	 * @since    1.0.0
+	 * @param string $input The input supplied by the field.
 	 */
 	public function input_validation( $input ) {
 
-		// Strip all HTML and PHP tags and properly handle quoted strings
+		// Strip all HTML and PHP tags and properly handle quoted strings.
 		$sanitized_input = strip_tags( stripslashes( $input ) );
 
 		return $sanitized_input;
@@ -331,10 +333,11 @@ class Google_Sign_Up_Admin {
 	 * Callback function for validating the form inputs.
 	 *
 	 * @since    1.0.0
+	 * @param string $input The input supplied by the field.
 	 */
 	public function domain_input_validation( $input ) {
 
-		// Strip all HTML and PHP tags and properly handle quoted strings
+		// Strip all HTML and PHP tags and properly handle quoted strings.
 		$sanitized_input = strip_tags( stripslashes( $input ) );
 
 		if ( '' !== $sanitized_input && ! preg_match( '~^\s*(?:(?:\w+(?:-+\w+)*\.)+[a-z]+)\s*(?:,\s*(?:(?:\w+(?:-+\w+)*\.)+[a-z]+)\s*)*$~', $sanitized_input ) ) {
@@ -354,9 +357,10 @@ class Google_Sign_Up_Admin {
 	 * Callback function for validating custom login param input.
 	 *
 	 * @since    1.0.0
+	 * @param string $input The input supplied by the field.
 	 */
 	public function custom_login_input_validation( $input ) {
-		// Strip all HTML and PHP tags and properly handle quoted strings
+		// Strip all HTML and PHP tags and properly handle quoted strings.
 		$sanitized_input = strip_tags( stripslashes( $input ) );
 
 		return $sanitized_input;
@@ -369,7 +373,7 @@ class Google_Sign_Up_Admin {
 	 */
 	public function settings_page_render() {
 
-		// check user capabilities
+		// Check user capabilities.
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
@@ -391,7 +395,7 @@ class Google_Sign_Up_Admin {
 		</div>
 		<?php
 
-		// Send the markup to the browser
+		// Send the markup to the browser.
 		echo ob_get_clean();
 
 	}
@@ -414,7 +418,7 @@ class Google_Sign_Up_Admin {
 	 */
 	public function build_google_redirect_url() {
 
-		// Build the API redirect url
+		// Build the API redirect url.
 		$google_client_id = get_option( 'google_client_id' );
 		$base_url         = 'https://accounts.google.com/o/oauth2/v2/auth';
 
@@ -423,7 +427,7 @@ class Google_Sign_Up_Admin {
 		$scopes[] = 'https://www.googleapis.com/auth/userinfo.email';
 		$scopes[] = 'https://www.googleapis.com/auth/userinfo.profile';
 
-		apply_filters( 'google_sign_up_scopes', $scopes ); // Allow scopes to be adjusted
+		apply_filters( 'google_sign_up_scopes', $scopes ); // Allow scopes to be adjusted.
 
 		$scope        = urlencode( implode( ' ', $scopes ) );
 		$redirect_uri = urlencode( site_url( '?google_response' ) );
@@ -478,6 +482,7 @@ class Google_Sign_Up_Admin {
 	 * Fetches the access_token using the response code.
 	 *
 	 * @since 1.0.0
+	 * @param string $code The code provided by Google's redirect.
 	 */
 	public function get_access_token( $code ) {
 
@@ -503,7 +508,7 @@ class Google_Sign_Up_Admin {
 	 * Gets a user by email or creates a new user.
 	 *
 	 * @since    1.0.0
-	 * @param    string  $user_data  The Google+ user data object.
+	 * @param    string $user_data  The Google+ user data object.
 	 */
 	public function find_by_email_or_create( $user_data ) {
 
@@ -548,6 +553,7 @@ class Google_Sign_Up_Admin {
 	 * Displays a message to the user if domain restriction is in use and their domain does not match.
 	 *
 	 * @since    1.0.0
+	 * @param string $message The message to show the user on the login screen.
 	 */
 	public function domain_restriction_error( $message ) {
 		$message = '<div id="login_error">You must have an email with a required domain (<strong>' . get_option( 'google_domain_restriction' ) . '</strong>) to log in to this website using Google.</div>';

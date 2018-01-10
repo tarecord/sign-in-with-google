@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The file that defines the core plugin class
  *
@@ -197,7 +196,7 @@ class Google_Sign_Up {
 
 		$this->loader->add_action( 'login_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'login_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-		$this->loader->add_action( 'login_form', $plugin_public, 'add_signup_button' );
+		$this->loader->add_action( 'login_form', $plugin_public, 'add_signin_button' );
 
 	}
 

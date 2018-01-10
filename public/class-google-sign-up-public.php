@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The public-facing functionality of the plugin.
  *
@@ -44,8 +43,8 @@ class Google_Sign_Up_Public {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of the plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param      string $plugin_name       The name of the plugin.
+	 * @param      string $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
@@ -100,7 +99,10 @@ class Google_Sign_Up_Public {
 
 	}
 
-	public function add_signup_button() {
+	/**
+	 * Adds the sign-in button to the login form.
+	 */
+	public function add_signin_button() {
 
 		if ( get_option( 'show_on_login' ) ) {
 
