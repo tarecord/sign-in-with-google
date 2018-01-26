@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 function activate_google_sign_in() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-google-sign-in-activator.php';
-	Google_Sign_Up_Activator::activate();
+	Google_Sign_In_Activator::activate();
 }
 
 /**
@@ -44,7 +44,7 @@ function activate_google_sign_in() {
  */
 function deactivate_google_sign_in() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-google-sign-in-deactivator.php';
-	Google_Sign_Up_Deactivator::deactivate();
+	Google_Sign_In_Deactivator::deactivate();
 }
 
 register_activation_hook( __FILE__, 'activate_google_sign_in' );
