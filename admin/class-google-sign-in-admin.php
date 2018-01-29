@@ -49,6 +49,15 @@ class Google_Sign_In_Admin {
 	private $client;
 
 	/**
+	 * The URL the user should be redirected to after login
+	 * 
+	 * @since	1.0.0
+	 * @access	private
+	 * @var		string		$request_uri	 The request uri.
+	 */
+	private $request_uri;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -406,6 +415,7 @@ class Google_Sign_In_Admin {
 	 * @since    1.0.0
 	 */
 	public function google_auth_redirect() {
+		$this->request_uri = $_SERVER['REQUEST_URI'];
 		$url = $this->build_google_redirect_url();
 		wp_redirect( $url );
 		exit;
@@ -432,7 +442,7 @@ class Google_Sign_In_Admin {
 		$scope        = urlencode( implode( ' ', $scopes ) );
 		$redirect_uri = urlencode( site_url( '?google_response' ) );
 
-		return $base_url . '?scope=' . $scope . '&redirect_uri=' . $redirect_uri . '&response_type=code&client_id=' . $google_client_id;
+		return $base_url . '?scope=' . $scope . '&redirect_uri=' . $redirect_uri . '&response_type=code&client_id=' . $google_client_id . '&state=' . $this->request_uri;
 	}
 
 	/**
@@ -442,8 +452,10 @@ class Google_Sign_In_Admin {
 	 */
 	public function authenticate_user() {
 
-		$code         = sanitize_text_field( $_GET['code'] );
-		$access_token = $this->get_access_token( $code );
+		$code            = sanitize_text_field( $_GET['code'] );
+		$raw_request_uri = ($_GET['state']) ? $_GET['state'] : '';
+		$request_uri     = remove_query_arg( get_option( 'custom_login_param' ), $raw_request_uri ); // Remove the custom login param from the redirect
+		$access_token    = $this->get_access_token( $code );
 
 		$this->client->setAccessToken( $access_token );
 
@@ -469,7 +481,11 @@ class Google_Sign_In_Admin {
 			do_action( 'wp_login', $user->user_login );
 		}
 
-		$redirect = admin_url(); // Send users to the dashboard by default.
+		if ( $request_uri ) {
+			$redirect = home_url() . $request_uri;
+		} else {
+			$redirect = admin_url(); // Send users to the dashboard by default.
+		}
 
 		apply_filters( 'google_sign_in_auth_redirect', $redirect ); // Allow the redirect to be adjusted.
 
