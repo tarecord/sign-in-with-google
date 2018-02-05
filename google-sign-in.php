@@ -17,9 +17,9 @@
  * Description:       Adds a "Sign in with Google" button to the login page, and allows users to sign up and login using Google.
  * Version:           1.0.0
  * Author:            North Star Marketing
- * Author URI:        http://www.northstarmarketing.com
- * License:           GPL-3.0+
- * License URI:       http://www.gnu.org/licenses/gpl-3.0.txt
+ * Author URI:        https://profiles.wordpress.org/northstarmarketing
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       google-sign-in
  * Domain Path:       /languages
  */
