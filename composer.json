@@ -4,6 +4,9 @@
     "require": {
         "google/apiclient": "^2.2"
     },
+    "config": {
+        "vendor-dir": "src/sign-in-with-google/vendor"
+    },
     "authors": [
         {
             "name": "Tanner Record",
