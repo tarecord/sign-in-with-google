@@ -55,7 +55,7 @@ class Google_Sign_In_Admin {
 	 * @access	private
 	 * @var		string		$request_uri	 The request uri.
 	 */
-	private $request_uri;
+	private $request_uri = '';
 
 	/**
 	 * Initialize the class and set its properties.
@@ -415,7 +415,13 @@ class Google_Sign_In_Admin {
 	 * @since    1.0.0
 	 */
 	public function google_auth_redirect() {
-		$this->request_uri = $_SERVER['REQUEST_URI'];
+		// If the request is coming from the login page
+		if ( strpos($_SERVER['REQUEST_URI'], 'wp-login') || strpos($_SERVER['REQUEST_URI'], 'google_redirect') ) {
+			$this->request_uri = '';
+		} else {
+			$this->request_uri = $_SERVER['REQUEST_URI'];
+		}
+
 		$url = $this->build_google_redirect_url();
 		wp_redirect( $url );
 		exit;
