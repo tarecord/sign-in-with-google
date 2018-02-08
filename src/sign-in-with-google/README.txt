@@ -58,6 +58,9 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 
 == Changelog ==
 
+= 1.0.2 =
+* Rename plugin file to match directory
+
 = 1.0.1 =
 * Fixed bug causing a redirect loop if using the button on the login page
 
