@@ -67,8 +67,8 @@ class Google_Sign_In {
 	 */
 	public function __construct() {
 
-		$this->version     = '1.0.0';
 		$this->plugin_name = 'sign-in-with-google';
+		$this->version     = '1.0.3';
 
 		$this->load_dependencies();
 		$this->set_locale();

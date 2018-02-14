@@ -2,8 +2,8 @@
 Contributors: tarecord, chrismkindred
 Tags: Google, sign in, users, registration, register, Google Apps, G Suite, OAuth
 Requires at least: 4.0
-Tested up to: 4.9.2
-Stable tag: 1.0.2
+Tested up to: 4.9.4
+Stable tag: 1.0.3
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -57,6 +57,10 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 2. This is the second screen shot
 
 == Changelog ==
+
+= 1.0.3 =
+* Fixed bug causing "Settings" link not to show on plugins page
+* Cleaned up error logs
 
 = 1.0.2 =
 * Rename plugin file to match directory
