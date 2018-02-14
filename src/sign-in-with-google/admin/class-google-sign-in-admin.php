@@ -457,7 +457,7 @@ class Google_Sign_In_Admin {
 	public function authenticate_user() {
 
 		$code            = sanitize_text_field( $_GET['code'] );
-		$raw_request_uri = ($_GET['state']) ? $_GET['state'] : '';
+		$raw_request_uri = ( isset($_GET['state']) ) ? $_GET['state'] : '';
 		$request_uri     = remove_query_arg( get_option( 'siwg_custom_login_param' ), $raw_request_uri ); // Remove the custom login param from the redirect
 		$access_token    = $this->get_access_token( $code );
 
