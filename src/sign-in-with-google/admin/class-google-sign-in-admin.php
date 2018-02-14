@@ -141,8 +141,8 @@ class Google_Sign_In_Admin {
 	public function settings_menu_init() {
 
 		add_options_page(
-			'Google Sign In',                       // The text to be displayed for this actual menu item.
-			'Google Sign In',                       // The title to be displayed on this menu's corresponding page.
+			'Sign in with Google',                       // The text to be displayed for this actual menu item.
+			'Sign in with Google',                       // The title to be displayed on this menu's corresponding page.
 			'manage_options',                       // Which capability can see this menu.
 			'siwg_settings',              // The unique ID - that is, the slug - for this menu item.
 			array( $this, 'settings_page_render' )  // The name of the function to call when rendering this menu's page.
