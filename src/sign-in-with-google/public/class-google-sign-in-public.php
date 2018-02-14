@@ -104,7 +104,7 @@ class Google_Sign_In_Public {
 	 */
 	public function add_signin_button() {
 
-		if ( get_option( 'show_on_login' ) ) {
+		if ( get_option( 'siwg_show_on_login' ) ) {
 
 			ob_start();
 			?>

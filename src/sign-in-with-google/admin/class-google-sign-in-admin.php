@@ -113,7 +113,7 @@ class Google_Sign_In_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/google-sign-in-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/sign-in-with-google-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
 
@@ -125,10 +125,8 @@ class Google_Sign_In_Admin {
 	 */
 	public function add_action_links( $links ) {
 
-		error_log( 'add_settings_link' );
-
 		$mylinks = array(
-			'<a href="' . admin_url( 'options-general.php?page=google_sign_in_settings' ) . '">Settings</a>',
+			'<a href="' . admin_url( 'options-general.php?page=siwg_settings' ) . '">Settings</a>',
 		);
 
 		return array_merge( $links, $mylinks );
@@ -143,10 +141,10 @@ class Google_Sign_In_Admin {
 	public function settings_menu_init() {
 
 		add_options_page(
-			'Google Sign In',                       // The text to be displayed for this actual menu item.
-			'Google Sign In',                       // The title to be displayed on this menu's corresponding page.
+			'Sign in with Google',                       // The text to be displayed for this actual menu item.
+			'Sign in with Google',                       // The title to be displayed on this menu's corresponding page.
 			'manage_options',                       // Which capability can see this menu.
-			'google_sign_in_settings',              // The unique ID - that is, the slug - for this menu item.
+			'siwg_settings',              // The unique ID - that is, the slug - for this menu item.
 			array( $this, 'settings_page_render' )  // The name of the function to call when rendering this menu's page.
 		);
 
@@ -160,66 +158,66 @@ class Google_Sign_In_Admin {
 	public function settings_api_init() {
 
 		add_settings_section(
-			'google_sign_in_section',
+			'siwg_section',
 			'',
-			array( $this, 'google_sign_in_section' ),
-			'google_sign_in_settings'
+			array( $this, 'siwg_section' ),
+			'siwg_settings'
 		);
 
 		add_settings_field(
-			'google_client_id',
+			'siwg_google_client_id',
 			'Client ID',
-			array( $this, 'google_client_id' ),
-			'google_sign_in_settings',
-			'google_sign_in_section'
+			array( $this, 'siwg_google_client_id' ),
+			'siwg_settings',
+			'siwg_section'
 		);
 
 		add_settings_field(
-			'google_client_secret',
+			'siwg_google_client_secret',
 			'Client Secret',
-			array( $this, 'google_client_secret' ),
-			'google_sign_in_settings',
-			'google_sign_in_section'
+			array( $this, 'siwg_google_client_secret' ),
+			'siwg_settings',
+			'siwg_section'
 		);
 
 		add_settings_field(
-			'google_user_default_role',
+			'siwg_google_user_default_role',
 			'Default New User Role',
-			array( $this, 'google_user_default_role' ),
-			'google_sign_in_settings',
-			'google_sign_in_section'
+			array( $this, 'siwg_google_user_default_role' ),
+			'siwg_settings',
+			'siwg_section'
 		);
 
 		add_settings_field(
-			'google_domain_restriction',
+			'siwg_google_domain_restriction',
 			'Restrict To Domain',
-			array( $this, 'google_domain_restriction' ),
-			'google_sign_in_settings',
-			'google_sign_in_section'
+			array( $this, 'siwg_google_domain_restriction' ),
+			'siwg_settings',
+			'siwg_section'
 		);
 
 		add_settings_field(
-			'custom_login_param',
+			'siwg_custom_login_param',
 			'Custom Login Parameter',
-			array( $this, 'custom_login_param' ),
-			'google_sign_in_settings',
-			'google_sign_in_section'
+			array( $this, 'siwg_custom_login_param' ),
+			'siwg_settings',
+			'siwg_section'
 		);
 
 		add_settings_field(
-			'show_on_login',
+			'siwg_show_on_login',
 			'Show Google Signup Button on Login Form',
-			array( $this, 'show_on_login' ),
-			'google_sign_in_settings',
-			'google_sign_in_section'
+			array( $this, 'siwg_show_on_login' ),
+			'siwg_settings',
+			'siwg_section'
 		);
 
-		register_setting( 'google_sign_in_settings', 'google_client_id', array( $this, 'input_validation' ) );
-		register_setting( 'google_sign_in_settings', 'google_client_secret', array( $this, 'input_validation' ) );
-		register_setting( 'google_sign_in_settings', 'google_user_default_role' );
-		register_setting( 'google_sign_in_settings', 'google_domain_restriction', array( $this, 'domain_input_validation' ) );
-		register_setting( 'google_sign_in_settings', 'custom_login_param', array( $this, 'custom_login_input_validation' ) );
-		register_setting( 'google_sign_in_settings', 'show_on_login' );
+		register_setting( 'siwg_settings', 'siwg_google_client_id', array( $this, 'input_validation' ) );
+		register_setting( 'siwg_settings', 'siwg_google_client_secret', array( $this, 'input_validation' ) );
+		register_setting( 'siwg_settings', 'siwg_google_user_default_role' );
+		register_setting( 'siwg_settings', 'siwg_google_domain_restriction', array( $this, 'domain_input_validation' ) );
+		register_setting( 'siwg_settings', 'siwg_custom_login_param', array( $this, 'custom_login_input_validation' ) );
+		register_setting( 'siwg_settings', 'siwg_show_on_login' );
 	}
 
 	/**
@@ -229,7 +227,7 @@ class Google_Sign_In_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function google_sign_in_section() {
+	public function siwg_section() {
 		echo '<p>Please paste in the necessary credentials so that we can authenticate your users.</p>';
 	}
 
@@ -238,8 +236,8 @@ class Google_Sign_In_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function google_client_id() {
-		echo '<input name="google_client_id" id="google_client_id" type="text" size="50" value="' . get_option( 'google_client_id' ) . '"/>';
+	public function siwg_google_client_id() {
+		echo '<input name="siwg_google_client_id" id="siwg_google_client_id" type="text" size="50" value="' . get_option( 'siwg_google_client_id' ) . '"/>';
 	}
 
 	/**
@@ -247,8 +245,8 @@ class Google_Sign_In_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function google_client_secret() {
-		echo '<input name="google_client_secret" id="google_client_secret" type="text" size="50" value="' . get_option( 'google_client_secret' ) . '"/>';
+	public function siwg_google_client_secret() {
+		echo '<input name="siwg_google_client_secret" id="siwg_google_client_secret" type="text" size="50" value="' . get_option( 'siwg_google_client_secret' ) . '"/>';
 	}
 
 	/**
@@ -256,15 +254,15 @@ class Google_Sign_In_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function google_user_default_role() {
+	public function siwg_google_user_default_role() {
 
 		ob_start(); ?>
-		<select name="google_user_default_role" id="google_user_default_role">
+		<select name="siwg_google_user_default_role" id="siwg_google_user_default_role">
 			<?php
 			$roles = get_editable_roles();
 			foreach ( $roles as $key => $value ) :
 				$selected = '';
-				if ( get_option( 'google_user_default_role', 'subscriber' ) == $key ) {
+				if ( get_option( 'siwg_google_user_default_role', 'subscriber' ) == $key ) {
 					$selected = 'selected';
 				}
 			?>
@@ -285,7 +283,7 @@ class Google_Sign_In_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function google_domain_restriction() {
+	public function siwg_google_domain_restriction() {
 
 		// Get the TLD and domain.
 		$urlparts    = parse_url( site_url() );
@@ -296,7 +294,7 @@ class Google_Sign_In_Admin {
 		ob_start();
 		?>
 
-		<input name="google_domain_restriction" id="google_domain_restriction" type="text" size="50" value="<?php echo get_option( 'google_domain_restriction' ); ?>" placeholder="<?php echo $domain; ?>">
+		<input name="siwg_google_domain_restriction" id="siwg_google_domain_restriction" type="text" size="50" value="<?php echo get_option( 'siwg_google_domain_restriction' ); ?>" placeholder="<?php echo $domain; ?>">
 		<p class="description">Enter the domain you would like to restrict new users to or leave blank to allow anyone with a google account. (Separate multiple domains with commas)</p>
 		<p class="description">Entering "<?php echo $domain; ?>" will only allow Google users with an @<?php echo $domain; ?> email address to sign up.</p>
 		<?php
@@ -309,8 +307,8 @@ class Google_Sign_In_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function custom_login_param() {
-		echo '<input name="custom_login_param" id="custom_login_param" type="text" size="50" value="' . get_option( 'custom_login_param' ) . '"/>';
+	public function siwg_custom_login_param() {
+		echo '<input name="siwg_custom_login_param" id="siwg_custom_login_param" type="text" size="50" value="' . get_option( 'siwg_custom_login_param' ) . '"/>';
 	}
 
 	/**
@@ -318,9 +316,9 @@ class Google_Sign_In_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function show_on_login() {
+	public function siwg_show_on_login() {
 
-		echo '<input type="checkbox" name="show_on_login" id="show_on_login" value="1" ' . checked( get_option( 'show_on_login' ), true, false ) . ' />';
+		echo '<input type="checkbox" name="siwg_show_on_login" id="siwg_show_on_login" value="1" ' . checked( get_option( 'siwg_show_on_login' ), true, false ) . ' />';
 
 	}
 
@@ -352,7 +350,7 @@ class Google_Sign_In_Admin {
 		if ( '' !== $sanitized_input && ! $this->verify_domain_list( $sanitized_input ) ) {
 
 			add_settings_error(
-				'google_sign_up_settings',
+				'siwg_settings',
 				esc_attr( 'domain-error' ),
 				'Please make sure you have a proper comma separated list of domains.',
 				'error'
@@ -388,15 +386,15 @@ class Google_Sign_In_Admin {
 		}
 
 		// show error/update messages.
-		settings_errors( 'google_sign_in_messages' );
+		settings_errors( 'siwg_messages' );
 
 		ob_start();
 		?>
 		<div class="wrap">
 			<h2>Google Sign In Settings</h2>
 			<form method="post" action="options.php">
-				<?php settings_fields( 'google_sign_in_settings' ); ?>
-				<?php do_settings_sections( 'google_sign_in_settings' ); ?>
+				<?php settings_fields( 'siwg_settings' ); ?>
+				<?php do_settings_sections( 'siwg_settings' ); ?>
 				<p class="submit">
 					<input name="submit" type="submit" id="submit" class="button-primary" value="Save Changes" />
 				</p>
@@ -435,7 +433,7 @@ class Google_Sign_In_Admin {
 	public function build_google_redirect_url() {
 
 		// Build the API redirect url.
-		$google_client_id = get_option( 'google_client_id' );
+		$google_client_id = get_option( 'siwg_google_client_id' );
 		$base_url         = 'https://accounts.google.com/o/oauth2/v2/auth';
 
 		$scopes[] = 'https://www.googleapis.com/auth/plus.login';
@@ -443,7 +441,7 @@ class Google_Sign_In_Admin {
 		$scopes[] = 'https://www.googleapis.com/auth/userinfo.email';
 		$scopes[] = 'https://www.googleapis.com/auth/userinfo.profile';
 
-		apply_filters( 'google_sign_in_scopes', $scopes ); // Allow scopes to be adjusted.
+		apply_filters( 'siwg_scopes', $scopes ); // Allow scopes to be adjusted.
 
 		$scope        = urlencode( implode( ' ', $scopes ) );
 		$redirect_uri = urlencode( site_url( '?google_response' ) );
@@ -460,7 +458,7 @@ class Google_Sign_In_Admin {
 
 		$code            = sanitize_text_field( $_GET['code'] );
 		$raw_request_uri = ($_GET['state']) ? $_GET['state'] : '';
-		$request_uri     = remove_query_arg( get_option( 'custom_login_param' ), $raw_request_uri ); // Remove the custom login param from the redirect
+		$request_uri     = remove_query_arg( get_option( 'siwg_custom_login_param' ), $raw_request_uri ); // Remove the custom login param from the redirect
 		$access_token    = $this->get_access_token( $code );
 
 		$this->client->setAccessToken( $access_token );
@@ -471,7 +469,7 @@ class Google_Sign_In_Admin {
 		$user_email_data = explode( '@', $user_email );
 
 		// The user doesn't have the correct domain, don't authenticate them.
-		$domains = explode( ',', get_option( 'google_domain_restriction' ) );
+		$domains = explode( ',', get_option( 'siwg_google_domain_restriction' ) );
 
 		if ( '' != $domains[0] && ! in_array( $user_email_data[1], $domains ) ) {
 			wp_redirect( wp_login_url() . '?google_login=incorrect_domain' );
@@ -493,7 +491,7 @@ class Google_Sign_In_Admin {
 			$redirect = admin_url(); // Send users to the dashboard by default.
 		}
 
-		apply_filters( 'google_sign_in_auth_redirect', $redirect ); // Allow the redirect to be adjusted.
+		apply_filters( 'siwg_auth_redirect', $redirect ); // Allow the redirect to be adjusted.
 
 		wp_redirect( $redirect );
 		exit;
@@ -516,8 +514,8 @@ class Google_Sign_In_Admin {
 
 		$this->client = new Google_Client();
 		$this->client->setApplicationName( bloginfo( 'name' ) );
-		$this->client->setClientId( get_option( 'google_client_id' ) );
-		$this->client->setClientSecret( get_option( 'google_client_secret' ) );
+		$this->client->setClientId( get_option( 'siwg_google_client_id' ) );
+		$this->client->setClientSecret( get_option( 'siwg_google_client_secret' ) );
 		$this->client->setRedirectUri( $redirect_uri );
 
 		$this->client->authenticate( $code );
@@ -547,7 +545,7 @@ class Google_Sign_In_Admin {
 		$first_name      = $user_data->name->givenName;
 		$last_name       = $user_data->name->familyName;
 		$display_name    = $first_name . ' ' . $last_name;
-		$role            = get_option( 'google_user_default_role', 'subscriber' );
+		$role            = get_option( 'siwg_google_user_default_role', 'subscriber' );
 
 		$user = array(
 			'user_pass'       => $user_pass,
@@ -593,7 +591,7 @@ class Google_Sign_In_Admin {
 	 * @param string $message The message to show the user on the login screen.
 	 */
 	public function domain_restriction_error( $message ) {
-		$message = '<div id="login_error">You must have an email with a required domain (<strong>' . get_option( 'google_domain_restriction' ) . '</strong>) to log in to this website using Google.</div>';
+		$message = '<div id="login_error">You must have an email with a required domain (<strong>' . get_option( 'siwg_google_domain_restriction' ) . '</strong>) to log in to this website using Google.</div>';
 		return $message;
 	}
 

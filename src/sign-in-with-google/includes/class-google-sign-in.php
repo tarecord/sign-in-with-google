@@ -170,7 +170,7 @@ class Google_Sign_In {
 		}
 
 		// Add custom URL param so we can add a custom login URL.
-		if ( isset( $_GET[ get_option( 'custom_login_param' ) ] ) ) {
+		if ( isset( $_GET[ get_option( 'siwg_custom_login_param' ) ] ) ) {
 			$this->loader->add_action( 'init', $plugin_admin, 'google_auth_redirect' );
 		}
 

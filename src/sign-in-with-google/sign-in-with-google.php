@@ -20,7 +20,7 @@
  * Author URI:        https://profiles.wordpress.org/northstarmarketing
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       google-sign-in
+ * Text Domain:       siwg
  * Domain Path:       /languages
  */
 
