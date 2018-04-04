@@ -70,7 +70,7 @@ script:
     fi
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -t e90a491b3b722e6e434390684549d2874bda80908c210f518afe71c134ca4e49
+  - bash <(curl -s https://codecov.io/bash) -t f9ed3e4e-416e-4f5d-8380-f95d691afbce
 
 deploy:
   #
