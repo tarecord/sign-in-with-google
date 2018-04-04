@@ -67,7 +67,7 @@ $filter_file = "$tmp_dir/filter";
 `rsync -r --filter=". $filter_file" "$src_dir"/* "$dest_dir"`;
 chdir( $tmp_dir );
 // Deploy the plugin to WordPress.org
-echo `svn co -q http://svn.wp-plugins.org/usgs-stream-flow-data svn`;
+echo `svn co -q http://svn.wp-plugins.org/$PLUGIN_SLUG svn`;
 echo `rm -R svn/trunk`;
 echo `mkdir svn/trunk`;
 echo `mkdir svn/tags/$version`;
