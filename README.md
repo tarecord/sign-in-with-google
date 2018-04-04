@@ -1,4 +1,5 @@
 # Sign In With Google
+[![Build Status](https://travis-ci.org/NorthStarMarketing/sign-in-with-google.svg?branch=master)](https://travis-ci.org/NorthStarMarketing/sign-in-with-google)
 
 This plugin gives your users the ability to sign in with their G Suite account. If they don't have a user account on your site and they try to sign in, an account will be created for them (if their email address domain is listed in the restricted domains).
 This is great for Agencies or sites that have lots of users and need a way to make signing in a quick and painless process.
