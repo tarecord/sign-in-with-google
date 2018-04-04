@@ -12,8 +12,5 @@
             "name": "Tanner Record",
             "email": "tanner.record@gmail.com"
         }
-    ],
-    "require-dev": {
-        "phpunit/phpunit": "^5"
-    }
+    ]
 }
