@@ -1,5 +1,5 @@
 {
-    "name": "tarecord/google-sign-in",
+    "name": "tarecord/sign-in-with-google",
     "description": "",
     "require": {
         "google/apiclient": "^2.2"

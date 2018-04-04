@@ -23,7 +23,7 @@
  * @subpackage Sign_In_With_Google/includes
  * @author     North Star Marketing <tech@northstarmarketing.com>
  */
-class Google_Sign_In_I18n {
+class Sign_In_With_Google_I18n {
 
 
 	/**
@@ -34,7 +34,7 @@ class Google_Sign_In_I18n {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
-			'google-sign-in',
+			'siwg',
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);

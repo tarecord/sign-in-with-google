@@ -28,7 +28,7 @@ class AdminTest extends WP_UnitTestCase {
 	 * Sets up the $plugin_name and $plugin_version required by Google_Sign_Up_Admin.
 	 */
 	function setUp() {
-		$this->plugin_name = 'google-sign-in';
+		$this->plugin_name = 'sign-in-with-google';
 		$this->version     = '1.0.0';
 	}
 
@@ -39,8 +39,8 @@ class AdminTest extends WP_UnitTestCase {
 	 * @dataProvider domain_test_array
 	 */
 	function test_verify_domain_list($input, $expected) {
-		$google_sign_in_admin = new Google_Sign_In_Admin( $this->plugin_name, $this->version );
-		$result = $google_sign_in_admin->verify_domain_list( $input );
+		$sign_in_with_google_admin = new Sign_In_With_Google_Admin( $this->plugin_name, $this->version );
+		$result = $sign_in_with_google_admin->verify_domain_list( $input );
 		$this->assertEquals( $result, $expected );
 	}
 

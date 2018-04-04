@@ -19,7 +19,7 @@
  * @subpackage Sign_In_With_Google/admin
  * @author     Tanner Record <tanner.record@northstarmarketing.com>
  */
-class Google_Sign_In_Admin {
+class Sign_In_With_Google_Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -90,7 +90,7 @@ class Google_Sign_In_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/google-sign-in-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/sign-in-with-google-admin.css', array(), $this->version, 'all' );
 
 	}
 

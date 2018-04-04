@@ -27,12 +27,12 @@ If you leave the "Sign in with Google" button shown on the login form, make sure
 
 == Development ==
 
-Active plugin development is handled on [Github](https://www.github.com/NorthStarMarketing/google-sign-in). Bugs and issues will be tracked and handled there.
+Active plugin development is handled on [Github](https://www.github.com/NorthStarMarketing/sign-in-with-google). Bugs and issues will be tracked and handled there.
 
 == Installation ==
 
 1. Download and extract plugin
-2. Upload `google-sign-in` folder to the `/wp-content/plugins/` directory
+2. Upload `sign-in-with-google` folder to the `/wp-content/plugins/` directory
 3. Activate the plugin through the 'Plugins' menu in WordPress
 
 == Frequently Asked Questions ==

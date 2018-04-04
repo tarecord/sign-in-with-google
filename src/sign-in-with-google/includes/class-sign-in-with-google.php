@@ -34,7 +34,7 @@ class Sign_In_With_Google {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Google_Sign_In_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Sign_In_With_Google_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -99,31 +99,31 @@ class Sign_In_With_Google {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-google-sign-in-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sign-in-with-google-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-google-sign-in-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sign-in-with-google-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-google-sign-in-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sign-in-with-google-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-google-sign-in-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-sign-in-with-google-public.php';
 
 		/**
 		 * Include Google's PHP library.
 		 */
 		require_once plugin_dir_path( __DIR__ ) . 'vendor/autoload.php';
 
-		$this->loader = new Google_Sign_In_Loader();
+		$this->loader = new Sign_In_With_Google_Loader();
 
 	}
 
@@ -138,7 +138,7 @@ class Sign_In_With_Google {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Google_Sign_In_I18n();
+		$plugin_i18n = new Sign_In_With_Google_I18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -153,7 +153,7 @@ class Sign_In_With_Google {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Google_Sign_In_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Sign_In_With_Google_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -192,7 +192,7 @@ class Sign_In_With_Google {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Google_Sign_In_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Sign_In_With_Google_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'login_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'login_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
@@ -224,7 +224,7 @@ class Sign_In_With_Google {
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     1.0.0
-	 * @return    Google_Sign_In_Loader    Orchestrates the hooks of the plugin.
+	 * @return    Sign_In_With_Google_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;

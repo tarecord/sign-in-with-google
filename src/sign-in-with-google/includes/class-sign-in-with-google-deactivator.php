@@ -19,7 +19,7 @@
  * @subpackage Sign_In_With_Google/includes
  * @author     Tanner Record <tanner.record@northstarmarketing.com>
  */
-class Google_Sign_In_Deactivator {
+class Sign_In_With_Google_Deactivator {
 
 	/**
 	 * Short Description. (use period)

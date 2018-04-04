@@ -31,30 +31,30 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-google-sign-in-activator.php
+ * This action is documented in includes/class-sign-in-with-google-activator.php
  */
-function activate_google_sign_in() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-google-sign-in-activator.php';
-	Google_Sign_In_Activator::activate();
+function activate_sign_in_with_google() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-sign-in-with-google-activator.php';
+	Sign_In_With_Google_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-google-sign-in-deactivator.php
+ * This action is documented in includes/class-sign-in-with-google-deactivator.php
  */
-function deactivate_google_sign_in() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-google-sign-in-deactivator.php';
-	Google_Sign_In_Deactivator::deactivate();
+function deactivate_sign_in_with_google() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-sign-in-with-google-deactivator.php';
+	Sign_In_With_Google_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_google_sign_in' );
-register_deactivation_hook( __FILE__, 'deactivate_google_sign_in' );
+register_activation_hook( __FILE__, 'activate_sign_in_with_google' );
+register_deactivation_hook( __FILE__, 'deactivate_sign_in_with_google' );
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-google-sign-in.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-sign-in-with-google.php';
 
 /**
  * Begins execution of the plugin.
@@ -65,10 +65,10 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-google-sign-in.php';
  *
  * @since    1.0.0
  */
-function run_google_sign_up() {
+function run_sign_in_with_google() {
 
 	$plugin = new Sign_In_With_Google();
 	$plugin->run();
 
 }
-run_google_sign_up();
+run_sign_in_with_google();

@@ -20,7 +20,7 @@
  * @subpackage Sign_In_With_Google/includes
  * @author     Tanner Record <tanner.record@northstarmarketing.com>
  */
-class Google_Sign_In_Loader {
+class Sign_In_With_Google_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.
