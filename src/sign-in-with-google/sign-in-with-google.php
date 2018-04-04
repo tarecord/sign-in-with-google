@@ -67,7 +67,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-sign-in-with-google.php';
  */
 function run_sign_in_with_google() {
 
-	$plugin = new Sign_In_With_Google();
+	$plugin = new Sign_In_With_Google('1.0.3');
 	$plugin->run();
 
 }

@@ -65,10 +65,10 @@ class Sign_In_With_Google {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct() {
+	public function __construct( $version ) {
 
 		$this->plugin_name = 'sign-in-with-google';
-		$this->version     = '1.0.3';
+		$this->version     = $version;
 
 		$this->load_dependencies();
 		$this->set_locale();
