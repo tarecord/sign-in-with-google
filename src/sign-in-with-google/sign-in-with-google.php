@@ -15,7 +15,7 @@
  * Plugin Name:       Sign In With Google
  * Plugin URI:        http://www.northstarmarketing.com
  * Description:       Adds a "Sign in with Google" button to the login page, and allows users to sign up and login using Google.
- * Version:           1.0.3
+ * Version:           1.0.4
  * Author:            North Star Marketing
  * Author URI:        https://profiles.wordpress.org/northstarmarketing
  * License:           GPL-2.0+
@@ -67,7 +67,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-sign-in-with-google.php';
  */
 function run_sign_in_with_google() {
 
-	$plugin = new Sign_In_With_Google('1.0.3');
+	$plugin = new Sign_In_With_Google('1.0.4');
 	$plugin->run();
 
 }
