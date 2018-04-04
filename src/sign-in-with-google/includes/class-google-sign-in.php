@@ -8,8 +8,8 @@
  * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
- * @package    Google_Sign_In
- * @subpackage Google_Sign_In/includes
+ * @package    Sign_In_With_Google
+ * @subpackage Sign_In_With_Google/includes
  */
 
 /**
@@ -22,11 +22,11 @@
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    Google_Sign_In
- * @subpackage Google_Sign_In/includes
+ * @package    Sign_In_With_Google
+ * @subpackage Sign_In_With_Google/includes
  * @author     Tanner Record <tanner.record@northstarmarketing.com>
  */
-class Google_Sign_In {
+class Sign_In_With_Google {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power

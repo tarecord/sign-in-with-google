@@ -2,7 +2,7 @@
 /**
  * Class AdminTest
  *
- * @package Google_Sign_In
+ * @package Sign_In_With_Google
  */
 
 /**

@@ -9,7 +9,7 @@
  *
  * @link              http://www.northstarmarketing.com
  * @since             1.0.0
- * @package           Google_Sign_In
+ * @package           Sign_In_With_Google
  *
  * @wordpress-plugin
  * Plugin Name:       Sign In With Google
@@ -67,7 +67,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-google-sign-in.php';
  */
 function run_google_sign_up() {
 
-	$plugin = new Google_Sign_In();
+	$plugin = new Sign_In_With_Google();
 	$plugin->run();
 
 }

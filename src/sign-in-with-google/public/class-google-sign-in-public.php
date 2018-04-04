@@ -5,8 +5,8 @@
  * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
- * @package    Google_Sign_In
- * @subpackage Google_Sign_In/public
+ * @package    Sign_In_With_Google
+ * @subpackage Sign_In_With_Google/public
  */
 
 /**
@@ -15,8 +15,8 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Google_Sign_In
- * @subpackage Google_Sign_In/public
+ * @package    Sign_In_With_Google
+ * @subpackage Sign_In_With_Google/public
  * @author     Tanner Record <tanner.record@northstarmarketing.com>
  */
 class Google_Sign_In_Public {
