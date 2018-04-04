@@ -1,0 +1,86 @@
+#!/usr/bin/php
+<?php
+// Setup
+$WP_ORG_PASSWORD = $argv[1];
+$WP_ORG_USERNAME = $argv[2];
+$PLUGIN_SLUG = $argv[3];
+$cleanup = true;
+$build_cfg_dir = getcwd() . '/build';
+$root_dir = dirname( $build_cfg_dir );
+$src_dir = "$root_dir/src/$PLUGIN_SLUG";
+$main_plugin_file = "$src_dir/sign-in-with-google.php";
+$tmp_dir = "$root_dir/wp-build";
+$dest_dir = "$tmp_dir/$PLUGIN_SLUG";
+if ( !file_exists( $main_plugin_file ) ) {
+	echo "Cannot find main plugin file $main_plugin_file.\n";
+	exit(1);
+}
+$version_checks = array(
+	"sign-in-with-google.php" => array(
+		'@Version:\s+(.*)\n@' => 'header'
+	),
+	"class-google-sign-in.php" => array(
+		'@\$this->version\s*=\s*\'(.*)\'@' => 'class instantiation'
+	),
+	"README.txt" => array(
+		'@Stable tag:\s+(.*)\n@' => 'header'
+	)
+);
+$messages = null;
+$version = null;
+foreach ( $version_checks as $file => $regexes ) {
+	$file = "$src_dir/$file";
+	if ( !file_exists( $file ) ) {
+		$messages .= "Whoa! Couldn't find $file\n";
+		continue;
+	}
+	$file_content = file_get_contents( $file );
+	if ( !$file_content ) {
+		$messages .= "Whoa! Could not read contents of $file\n";
+		continue;
+	}
+	foreach ( $regexes as $regex => $context ) {
+		if ( !preg_match( $regex, $file_content, $matches ) ) {
+			$messages .= "Whoa! Couldn't find $context version number in $file\n";
+			continue;
+		}
+		if ( $version && $version !== trim( $matches[1] ) ) {
+			$messages .= "Whoa! Version Numbers don't match\n";
+		}
+		$version = trim( $matches[1] );
+	}
+	$tags = exec( "svn list http://svn.wp-plugins.org/$PLUGIN_SLUG/tags/ --non-interactive 2>&1", $arrOutput );
+	if( array_search( "$version/", $arrOutput, false ) !== false ) {
+		echo "Tag already exists in repo, no deployment will be made.";
+		exit();
+	}
+	if ( $messages ) {
+		echo $messages;
+		exit(1);
+	}
+}
+`rm -Rf "$dest_dir" 2>/dev/null`;
+if ( ! is_dir( $tmp_dir ) ) {
+	mkdir( $tmp_dir );
+}
+mkdir( $dest_dir );
+$filter_file = "$tmp_dir/filter";
+`cat "$build_cfg_dir/filter-all" > "$filter_file"`;
+`rsync -r --filter=". $filter_file" "$src_dir"/* "$dest_dir"`;
+chdir( $tmp_dir );
+// Deploy the plugin to WordPress.org
+echo `svn co -q http://svn.wp-plugins.org/usgs-stream-flow-data svn`;
+echo `rm -R svn/trunk`;
+echo `mkdir svn/trunk`;
+echo `mkdir svn/tags/$version`;
+echo `rsync -r $PLUGIN_SLUG/* svn/trunk/`;
+echo `rsync -r $PLUGIN_SLUG/* svn/tags/$version`;
+echo `svn stat svn/ | grep '^\?' | awk '{print $2}' | xargs -I x svn add x@`;
+echo `svn stat svn/ | grep '^\!' | awk '{print $2}' | xargs -I x svn rm --force x@`;
+echo `svn stat svn/`;
+echo `svn ci --no-auth-cache --username $WP_ORG_USERNAME --password $WP_ORG_PASSWORD svn -m "Deploy version $version"`;
+if ( $cleanup ) {
+	`rm -Rf "$dest_dir"`;
+	`rm -Rf "$tmp_dir"`;
+}
+exit();
