@@ -67,7 +67,7 @@ $filter_file = "$tmp_dir/filter";
 `rsync -r --filter=". $filter_file" "$src_dir"/* "$dest_dir"`;
 chdir( $tmp_dir );
 // Deploy the plugin to WordPress.org
-echo `svn co "https://plugins.svn.wordpress.org/sign-in-with-google" svn`;
+echo `svn co https://plugins.svn.wordpress.org/sign-in-with-google svn`;
 echo `rm -R svn/trunk`;
 echo `mkdir svn/trunk`;
 echo `mkdir svn/tags/$version`;
