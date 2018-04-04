@@ -2,8 +2,8 @@
 Contributors: tarecord, chrismkindred
 Tags: Google, sign in, users, registration, register, Google Apps, G Suite, OAuth
 Requires at least: 4.0
-Tested up to: 4.9.4
-Stable tag: 1.0.3
+Tested up to: 4.9.5
+Stable tag: 1.0.4
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -27,12 +27,12 @@ If you leave the "Sign in with Google" button shown on the login form, make sure
 
 == Development ==
 
-Active plugin development is handled on [Github](https://www.github.com/NorthStarMarketing/google-sign-in). Bugs and issues will be tracked and handled there.
+Active plugin development is handled on [Github](https://www.github.com/NorthStarMarketing/sign-in-with-google). Bugs and issues will be tracked and handled there.
 
 == Installation ==
 
 1. Download and extract plugin
-2. Upload `google-sign-in` folder to the `/wp-content/plugins/` directory
+2. Upload `sign-in-with-google` folder to the `/wp-content/plugins/` directory
 3. Activate the plugin through the 'Plugins' menu in WordPress
 
 == Frequently Asked Questions ==
@@ -57,6 +57,9 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 2. This is the second screen shot
 
 == Changelog ==
+
+= 1.0.4 =
+* Update class and file naming
 
 = 1.0.3 =
 * Fixed bug causing "Settings" link not to show on plugins page

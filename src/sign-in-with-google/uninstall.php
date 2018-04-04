@@ -21,7 +21,7 @@
  * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
- * @package    Google_Sign_In
+ * @package    Sign_In_With_Google
  */
 
 // If uninstall not called from WordPress, then exit.

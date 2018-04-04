@@ -5,8 +5,8 @@
  * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
- * @package    Google_Sign_In
- * @subpackage Google_Sign_In/admin
+ * @package    Sign_In_With_Google
+ * @subpackage Sign_In_With_Google/admin
  */
 
 /**
@@ -15,11 +15,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Google_Sign_In
- * @subpackage Google_Sign_In/admin
+ * @package    Sign_In_With_Google
+ * @subpackage Sign_In_With_Google/admin
  * @author     Tanner Record <tanner.record@northstarmarketing.com>
  */
-class Google_Sign_In_Admin {
+class Sign_In_With_Google_Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -90,7 +90,7 @@ class Google_Sign_In_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/google-sign-in-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/sign-in-with-google-admin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -391,7 +391,7 @@ class Google_Sign_In_Admin {
 		ob_start();
 		?>
 		<div class="wrap">
-			<h2>Google Sign In Settings</h2>
+			<h2>Sign In With Google Settings</h2>
 			<form method="post" action="options.php">
 				<?php settings_fields( 'siwg_settings' ); ?>
 				<?php do_settings_sections( 'siwg_settings' ); ?>

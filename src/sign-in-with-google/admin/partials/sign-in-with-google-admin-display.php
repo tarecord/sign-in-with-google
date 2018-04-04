@@ -7,8 +7,8 @@
  * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
- * @package    Google_Sign_In
- * @subpackage Google_Sign_In/admin/partials
+ * @package    Sign_In_With_Google
+ * @subpackage Sign_In_With_Google/admin/partials
  */
 
 ?>

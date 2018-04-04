@@ -5,8 +5,8 @@
  * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
- * @package    Google_Sign_In
- * @subpackage Google_Sign_In/public
+ * @package    Sign_In_With_Google
+ * @subpackage Sign_In_With_Google/public
  */
 
 /**
@@ -15,11 +15,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Google_Sign_In
- * @subpackage Google_Sign_In/public
+ * @package    Sign_In_With_Google
+ * @subpackage Sign_In_With_Google/public
  * @author     Tanner Record <tanner.record@northstarmarketing.com>
  */
-class Google_Sign_In_Public {
+class Sign_In_With_Google_Public {
 
 	/**
 	 * The ID of this plugin.
@@ -72,7 +72,7 @@ class Google_Sign_In_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/google-sign-in-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/sign-in-with-google-public.css', array(), $this->version, 'all' );
 
 	}
 
@@ -95,7 +95,7 @@ class Google_Sign_In_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/google-sign-in-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/sign-in-with-google-public.js', array( 'jquery' ), $this->version, false );
 
 	}
 
@@ -108,7 +108,7 @@ class Google_Sign_In_Public {
 
 			ob_start();
 			?>
-				<div id="google-sign-in">
+				<div id="sign-in-with-google">
 					<a href="<?php echo site_url( '?google_redirect', 'http' ); ?>" title="Sign in with Google"><img src="<?php echo plugin_dir_url( __FILE__ ); ?>img/sign_in.svg"></a>
 				</div>
 			<?php

@@ -5,8 +5,8 @@
  * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
- * @package    Google_Sign_In
- * @subpackage Google_Sign_In/includes
+ * @package    Sign_In_With_Google
+ * @subpackage Sign_In_With_Google/includes
  */
 
 /**
@@ -16,11 +16,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Google_Sign_In
- * @subpackage Google_Sign_In/includes
+ * @package    Sign_In_With_Google
+ * @subpackage Sign_In_With_Google/includes
  * @author     Tanner Record <tanner.record@northstarmarketing.com>
  */
-class Google_Sign_In_Loader {
+class Sign_In_With_Google_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

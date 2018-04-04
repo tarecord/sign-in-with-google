@@ -2,15 +2,15 @@
 	margin-top: 0px;
 }
 
-#google-sign-in {
+#sign-in-with-google {
 	margin-bottom: 20px;
 }
 
-#google-sign-in a {
+#sign-in-with-google a {
 	display: inline-block;
 	text-align: center;
 }
 
-#google-sign-in img {
+#sign-in-with-google img {
 	margin-left: -3px;
 }
