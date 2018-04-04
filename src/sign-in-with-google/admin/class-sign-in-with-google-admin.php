@@ -391,7 +391,7 @@ class Sign_In_With_Google_Admin {
 		ob_start();
 		?>
 		<div class="wrap">
-			<h2>Google Sign In Settings</h2>
+			<h2>Sign In With Google Settings</h2>
 			<form method="post" action="options.php">
 				<?php settings_fields( 'siwg_settings' ); ?>
 				<?php do_settings_sections( 'siwg_settings' ); ?>
