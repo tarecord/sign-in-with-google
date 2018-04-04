@@ -58,10 +58,9 @@ before_script:
     fi
 
 script:
-  - phpunit --coverage-clover=coverage.xml
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
-      phpunit
+      phpunit --coverage-clover=coverage.xml
       WP_MULTISITE=1 phpunit
     fi
   - |
