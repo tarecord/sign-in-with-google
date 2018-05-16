@@ -553,4 +553,41 @@ class Sign_In_With_Google_Admin {
 		return $message;
 	}
 
+	/**
+	 * Process a settings export that generates a .json file of the shop settings
+	 */
+	function process_settings_export() {
+
+		if ( empty( $_POST['siwg_action'] ) || 'export_settings' != $_POST['siwg_action'] ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( $_POST['siwg_export_nonce'], 'siwg_export_nonce' ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$settings = array(
+			'siwg_google_client_id'          => get_option( 'siwg_google_client_id' ),
+			'siwg_google_client_secret'      => get_option( 'siwg_google_client_secret' ),
+			'siwg_google_user_default_role'  => get_option( 'siwg_google_user_default_role' ),
+			'siwg_google_domain_restriction' => get_option( 'siwg_google_domain_restriction' ),
+			'siwg_custom_login_param'        => get_option( 'siwg_custom_login_param' ),
+			'siwg_show_on_login'             => get_option( 'siwg_show_on_login' ),
+		);
+
+		ignore_user_abort( true );
+
+		nocache_headers();
+
+		header( 'Content-Type: application/json; charset=utf-8' );
+		header( 'Content-Disposition: attachment; filename=siwg-settings-export-' . date( 'm-d-Y' ) . '.json' );
+		header( 'Expires: 0' );
+
+		echo json_encode( $settings );
+		exit;
+	}
 }

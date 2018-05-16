@@ -25,3 +25,19 @@
 		</p>
 	</form>
 </div>
+
+<div class="metabox-holder">
+	<div class="postbox">
+		<h3><span><?php _e( 'Export Settings' ); ?></span></h3>
+		<div class="inside">
+			<p><?php _e( 'Export the plugin settings for this site as a .json file.' ); ?></p>
+			<form method="post">
+				<p><input type="hidden" name="siwg_action" value="export_settings" /></p>
+				<p>
+					<?php wp_nonce_field( 'siwg_export_nonce', 'siwg_export_nonce' ); ?>
+					<?php submit_button( __( 'Export' ), 'secondary', 'submit', false ); ?>
+				</p>
+			</form>
+		</div><!-- .inside -->
+	</div><!-- .postbox -->
+</div><!-- .metabox-holder -->

@@ -161,6 +161,7 @@ class Sign_In_With_Google {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'settings_api_init' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'settings_menu_init' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'process_settings_export' );
 
 		if ( isset( $_GET['google_redirect'] ) ) {
 			$this->loader->add_action( 'template_redirect', $plugin_admin, 'google_auth_redirect' );
