@@ -64,9 +64,6 @@ script:
       phpcs
     fi
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash) -t f9ed3e4e-416e-4f5d-8380-f95d691afbce
-
 deploy:
   #
   # Auto-deploys the built plugin to WordPress.org on push to master branch
