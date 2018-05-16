@@ -590,4 +590,45 @@ class Sign_In_With_Google_Admin {
 		echo json_encode( $settings );
 		exit;
 	}
+
+	/**
+	 * Process a settings import from a json file
+	 */
+	function process_settings_import() {
+
+		if ( empty( $_POST['siwg_action'] ) || 'import_settings' != $_POST['siwg_action'] ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( $_POST['siwg_import_nonce'], 'siwg_import_nonce' ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$extension = end( explode( '.', $_FILES['import_file']['name'] ) );
+
+		if ( 'json' != $extension ) {
+			wp_die( __( 'Please upload a valid .json file', 'siwg' ) );
+		}
+
+		$import_file = $_FILES['import_file']['tmp_name'];
+
+		if ( empty( $import_file ) ) {
+			wp_die( __( 'Please upload a file to import', 'siwg' ) );
+		}
+
+		// Retrieve the settings from the file and convert the json object to an array.
+		$settings = (array) json_decode( file_get_contents( $import_file ) );
+
+		foreach ( $settings as $key => $value ) {
+			update_option( $key, $value );
+		}
+
+		wp_safe_redirect( admin_url( 'options-general.php?page=siwg_settings' ) );
+
+		exit;
+	}
 }

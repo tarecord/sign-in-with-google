@@ -28,7 +28,7 @@
 
 <div class="metabox-holder">
 	<div class="postbox">
-		<h3><span><?php _e( 'Export Settings', 'siwg'  ); ?></span></h3>
+		<h3><span><?php _e( 'Export Settings', 'siwg' ); ?></span></h3>
 		<div class="inside">
 			<p><?php _e( 'Export the plugin settings for this site as a .json file.', 'siwg' ); ?></p>
 			<form method="post">
@@ -36,6 +36,23 @@
 				<p>
 					<?php wp_nonce_field( 'siwg_export_nonce', 'siwg_export_nonce' ); ?>
 					<?php submit_button( __( 'Export', 'siwg' ), 'secondary', 'submit', false ); ?>
+				</p>
+			</form>
+		</div><!-- .inside -->
+	</div><!-- .postbox -->
+
+	<div class="postbox">
+		<h3><span><?php _e( 'Import Settings', 'siwg' ); ?></span></h3>
+		<div class="inside">
+			<p><?php _e( 'Import the plugin settings from a .json file. This file can be obtained by exporting the settings on another site using the form above.', 'siwg' ); ?></p>
+			<form method="post" enctype="multipart/form-data">
+				<p>
+					<input type="file" name="import_file"/>
+				</p>
+				<p>
+					<input type="hidden" name="siwg_action" value="import_settings" />
+					<?php wp_nonce_field( 'siwg_import_nonce', 'siwg_import_nonce' ); ?>
+					<?php submit_button( __( 'Import', 'siwg' ), 'secondary', 'submit', false ); ?>
 				</p>
 			</form>
 		</div><!-- .inside -->
