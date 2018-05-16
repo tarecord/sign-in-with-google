@@ -255,9 +255,23 @@ class Sign_In_With_Google_Admin {
 	 * @since    1.0.0
 	 */
 	public function siwg_google_user_default_role() {
-		ob_start();
-		include( plugin_dir_path( __FILE__ ) . 'partials/' . 'default-role-select.php' );
-		echo ob_get_clean();
+		?>
+		<select name="siwg_google_user_default_role" id="siwg_google_user_default_role">
+			<?php
+			$siwg_roles = get_editable_roles();
+			foreach ( $siwg_roles as $key => $value ) :
+				$siwg_selected = '';
+				if ( get_option( 'siwg_google_user_default_role', 'subscriber' ) == $key ) {
+					$siwg_selected = 'selected';
+				}
+			?>
+
+				<option value="<?php echo $key; ?>" <?php echo $siwg_selected; ?>><?php echo $value['name']; ?></option>
+
+			<?php endforeach; ?>
+
+		</select>
+		<?php
 	}
 
 	/**
@@ -266,9 +280,17 @@ class Sign_In_With_Google_Admin {
 	 * @since    1.0.0
 	 */
 	public function siwg_google_domain_restriction() {
-		ob_start();
-		include( plugin_dir_path( __FILE__ ) . 'partials/' . 'domain-restriction.php' );
-		echo ob_get_clean();
+		// Get the TLD and domain.
+		$siwg_urlparts    = parse_url( site_url() );
+		$siwg_domain      = $siwg_urlparts['host'];
+		$siwg_domainparts = explode( '.', $siwg_domain );
+		$siwg_domain      = $siwg_domainparts[ count( $siwg_domainparts ) - 2 ] . '.' . $siwg_domainparts[ count( $siwg_domainparts ) - 1 ];
+
+		?>
+		<input name="siwg_google_domain_restriction" id="siwg_google_domain_restriction" type="text" size="50" value="<?php echo get_option( 'siwg_google_domain_restriction' ); ?>" placeholder="<?php echo $siwg_domain; ?>">
+		<p class="description">Enter the domain you would like to restrict new users to or leave blank to allow anyone with a google account. (Separate multiple domains with commas)</p>
+		<p class="description">Entering "<?php echo $siwg_domain; ?>" will only allow Google users with an @<?php echo $siwg_domain; ?> email address to sign up.</p>
+		<?php
 	}
 
 	/**
@@ -356,8 +378,52 @@ class Sign_In_With_Google_Admin {
 
 		// show error/update messages.
 		settings_errors( 'siwg_messages' );
+		?>
+		<div class="wrap">
+			<h2>Sign In With Google Settings</h2>
+			<form method="post" action="options.php">
+				<?php settings_fields( 'siwg_settings' ); ?>
+				<?php do_settings_sections( 'siwg_settings' ); ?>
+				<p class="submit">
+					<input name="submit" type="submit" id="submit" class="button-primary" value="Save Changes" />
+				</p>
+			</form>
+		</div>
 
-		include( 'partials/sign-in-with-google-admin-display.php' );
+		<div class="metabox-holder">
+			<div class="postbox">
+				<h3><span><?php _e( 'Export Settings', 'siwg' ); ?></span></h3>
+				<div class="inside">
+					<p><?php _e( 'Export the plugin settings for this site as a .json file.', 'siwg' ); ?></p>
+					<form method="post">
+						<p><input type="hidden" name="siwg_action" value="export_settings" /></p>
+						<p>
+							<?php wp_nonce_field( 'siwg_export_nonce', 'siwg_export_nonce' ); ?>
+							<?php submit_button( __( 'Export', 'siwg' ), 'secondary', 'submit', false ); ?>
+						</p>
+					</form>
+				</div><!-- .inside -->
+			</div><!-- .postbox -->
+
+			<div class="postbox">
+				<h3><span><?php _e( 'Import Settings', 'siwg' ); ?></span></h3>
+				<div class="inside">
+					<p><?php _e( 'Import the plugin settings from a .json file. This file can be obtained by exporting the settings on another site using the form above.', 'siwg' ); ?></p>
+					<form method="post" enctype="multipart/form-data">
+						<p>
+							<input type="file" name="import_file"/>
+						</p>
+						<p>
+							<input type="hidden" name="siwg_action" value="import_settings" />
+							<?php wp_nonce_field( 'siwg_import_nonce', 'siwg_import_nonce' ); ?>
+							<?php submit_button( __( 'Import', 'siwg' ), 'secondary', 'submit', false ); ?>
+						</p>
+					</form>
+				</div><!-- .inside -->
+			</div><!-- .postbox -->
+		</div><!-- .metabox-holder -->
+
+		<?php
 
 	}
 
