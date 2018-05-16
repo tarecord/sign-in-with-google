@@ -256,7 +256,7 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function siwg_google_user_default_role() {
 
-		include( 'partials/default-role-select.php' );
+		echo file_get_contents( 'partials/default-role-select.php' );
 	}
 
 	/**
@@ -272,7 +272,7 @@ class Sign_In_With_Google_Admin {
 		$domainparts = explode( '.', $domain );
 		$domain      = $domainparts[ count( $domainparts ) - 2 ] . '.' . $domainparts[ count( $domainparts ) - 1 ];
 
-		include( 'partials/domain-restriction.php' );
+		echo file_get_contents( 'partials/domain-restriction.php' );
 	}
 
 	/**
