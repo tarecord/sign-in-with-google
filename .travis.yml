@@ -76,4 +76,4 @@ deploy:
     - php build/plugin-build $WP_ORG_PASSWORD tarecord sign-in-with-google
   on:
     branch: master
-    php: 7.0
+    php: 5.6
