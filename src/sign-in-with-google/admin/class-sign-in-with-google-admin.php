@@ -50,10 +50,10 @@ class Sign_In_With_Google_Admin {
 
 	/**
 	 * The URL the user should be redirected to after login
-	 * 
-	 * @since	1.0.0
-	 * @access	private
-	 * @var		string		$request_uri	 The request uri.
+	 *
+	 * @since   1.0.0
+	 * @access  private
+	 * @var     string  $request_uri The request uri.
 	 */
 	private $request_uri = '';
 
@@ -413,8 +413,8 @@ class Sign_In_With_Google_Admin {
 	 * @since    1.0.0
 	 */
 	public function google_auth_redirect() {
-		// If the request is coming from the login page
-		if ( strpos($_SERVER['REQUEST_URI'], 'wp-login') || strpos($_SERVER['REQUEST_URI'], 'google_redirect') ) {
+		// If the request is coming from the login page.
+		if ( strpos( $_SERVER['REQUEST_URI'], 'wp-login' ) || strpos( $_SERVER['REQUEST_URI'], 'google_redirect' ) ) {
 			$this->request_uri = '';
 		} else {
 			$this->request_uri = $_SERVER['REQUEST_URI'];
@@ -457,8 +457,8 @@ class Sign_In_With_Google_Admin {
 	public function authenticate_user() {
 
 		$code            = sanitize_text_field( $_GET['code'] );
-		$raw_request_uri = ( isset($_GET['state']) ) ? $_GET['state'] : '';
-		$request_uri     = remove_query_arg( get_option( 'siwg_custom_login_param' ), $raw_request_uri ); // Remove the custom login param from the redirect
+		$raw_request_uri = ( isset( $_GET['state'] ) ) ? $_GET['state'] : '';
+		$request_uri     = remove_query_arg( get_option( 'siwg_custom_login_param' ), $raw_request_uri ); // Remove the custom login param from the redirect.
 		$access_token    = $this->get_access_token( $code );
 
 		$this->client->setAccessToken( $access_token );
@@ -482,7 +482,7 @@ class Sign_In_With_Google_Admin {
 		if ( $user ) {
 			wp_set_current_user( $user->ID, $user->user_login );
 			wp_set_auth_cookie( $user->ID );
-			do_action( 'wp_login', $user->user_login );
+			do_action( 'wp_login', $user->user_login ); // phpcs:ignore
 		}
 
 		if ( $request_uri ) {

@@ -33,7 +33,7 @@ if ( ! defined( 'WPINC' ) ) {
  * The code that runs during plugin activation.
  * This action is documented in includes/class-sign-in-with-google-activator.php
  */
-function activate_sign_in_with_google() {
+function sign_in_with_google_activate() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-sign-in-with-google-activator.php';
 	Sign_In_With_Google_Activator::activate();
 }
@@ -42,13 +42,13 @@ function activate_sign_in_with_google() {
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-sign-in-with-google-deactivator.php
  */
-function deactivate_sign_in_with_google() {
+function sign_in_with_google_deactivate() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-sign-in-with-google-deactivator.php';
 	Sign_In_With_Google_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_sign_in_with_google' );
-register_deactivation_hook( __FILE__, 'deactivate_sign_in_with_google' );
+register_activation_hook( __FILE__, 'sign_in_with_google_activate' );
+register_deactivation_hook( __FILE__, 'sign_in_with_google_deactivate' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -65,10 +65,10 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-sign-in-with-google.php';
  *
  * @since    1.0.0
  */
-function run_sign_in_with_google() {
+function sign_in_with_google_run() {
 
-	$plugin = new Sign_In_With_Google('1.0.4');
+	$plugin = new Sign_In_With_Google( '1.0.4' );
 	$plugin->run();
 
 }
-run_sign_in_with_google();
+sign_in_with_google_run();

@@ -64,6 +64,8 @@ class Sign_In_With_Google {
 	 * the public-facing side of the site.
 	 *
 	 * @since    1.0.0
+	 *
+	 * @param string $version The current version of the plugin.
 	 */
 	public function __construct( $version ) {
 
