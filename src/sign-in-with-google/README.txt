@@ -3,7 +3,7 @@ Contributors: tarecord, chrismkindred
 Tags: Google, sign in, users, registration, register, Google Apps, G Suite, OAuth
 Requires at least: 4.0
 Tested up to: 4.9.5
-Stable tag: 1.0.4
+Stable tag: 1.1.0
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -57,6 +57,9 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 2. This is the second screen shot
 
 == Changelog ==
+
+= 1.1.0 =
+* Add settings import and export
 
 = 1.0.4 =
 * Update class and file naming
