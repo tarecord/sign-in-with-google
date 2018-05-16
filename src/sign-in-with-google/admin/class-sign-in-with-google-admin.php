@@ -256,26 +256,7 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function siwg_google_user_default_role() {
 
-		ob_start(); ?>
-		<select name="siwg_google_user_default_role" id="siwg_google_user_default_role">
-			<?php
-			$roles = get_editable_roles();
-			foreach ( $roles as $key => $value ) :
-				$selected = '';
-				if ( get_option( 'siwg_google_user_default_role', 'subscriber' ) == $key ) {
-					$selected = 'selected';
-				}
-			?>
-
-				<option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $value['name']; ?></option>
-
-			<?php endforeach; ?>
-
-		</select>
-
-		<?php
-		// Send the markup to the browser.
-		echo ob_get_clean();
+		include( 'partials/default-role-select.php' );
 	}
 
 	/**
@@ -291,15 +272,7 @@ class Sign_In_With_Google_Admin {
 		$domainparts = explode( '.', $domain );
 		$domain      = $domainparts[ count( $domainparts ) - 2 ] . '.' . $domainparts[ count( $domainparts ) - 1 ];
 
-		ob_start();
-		?>
-
-		<input name="siwg_google_domain_restriction" id="siwg_google_domain_restriction" type="text" size="50" value="<?php echo get_option( 'siwg_google_domain_restriction' ); ?>" placeholder="<?php echo $domain; ?>">
-		<p class="description">Enter the domain you would like to restrict new users to or leave blank to allow anyone with a google account. (Separate multiple domains with commas)</p>
-		<p class="description">Entering "<?php echo $domain; ?>" will only allow Google users with an @<?php echo $domain; ?> email address to sign up.</p>
-		<?php
-		// Send the markup to the browser.
-		echo ob_get_clean();
+		include( 'partials/domain-restriction.php' );
 	}
 
 	/**
@@ -388,22 +361,7 @@ class Sign_In_With_Google_Admin {
 		// show error/update messages.
 		settings_errors( 'siwg_messages' );
 
-		ob_start();
-		?>
-		<div class="wrap">
-			<h2>Sign In With Google Settings</h2>
-			<form method="post" action="options.php">
-				<?php settings_fields( 'siwg_settings' ); ?>
-				<?php do_settings_sections( 'siwg_settings' ); ?>
-				<p class="submit">
-					<input name="submit" type="submit" id="submit" class="button-primary" value="Save Changes" />
-				</p>
-			</form>
-		</div>
-		<?php
-
-		// Send the markup to the browser.
-		echo ob_get_clean();
+		include( 'partials/sign-in-with-google-admin-display.php' );
 
 	}
 
