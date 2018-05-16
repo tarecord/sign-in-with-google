@@ -18,7 +18,7 @@ if ( !file_exists( $main_plugin_file ) ) {
 $version_checks = array(
 	"sign-in-with-google.php" => array(
 		'@Version:\s+(.*)\n@' => 'header',
-		'@Sign_In_With_Google\(\'(.*)\'\)@' => 'class instantiation'
+		'@Sign_In_With_Google\(\s*\'(.*)\'\s*\)@' => 'class instantiation'
 	),
 	"README.txt" => array(
 		'@Stable tag:\s+(.*)\n@' => 'header'
