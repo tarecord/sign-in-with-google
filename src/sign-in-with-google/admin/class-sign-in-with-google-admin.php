@@ -255,7 +255,6 @@ class Sign_In_With_Google_Admin {
 	 * @since    1.0.0
 	 */
 	public function siwg_google_user_default_role() {
-
 		include( plugin_dir_path( __FILE__ ) . 'partials/' . 'default-role-select.php' );
 	}
 
@@ -265,13 +264,6 @@ class Sign_In_With_Google_Admin {
 	 * @since    1.0.0
 	 */
 	public function siwg_google_domain_restriction() {
-
-		// Get the TLD and domain.
-		$urlparts    = parse_url( site_url() );
-		$domain      = $urlparts['host'];
-		$domainparts = explode( '.', $domain );
-		$domain      = $domainparts[ count( $domainparts ) - 2 ] . '.' . $domainparts[ count( $domainparts ) - 1 ];
-
 		include( plugin_dir_path( __FILE__ ) . 'partials/' . 'domain-restriction.php' );
 	}
 
