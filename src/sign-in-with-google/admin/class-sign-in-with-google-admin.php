@@ -255,7 +255,9 @@ class Sign_In_With_Google_Admin {
 	 * @since    1.0.0
 	 */
 	public function siwg_google_user_default_role() {
+		ob_start();
 		include( plugin_dir_path( __FILE__ ) . 'partials/' . 'default-role-select.php' );
+		echo ob_get_clean();
 	}
 
 	/**
@@ -264,7 +266,9 @@ class Sign_In_With_Google_Admin {
 	 * @since    1.0.0
 	 */
 	public function siwg_google_domain_restriction() {
+		ob_start();
 		include( plugin_dir_path( __FILE__ ) . 'partials/' . 'domain-restriction.php' );
+		echo ob_get_clean();
 	}
 
 	/**
