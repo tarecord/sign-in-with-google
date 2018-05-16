@@ -2,6 +2,9 @@
 <ruleset name="North Star Marketing Coding Standards">
 	<description>A custom set of rules to check for a WordPress project</description>
 
+	<!-- Check all files in plugin src -->
+	<file>./src/sign-in-with-google</file>
+
 	<!-- Exclude the Composer Vendor directory. -->
 	<exclude-pattern>/vendor/*</exclude-pattern>
 
@@ -54,8 +57,5 @@
 			<property name="prefixes" type="array" value="siwg, Sign_In_With_Google"/>
 		</properties>
 	</rule>
-
-	<!-- Check all files in plugin src -->
-	<file>src/.</file>
 
 </ruleset>
