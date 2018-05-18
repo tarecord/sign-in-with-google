@@ -26,6 +26,7 @@ $version_checks = array(
 );
 $messages = null;
 $version = null;
+echo 'Running Versioning Checks...';
 foreach ( $version_checks as $file => $regexes ) {
 	$file = "$src_dir/$file";
 	if ( !file_exists( $file ) ) {
@@ -57,8 +58,10 @@ foreach ( $version_checks as $file => $regexes ) {
 		exit(1);
 	}
 }
+echo 'done' . PHP_EOL;
 
-echo `rm -Rf "$dest_dir"`;
+echo 'Preparing build directory...';
+echo `rm -rf $tmp_dir`;
 if ( ! is_dir( $tmp_dir ) ) {
 	mkdir( $tmp_dir );
 }
@@ -68,16 +71,20 @@ echo `cat "$build_cfg_dir/filter-all" > "$filter_file"`;
 echo `rsync -r --filter=". $filter_file" "$src_dir"/* "$dest_dir"`;
 chdir( $tmp_dir );
 // Deploy the plugin to WordPress.org
-echo `svn co https://plugins.svn.wordpress.org/sign-in-with-google svn`;
-echo `rm -R svn/trunk`;
-echo `mkdir svn/trunk`;
+echo "done" . PHP_EOL;
+echo "Pulling down SVN Repository...";
+echo `svn co --depth=immediates https://plugins.svn.wordpress.org/sign-in-with-google svn`;
+echo `svn update`;
+echo "done" . PHP_EOL;
 echo `mkdir svn/tags/$version`;
 echo `rsync -r $PLUGIN_SLUG/* svn/trunk/`;
 echo `rsync -r $PLUGIN_SLUG/* svn/tags/$version`;
 echo `svn stat svn/ | grep '^\?' | awk '{print $2}' | xargs -I x svn add x@`;
 echo `svn stat svn/ | grep '^\!' | awk '{print $2}' | xargs -I x svn rm --force x@`;
 echo `svn stat svn/`;
+echo "Committing repository to WordPress...";
 echo `svn ci --no-auth-cache --username $WP_ORG_USERNAME --password $WP_ORG_PASSWORD svn -m "Deploy version $version"`;
+echo "done" . PHP_EOL;
 if ( $cleanup ) {
 	echo `rm -Rf "$dest_dir"`;
 	echo `rm -Rf "$tmp_dir"`;
