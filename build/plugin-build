@@ -74,7 +74,7 @@ chdir( $tmp_dir );
 echo "done" . PHP_EOL;
 echo "Pulling down SVN Repository...";
 echo `svn co --depth=immediates https://plugins.svn.wordpress.org/sign-in-with-google svn`;
-echo 'cd svn';
+echo `cd svn`;
 echo `svn update`;
 echo `cd ..`;
 echo "done" . PHP_EOL;
