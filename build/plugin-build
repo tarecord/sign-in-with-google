@@ -57,8 +57,8 @@ foreach ( $version_checks as $file => $regexes ) {
 		exit(1);
 	}
 }
-echo 'Deploying to WordPress';
-`rm -Rf "$dest_dir" 2>/dev/null`;
+
+`rm -Rf "$dest_dir"`;
 if ( ! is_dir( $tmp_dir ) ) {
 	mkdir( $tmp_dir );
 }
