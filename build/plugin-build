@@ -58,14 +58,14 @@ foreach ( $version_checks as $file => $regexes ) {
 	}
 }
 
-`rm -Rf "$dest_dir"`;
+echo `rm -Rf "$dest_dir"`;
 if ( ! is_dir( $tmp_dir ) ) {
 	mkdir( $tmp_dir );
 }
 mkdir( $dest_dir );
 $filter_file = "$tmp_dir/filter";
-`cat "$build_cfg_dir/filter-all" > "$filter_file"`;
-`rsync -r --filter=". $filter_file" "$src_dir"/* "$dest_dir"`;
+echo `cat "$build_cfg_dir/filter-all" > "$filter_file"`;
+echo `rsync -r --filter=". $filter_file" "$src_dir"/* "$dest_dir"`;
 chdir( $tmp_dir );
 // Deploy the plugin to WordPress.org
 echo `svn co https://plugins.svn.wordpress.org/sign-in-with-google svn`;
@@ -79,7 +79,7 @@ echo `svn stat svn/ | grep '^\!' | awk '{print $2}' | xargs -I x svn rm --force 
 echo `svn stat svn/`;
 echo `svn ci --no-auth-cache --username $WP_ORG_USERNAME --password $WP_ORG_PASSWORD svn -m "Deploy version $version"`;
 if ( $cleanup ) {
-	`rm -Rf "$dest_dir"`;
-	`rm -Rf "$tmp_dir"`;
+	echo `rm -Rf "$dest_dir"`;
+	echo `rm -Rf "$tmp_dir"`;
 }
 exit();
