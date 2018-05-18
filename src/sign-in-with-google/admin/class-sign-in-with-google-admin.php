@@ -555,8 +555,8 @@ class Sign_In_With_Google_Admin {
 		$user = get_user_by( 'email', $user_data->emails[0]->value );
 
 		if ( false !== $user ) {
-			update_user_meta($user->ID, 'first_name', $user_data->name->givenName);
-			update_user_meta($user->ID, 'last_name', $user_data->name->familyName);
+			update_user_meta( $user->ID, 'first_name', $user_data->name->givenName );
+			update_user_meta( $user->ID, 'last_name', $user_data->name->familyName );
 			return $user;
 		}
 
