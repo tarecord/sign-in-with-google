@@ -72,52 +72,6 @@ class Sign_In_With_Google_Admin {
 	}
 
 	/**
-	 * Register the stylesheets for the admin area.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_styles() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Google_Sign_Up_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Google_Sign_Up_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/sign-in-with-google-admin.css', array(), $this->version, 'all' );
-
-	}
-
-	/**
-	 * Register the JavaScript for the admin area.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_scripts() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Google_Sign_Up_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Google_Sign_Up_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/sign-in-with-google-admin.js', array( 'jquery' ), $this->version, false );
-
-	}
-
-	/**
 	 * Add the plugin settings link found on the plugin page.
 	 *
 	 * @since    1.0.0
@@ -264,7 +218,7 @@ class Sign_In_With_Google_Admin {
 				if ( get_option( 'siwg_google_user_default_role', 'subscriber' ) == $key ) {
 					$siwg_selected = 'selected';
 				}
-			?>
+				?>
 
 				<option value="<?php echo $key; ?>" <?php echo $siwg_selected; ?>><?php echo $value['name']; ?></option>
 
