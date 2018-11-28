@@ -218,7 +218,7 @@ class Sign_In_With_Google_Admin {
 				if ( get_option( 'siwg_google_user_default_role', 'subscriber' ) == $key ) {
 					$siwg_selected = 'selected';
 				}
-			?>
+				?>
 
 				<option value="<?php echo $key; ?>" <?php echo $siwg_selected; ?>><?php echo $value['name']; ?></option>
 
