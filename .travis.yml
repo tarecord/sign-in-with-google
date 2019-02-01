@@ -73,7 +73,7 @@ deploy:
   provider: script
   skip_cleanup: true
   script:
-    - php build/plugin-build $WP_ORG_PASSWORD tarecord sign-in-with-google
+    - travis_wait 60 php build/plugin-build $WP_ORG_PASSWORD tarecord sign-in-with-google
   on:
     branch: master
     php: 7.2
