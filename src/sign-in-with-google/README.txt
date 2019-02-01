@@ -58,6 +58,9 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 
 == Changelog ==
 
+= 1.1.1 =
+* Remove call to css and js files that don't exist.
+
 = 1.1.0 =
 * Add settings import and export
 
