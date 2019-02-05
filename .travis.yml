@@ -47,7 +47,8 @@ before_script:
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
-      composer global require wp-coding-standards/wpcs
+	  composer global require wp-coding-standards/wpcs
+	  composer global require "squizlabs/php_codesniffer=*"
       phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
     fi
 
@@ -58,7 +59,7 @@ script:
       WP_MULTISITE=1 phpunit
     fi
   - |
-    if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
+	if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
       phpcs
     fi
 
