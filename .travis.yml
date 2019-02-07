@@ -78,7 +78,7 @@ deploy:
   - provider: script
     skip_cleanup: true
     script:
-      - php build/plugin-build $WP_ORG_PASSWORD tarecord sign-in-with-google
+      - php build/plugin-build $WP_ORG_PASSWORD $WP_ORG_USERNAME sign-in-with-google
     on:
       tags: true
       php: 7.0
