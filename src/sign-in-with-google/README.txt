@@ -1,8 +1,8 @@
 === Sign In With Google ===
 Contributors: tarecord, chrismkindred
 Tags: Google, sign in, users, registration, register, Google Apps, G Suite, OAuth
-Requires at least: 4.0
-Tested up to: 4.9.5
+Requires at least: 4.8.1
+Tested up to: 5.0.3
 Stable tag: 1.2.0
 Requires PHP: 5.6
 License: GPLv2 or later
