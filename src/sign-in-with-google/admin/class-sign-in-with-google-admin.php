@@ -582,7 +582,7 @@ class Sign_In_With_Google_Admin {
 	 *
 	 * @return mixed Access token on success or WP_Error.
 	 */
-	protected function set_access_token( string $code = '' ) {
+	protected function set_access_token( $code = '' ) {
 
 		if ( ! $code ) {
 			return new WP_Error( 'No authorization code provided.' );
