@@ -60,14 +60,25 @@ script:
       phpcs
     fi
 
+before_deploy:
+  # Zip up the plugin
+  - zip -r sign-in-with-google.zip src/sign-in-with-google
+
 deploy:
-  #
-  # Auto-deploys the built plugin to WordPress.org on push to master branch
-  #
-  provider: script
-  skip_cleanup: true
-  script:
-    - php build/plugin-build $WP_ORG_PASSWORD tarecord sign-in-with-google
-  on:
-    tags: true
-    php: 7.0
+  # Upload .zip to Github release
+  - provider: releases
+    api_key: "$GITHUB_OAUTH_TOKEN"
+    file: "sign-in-with-google.zip"
+    skip_cleanup: true
+    on:
+      tags: true
+      php: 7.2
+
+  # Auto-deploys the built plugin to WordPress.org
+  - provider: script
+    skip_cleanup: true
+    script:
+      - php build/plugin-build $WP_ORG_PASSWORD tarecord sign-in-with-google
+    on:
+      tags: true
+      php: 7.0
