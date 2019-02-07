@@ -445,14 +445,7 @@ class Sign_In_With_Google_Admin {
 		$raw_request_uri = ( isset( $_GET['state'] ) ) ? $_GET['state'] : '';
 		$request_uri     = remove_query_arg( get_option( 'siwg_custom_login_param' ), $raw_request_uri );
 
-		// The user doesn't have the correct domain, don't authenticate them.
-		$domains     = explode( ',', get_option( 'siwg_google_domain_restriction' ) );
-		$user_domain = explode( '@', $this->user->email );
-
-		if ( ! empty( $domains ) && ! in_array( $user_domain[1], $domains ) ) {
-			wp_redirect( wp_login_url() . '?google_login=incorrect_domain' );
-			exit;
-		}
+		$this->check_domain_restriction();
 
 		$user = $this->find_by_email_or_create( $this->user );
 
@@ -692,5 +685,24 @@ class Sign_In_With_Google_Admin {
 		$result = wp_remote_request( 'https://www.googleapis.com/userinfo/v2/me', $args );
 
 		return json_decode( $result['body'] );
+	}
+
+	/**
+	 * Checks if the user has the right email domain.
+	 *
+	 * @since 1.2.0
+	 */
+	protected function check_domain_restriction() {
+		// The user doesn't have the correct domain, don't authenticate them.
+		$domains     = explode( ', ', get_option( 'siwg_google_domain_restriction' ) );
+		$user_domain = explode( '@', $this->user->email );
+
+		if ( ! empty( $domains ) && ! in_array( $user_domain[1], $domains ) ) {
+			error_log( print_r( $domains, true ) );
+			error_log( print_r( $user_domain[1], true ) );
+			wp_die();
+			wp_redirect( wp_login_url() . '?google_login=incorrect_domain' );
+			exit;
+		}
 	}
 }
