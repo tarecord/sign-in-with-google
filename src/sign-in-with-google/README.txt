@@ -58,13 +58,10 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 
 == Changelog ==
 
-= 1.1.1 =
+= 1.2.0 =
+* Remove Google+ API
 * Remove call to css and js files that don't exist.
-
-= 1.1.0 =
 * Add settings import and export
-
-= 1.0.4 =
 * Update class and file naming
 
 = 1.0.3 =
