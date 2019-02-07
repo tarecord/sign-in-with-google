@@ -40,15 +40,6 @@ class Sign_In_With_Google_Admin {
 	private $version;
 
 	/**
-	 * The Google client.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $client    The Google client instance.
-	 */
-	private $client;
-
-	/**
 	 * The URL the user should be redirected to after login
 	 *
 	 * @since   1.0.0
@@ -56,6 +47,24 @@ class Sign_In_With_Google_Admin {
 	 * @var     string  $request_uri The request uri.
 	 */
 	private $request_uri = '';
+
+	/**
+	 * The access token for accessing Google APIs.
+	 *
+	 * @since 1.2.0
+	 * @access private
+	 * @var string $access_token The token.
+	 */
+	private $access_token = '';
+
+	/**
+	 * The user's information.
+	 *
+	 * @since 1.2.0
+	 * @access private
+	 * @var string $user The user data.
+	 */
+	private $user;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -410,8 +419,6 @@ class Sign_In_With_Google_Admin {
 		$google_client_id = get_option( 'siwg_google_client_id' );
 		$base_url         = 'https://accounts.google.com/o/oauth2/v2/auth';
 
-		$scopes[] = 'https://www.googleapis.com/auth/plus.login';
-		$scopes[] = 'https://www.googleapis.com/auth/plus.me';
 		$scopes[] = 'https://www.googleapis.com/auth/userinfo.email';
 		$scopes[] = 'https://www.googleapis.com/auth/userinfo.profile';
 
@@ -430,27 +437,24 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function authenticate_user() {
 
-		$code            = sanitize_text_field( $_GET['code'] );
+		$this->set_access_token( $_GET['code'] );
+
+		$this->set_user_info();
+
+		// Remove the custom login param from the redirect.
 		$raw_request_uri = ( isset( $_GET['state'] ) ) ? $_GET['state'] : '';
-		$request_uri     = remove_query_arg( get_option( 'siwg_custom_login_param' ), $raw_request_uri ); // Remove the custom login param from the redirect.
-		$access_token    = $this->get_access_token( $code );
-
-		$this->client->setAccessToken( $access_token );
-
-		$plus            = new Google_Service_Plus( $this->client );
-		$user_data       = $plus->people->get( 'me' );
-		$user_email      = $user_data->emails[0]->value;
-		$user_email_data = explode( '@', $user_email );
+		$request_uri     = remove_query_arg( get_option( 'siwg_custom_login_param' ), $raw_request_uri );
 
 		// The user doesn't have the correct domain, don't authenticate them.
-		$domains = explode( ',', get_option( 'siwg_google_domain_restriction' ) );
+		$domains     = explode( ',', get_option( 'siwg_google_domain_restriction' ) );
+		$user_domain = explode( '@', $this->user->email );
 
-		if ( '' != $domains[0] && ! in_array( $user_email_data[1], $domains ) ) {
+		if ( ! empty( $domains ) && ! in_array( $user_domain[1], $domains ) ) {
 			wp_redirect( wp_login_url() . '?google_login=incorrect_domain' );
 			exit;
 		}
 
-		$user = $this->find_by_email_or_create( $user_data );
+		$user = $this->find_by_email_or_create( $this->user );
 
 		// Log in the user.
 		if ( $user ) {
@@ -469,79 +473,6 @@ class Sign_In_With_Google_Admin {
 
 		wp_redirect( $redirect );
 		exit;
-
-	}
-
-	/**
-	 * Fetches the access_token using the response code.
-	 *
-	 * @since 1.0.0
-	 * @param string $code The code provided by Google's redirect.
-	 */
-	public function get_access_token( $code ) {
-
-		if ( ! isset( $_GET['code'] ) ) {
-			return; // Code from Google wasn't passed.
-		}
-
-		$redirect_uri = site_url( '?google_response' );
-
-		$this->client = new Google_Client();
-		$this->client->setApplicationName( bloginfo( 'name' ) );
-		$this->client->setClientId( get_option( 'siwg_google_client_id' ) );
-		$this->client->setClientSecret( get_option( 'siwg_google_client_secret' ) );
-		$this->client->setRedirectUri( $redirect_uri );
-
-		$this->client->authenticate( $code );
-
-		return $this->client->getAccessToken();
-
-	}
-
-	/**
-	 * Gets a user by email or creates a new user.
-	 *
-	 * @since    1.0.0
-	 * @param    string $user_data  The Google+ user data object.
-	 */
-	public function find_by_email_or_create( $user_data ) {
-
-		$user = get_user_by( 'email', $user_data->emails[0]->value );
-
-		if ( false !== $user ) {
-			update_user_meta( $user->ID, 'first_name', $user_data->name->givenName );
-			update_user_meta( $user->ID, 'last_name', $user_data->name->familyName );
-			return $user;
-		}
-
-		$user_pass       = wp_generate_password( 12 );
-		$user_email      = $user_data->emails[0]->value;
-		$user_email_data = explode( '@', $user_email );
-		$user_login      = $user_email_data[0];
-		$first_name      = $user_data->name->givenName;
-		$last_name       = $user_data->name->familyName;
-		$display_name    = $first_name . ' ' . $last_name;
-		$role            = get_option( 'siwg_google_user_default_role', 'subscriber' );
-
-		$user = array(
-			'user_pass'       => $user_pass,
-			'user_login'      => $user_login,
-			'user_email'      => $user_email,
-			'display_name'    => $display_name,
-			'first_name'      => $first_name,
-			'last_name'       => $last_name,
-			'user_registered' => date( 'Y-m-d H:i:s' ),
-			'role'            => $role,
-		);
-
-		$new_user = wp_insert_user( $user );
-
-		if ( is_wp_error( $new_user ) ) {
-			error_log( $new_user->get_error_message() );
-			return false;
-		} else {
-			return get_user_by( 'id', $new_user );
-		}
 
 	}
 
@@ -574,7 +505,7 @@ class Sign_In_With_Google_Admin {
 	/**
 	 * Process a settings export that generates a .json file of the shop settings
 	 */
-	function process_settings_export() {
+	public function process_settings_export() {
 
 		if ( empty( $_POST['siwg_action'] ) || 'export_settings' != $_POST['siwg_action'] ) {
 			return;
@@ -612,7 +543,7 @@ class Sign_In_With_Google_Admin {
 	/**
 	 * Process a settings import from a json file
 	 */
-	function process_settings_import() {
+	public function process_settings_import() {
 
 		if ( empty( $_POST['siwg_action'] ) || 'import_settings' != $_POST['siwg_action'] ) {
 			return;
@@ -648,5 +579,118 @@ class Sign_In_With_Google_Admin {
 		wp_safe_redirect( admin_url( 'options-general.php?page=siwg_settings' ) );
 
 		exit;
+	}
+
+	/**
+	 * Sets the access_token using the response code.
+	 *
+	 * @since 1.0.0
+	 * @param string $code The code provided by Google's redirect.
+	 *
+	 * @return mixed Access token on success or WP_Error.
+	 */
+	protected function set_access_token( string $code = '' ) {
+
+		if ( ! $code ) {
+			return new WP_Error( 'No authorization code provided.' );
+		}
+
+		// Sanitize auth code.
+		$code = sanitize_text_field( $code );
+
+		$args = array(
+			'body' => array(
+				'code'          => $code,
+				'client_id'     => get_option( 'siwg_google_client_id' ),
+				'client_secret' => get_option( 'siwg_google_client_secret' ),
+				'redirect_uri'  => site_url( '?google_response' ),
+				'grant_type'    => 'authorization_code',
+			),
+		);
+
+		$response = wp_remote_post( 'https://www.googleapis.com/oauth2/v4/token', $args );
+
+		$body = json_decode( $response['body'] );
+
+		if ( '' != $body->access_token ) {
+			$this->access_token = $body->access_token;
+			return $this->access_token;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Sets the user's information.
+	 *
+	 * @since 1.2.0
+	 */
+	protected function set_user_info() {
+		$this->user = $this->get_user_by_token();
+	}
+
+	/**
+	 * Gets a user by email or creates a new user.
+	 *
+	 * @since 1.0.0
+	 * @param object $user_data  The Google+ user data object.
+	 */
+	protected function find_by_email_or_create( $user_data ) {
+
+		$user = get_user_by( 'email', $user_data->email );
+
+		if ( false !== $user ) {
+			update_user_meta( $user->ID, 'first_name', $user_data->given_name );
+			update_user_meta( $user->ID, 'last_name', $user_data->family_name );
+			return $user;
+		}
+
+		$user_pass       = wp_generate_password( 12 );
+		$user_email      = $user_data->email;
+		$user_email_data = explode( '@', $user_email );
+		$user_login      = $user_email_data[0];
+		$first_name      = $user_data->given_name;
+		$last_name       = $user_data->family_name;
+		$display_name    = $first_name . ' ' . $last_name;
+		$role            = get_option( 'siwg_google_user_default_role', 'subscriber' );
+
+		$user = array(
+			'user_pass'       => $user_pass,
+			'user_login'      => $user_login,
+			'user_email'      => $user_email,
+			'display_name'    => $display_name,
+			'first_name'      => $first_name,
+			'last_name'       => $last_name,
+			'user_registered' => date( 'Y-m-d H:i:s' ),
+			'role'            => $role,
+		);
+
+		$new_user = wp_insert_user( $user );
+
+		if ( is_wp_error( $new_user ) ) {
+			error_log( $new_user->get_error_message() );
+			return false;
+		} else {
+			return get_user_by( 'id', $new_user );
+		}
+
+	}
+
+	/**
+	 * Get the user's info.
+	 *
+	 * @since 1.2.0
+	 */
+	protected function get_user_by_token() {
+
+		$args = array(
+			'headers' => array(
+				'Authorization' => 'Bearer ' . $this->access_token,
+			),
+		);
+
+		$result = wp_remote_request( 'https://www.googleapis.com/userinfo/v2/me', $args );
+
+		return json_decode( $result['body'] );
 	}
 }
