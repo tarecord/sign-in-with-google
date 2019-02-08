@@ -104,12 +104,15 @@ class Sign_In_With_Google_Public {
 	 */
 	public function add_signin_button() {
 
+		// Keep existing url query string intact.
+		$url = site_url( '?google_redirect&' ) . $_SERVER['QUERY_STRING'];
+
 		if ( get_option( 'siwg_show_on_login' ) ) {
 
 			ob_start();
 			?>
 				<div id="sign-in-with-google">
-					<a href="<?php echo site_url( '?google_redirect', 'http' ); ?>" title="Sign in with Google"><img src="<?php echo plugin_dir_url( __FILE__ ); ?>img/sign_in.svg"></a>
+					<a href="<?php echo $url; ?>" title="Sign in with Google"><img src="<?php echo plugin_dir_url( __FILE__ ); ?>img/sign_in.svg"></a>
 				</div>
 			<?php
 			echo ob_get_clean();

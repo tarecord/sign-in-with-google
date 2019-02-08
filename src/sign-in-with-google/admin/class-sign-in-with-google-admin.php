@@ -40,15 +40,6 @@ class Sign_In_With_Google_Admin {
 	private $version;
 
 	/**
-	 * The URL the user should be redirected to after login
-	 *
-	 * @since   1.0.0
-	 * @access  private
-	 * @var     string  $request_uri The request uri.
-	 */
-	private $request_uri = '';
-
-	/**
 	 * The access token for accessing Google APIs.
 	 *
 	 * @since 1.2.0
@@ -65,6 +56,16 @@ class Sign_In_With_Google_Admin {
 	 * @var string $user The user data.
 	 */
 	private $user;
+
+	/**
+	 * Holds the state to send with Google redirect. It will be
+	 * json and url encoded before the redirect.
+	 *
+	 * @since 1.2.1
+	 * @access private
+	 * @var array $state
+	 */
+	private $state;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -396,12 +397,13 @@ class Sign_In_With_Google_Admin {
 	 * @since    1.0.0
 	 */
 	public function google_auth_redirect() {
-		// If the request is coming from the login page.
-		if ( strpos( $_SERVER['REQUEST_URI'], 'wp-login' ) || strpos( $_SERVER['REQUEST_URI'], 'google_redirect' ) ) {
-			$this->request_uri = '';
-		} else {
-			$this->request_uri = $_SERVER['REQUEST_URI'];
-		}
+
+		// Gather necessary elements for 'state' parameter.
+		$redirect_to = isset( $_GET['redirect_to'] ) ? $_GET['redirect_to'] : '';
+
+		$this->state = array(
+			'redirect_to' => $redirect_to,
+		);
 
 		$url = $this->build_google_redirect_url();
 		wp_redirect( $url );
@@ -427,7 +429,9 @@ class Sign_In_With_Google_Admin {
 		$scope        = urlencode( implode( ' ', $scopes ) );
 		$redirect_uri = urlencode( site_url( '?google_response' ) );
 
-		return $base_url . '?scope=' . $scope . '&redirect_uri=' . $redirect_uri . '&response_type=code&client_id=' . $google_client_id . '&state=' . $this->request_uri;
+		$state = base64_encode( json_encode( $this->state ) );
+
+		return $base_url . '?scope=' . $scope . '&redirect_uri=' . $redirect_uri . '&response_type=code&client_id=' . $google_client_id . '&state=' . $state;
 	}
 
 	/**
@@ -441,9 +445,9 @@ class Sign_In_With_Google_Admin {
 
 		$this->set_user_info();
 
-		// Remove the custom login param from the redirect.
-		$raw_request_uri = ( isset( $_GET['state'] ) ) ? $_GET['state'] : '';
-		$request_uri     = remove_query_arg( get_option( 'siwg_custom_login_param' ), $raw_request_uri );
+		// Decode passed back state.
+		$raw_state = ( isset( $_GET['state'] ) ) ? $_GET['state'] : '';
+		$state     = json_decode( base64_decode( $raw_state ) );
 
 		$this->check_domain_restriction();
 
@@ -456,8 +460,8 @@ class Sign_In_With_Google_Admin {
 			do_action( 'wp_login', $user->user_login ); // phpcs:ignore
 		}
 
-		if ( $request_uri ) {
-			$redirect = home_url() . $request_uri;
+		if ( isset( $state->redirect_to ) ) {
+			$redirect = $state->redirect_to;
 		} else {
 			$redirect = admin_url(); // Send users to the dashboard by default.
 		}
