@@ -3,7 +3,7 @@ Contributors: tarecord, chrismkindred
 Tags: Google, sign in, users, registration, register, Google Apps, G Suite, OAuth
 Requires at least: 4.8.1
 Tested up to: 5.0.3
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -58,18 +58,19 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 
 == Changelog ==
 
-= 1.2.0 =
-* Remove Google+ API
-* Remove call to css and js files that don't exist.
-* Add settings import and export
-* Update class and file naming
+= 1.2.1 =
+* Removed Google+ API Dependency
+* Removed call to css and js files that don't exist.
+* Added settings import and export
+* Updated class and file naming
+* Fixed bug where the user was not redirected properly after login.
 
 = 1.0.3 =
 * Fixed bug causing "Settings" link not to show on plugins page
 * Cleaned up error logs
 
 = 1.0.2 =
-* Rename plugin file to match directory
+* Renamed plugin file to match directory
 
 = 1.0.1 =
 * Fixed bug causing a redirect loop if using the button on the login page
