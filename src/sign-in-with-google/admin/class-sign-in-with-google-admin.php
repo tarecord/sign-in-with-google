@@ -698,9 +698,6 @@ class Sign_In_With_Google_Admin {
 		$user_domain = explode( '@', $this->user->email );
 
 		if ( ! empty( $domains ) && ! in_array( $user_domain[1], $domains ) ) {
-			error_log( print_r( $domains, true ) );
-			error_log( print_r( $user_domain[1], true ) );
-			wp_die();
 			wp_redirect( wp_login_url() . '?google_login=incorrect_domain' );
 			exit;
 		}
