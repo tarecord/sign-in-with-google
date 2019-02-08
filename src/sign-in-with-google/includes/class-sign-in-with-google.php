@@ -120,11 +120,6 @@ class Sign_In_With_Google {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-sign-in-with-google-public.php';
 
-		/**
-		 * Include Google's PHP library.
-		 */
-		require_once plugin_dir_path( __DIR__ ) . 'vendor/autoload.php';
-
 		$this->loader = new Sign_In_With_Google_Loader();
 
 	}

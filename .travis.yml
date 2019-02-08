@@ -36,8 +36,7 @@ matrix:
       env: WP_TRAVISCI=phpcs
 
 before_script:
-  - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - composer install
+  - export PATH="$HOME/.config/composer/vendor/bin:$PATH"
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
       bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 $WP_VERSION
@@ -46,7 +45,7 @@ before_script:
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
       composer global require wp-coding-standards/wpcs
-      phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
+      phpcs --config-set installed_paths $HOME/.config/composer/vendor/wp-coding-standards/wpcs
     fi
 
 script:
@@ -60,14 +59,25 @@ script:
       phpcs
     fi
 
+before_deploy:
+  # Zip up the plugin
+  - zip -r sign-in-with-google.zip src/sign-in-with-google
+
 deploy:
-  #
-  # Auto-deploys the built plugin to WordPress.org on push to master branch
-  #
-  provider: script
-  skip_cleanup: true
-  script:
-    - php build/plugin-build $WP_ORG_PASSWORD tarecord sign-in-with-google
-  on:
-    tags: true
-    php: 7.0
+  # Upload .zip to Github release
+  - provider: releases
+    api_key: "$GITHUB_OAUTH_TOKEN"
+    file: "sign-in-with-google.zip"
+    skip_cleanup: true
+    on:
+      tags: true
+      php: 7.2
+
+  # Auto-deploys the built plugin to WordPress.org
+  - provider: script
+    skip_cleanup: true
+    script:
+      - php build/plugin-build $WP_ORG_PASSWORD $WP_ORG_USERNAME sign-in-with-google
+    on:
+      tags: true
+      php: 7.0
