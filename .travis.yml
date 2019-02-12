@@ -18,7 +18,6 @@ env:
     - WP_CLI_BIN_DIR="$TRAVIS_BUILD_DIR/vendor/bin"
 
 matrix:
-  fast_finish: true
   include:
     - php: 7.0
       env: WP_VERSION=latest
@@ -76,7 +75,7 @@ deploy:
   - provider: script
     skip_cleanup: true
     script:
-      - php build/plugin-build $WP_ORG_PASSWORD $WP_ORG_USERNAME sign-in-with-google
+      - travis_wait php build/plugin-build $WP_ORG_PASSWORD $WP_ORG_USERNAME sign-in-with-google
     on:
       tags: true
       php: 7.0
