@@ -69,7 +69,7 @@ deploy:
     skip_cleanup: true
     on:
       tags: true
-      php: 7.2
+      php: 7.0
 
   # Auto-deploys the built plugin to WordPress.org
   - provider: script
