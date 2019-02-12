@@ -73,7 +73,7 @@ chdir( $tmp_dir );
 // Deploy the plugin to WordPress.org
 echo "done" . PHP_EOL;
 echo "Pulling down SVN Repository...";
-echo `svn co https://plugins.svn.wordpress.org/sign-in-with-google svn`;
+echo `svn co https://plugins.svn.wordpress.org/sign-in-with-google svn --depth=immediates`;
 echo "done" . PHP_EOL;
 echo `cd svn/trunk`;
 echo `rsync -r $PLUGIN_SLUG/ svn/trunk`;
