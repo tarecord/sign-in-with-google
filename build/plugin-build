@@ -74,7 +74,10 @@ chdir( $tmp_dir );
 echo "done" . PHP_EOL;
 echo "Pulling down SVN Repository..." . PHP_EOL;
 echo `svn co https://plugins.svn.wordpress.org/sign-in-with-google svn --depth=immediates`;
-echo `rsync -r $PLUGIN_SLUG/ svn/trunk`;
+chdir( $tmp_dir . '/svn/trunk' );
+echo `svn update --set-depth infinity`; // Pull all current trunk files so we can track modifications.
+chdir( $tmp_dir );
+echo `rsync -r --delete $PLUGIN_SLUG/ svn/trunk`;
 echo `rsync -r $PLUGIN_SLUG/ svn/tags/$version`;
 echo `svn stat svn/ | grep '^\?' | awk '{print $2}' | xargs -I x svn add x@`;
 echo `svn stat svn/ | grep '^\!' | awk '{print $2}' | xargs -I x svn rm --force x@`;
