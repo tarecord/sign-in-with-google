@@ -75,7 +75,7 @@ deploy:
   - provider: script
     skip_cleanup: true
     script:
-      - ./travis_wait -i 60 -l 2400 -x 0 -a 1 "php build/plugin-build $WP_ORG_PASSWORD $WP_ORG_USERNAME sign-in-with-google" "build.log"
+      - bash build/travis_wait -i 60 -l 2400 -x 0 -a 1 "php build/plugin-build $WP_ORG_PASSWORD $WP_ORG_USERNAME sign-in-with-google" "build.log"
     on:
       tags: true
       php: 7.0
