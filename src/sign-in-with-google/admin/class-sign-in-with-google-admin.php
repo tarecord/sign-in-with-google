@@ -460,7 +460,7 @@ class Sign_In_With_Google_Admin {
 			do_action( 'wp_login', $user->user_login ); // phpcs:ignore
 		}
 
-		if ( isset( $state->redirect_to ) ) {
+		if ( isset( $state->redirect_to ) && '' !== $state->redirect_to ) {
 			$redirect = $state->redirect_to;
 		} else {
 			$redirect = admin_url(); // Send users to the dashboard by default.
