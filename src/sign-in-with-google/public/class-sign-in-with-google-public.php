@@ -40,6 +40,24 @@ class Sign_In_With_Google_Public {
 	private $version;
 
 	/**
+	 * The redirect url for authentication with Google.
+	 *
+	 * @since    1.2.1
+	 * @access   private
+	 * @var      string   $url  The url to use.
+	 */
+	private $url;
+
+	/**
+	 * The object to localize for usage in front end js.
+	 *
+	 * @since    1.2.1
+	 * @access   private
+	 * @var      array    $localize_array  An associative array of values to localize.
+	 */
+	private $localize_array;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -48,8 +66,15 @@ class Sign_In_With_Google_Public {
 	 */
 	public function __construct( $plugin_name, $version ) {
 
-		$this->plugin_name = $plugin_name;
-		$this->version     = $version;
+		$this->plugin_name      = $plugin_name;
+		$this->version          = $version;
+
+		// Keep existing url query string intact.
+		$this->url = site_url( '?google_redirect&' ) . $_SERVER['QUERY_STRING'];
+
+		$this->localize_array = array(
+			'redirect_url' => $this->url,
+		);
 
 	}
 
@@ -97,6 +122,8 @@ class Sign_In_With_Google_Public {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/sign-in-with-google-public.js', array( 'jquery' ), $this->version, false );
 
+		wp_localize_script( $this->plugin_name, 'siwg', $this->localize_array );
+
 	}
 
 	/**
@@ -104,14 +131,11 @@ class Sign_In_With_Google_Public {
 	 */
 	public function add_signin_button() {
 
-		// Keep existing url query string intact.
-		$url = site_url( '?google_redirect&' ) . $_SERVER['QUERY_STRING'];
-
 		if ( get_option( 'siwg_show_on_login' ) ) {
 
 			ob_start();
 			?>
-				<a id="sign-in-with-google" href="<?php echo $url; ?>">
+				<a id="sign-in-with-google" href="<?php echo $this->url; ?>">
 					<img src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48Zz48cGF0aCBmaWxsPSIjRUE0MzM1IiBkPSJNMjQgOS41YzMuNTQgMCA2LjcxIDEuMjIgOS4yMSAzLjZsNi44NS02Ljg1QzM1LjkgMi4zOCAzMC40NyAwIDI0IDAgMTQuNjIgMCA2LjUxIDUuMzggMi41NiAxMy4yMmw3Ljk4IDYuMTlDMTIuNDMgMTMuNzIgMTcuNzQgOS41IDI0IDkuNXoiPjwvcGF0aD48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNNDYuOTggMjQuNTVjMC0xLjU3LS4xNS0zLjA5LS4zOC00LjU1SDI0djkuMDJoMTIuOTRjLS41OCAyLjk2LTIuMjYgNS40OC00Ljc4IDcuMThsNy43MyA2YzQuNTEtNC4xOCA3LjA5LTEwLjM2IDcuMDktMTcuNjV6Ij48L3BhdGg+PHBhdGggZmlsbD0iI0ZCQkMwNSIgZD0iTTEwLjUzIDI4LjU5Yy0uNDgtMS40NS0uNzYtMi45OS0uNzYtNC41OXMuMjctMy4xNC43Ni00LjU5bC03Ljk4LTYuMTlDLjkyIDE2LjQ2IDAgMjAuMTIgMCAyNGMwIDMuODguOTIgNy41NCAyLjU2IDEwLjc4bDcuOTctNi4xOXoiPjwvcGF0aD48cGF0aCBmaWxsPSIjMzRBODUzIiBkPSJNMjQgNDhjNi40OCAwIDExLjkzLTIuMTMgMTUuODktNS44MWwtNy43My02Yy0yLjE1IDEuNDUtNC45MiAyLjMtOC4xNiAyLjMtNi4yNiAwLTExLjU3LTQuMjItMTMuNDctOS45MWwtNy45OCA2LjE5QzYuNTEgNDIuNjIgMTQuNjIgNDggMjQgNDh6Ij48L3BhdGg+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg0OHY0OEgweiI+PC9wYXRoPjwvZz48L3N2Zz4K">Sign In With Google
 				</a>
 			<?php
