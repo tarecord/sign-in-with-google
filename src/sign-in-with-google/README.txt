@@ -2,7 +2,7 @@
 Contributors: tarecord, chrismkindred
 Tags: Google, sign in, users, registration, register, Google Apps, G Suite, OAuth
 Requires at least: 4.8.1
-Tested up to: 5.0.3
+Tested up to: 5.2
 Stable tag: 1.2.2
 Requires PHP: 5.6
 License: GPLv2 or later
