@@ -140,7 +140,7 @@ class Sign_In_With_Google_WPCLI {
 		$result = update_option( 'siwg_google_domain_restriction', $domains );
 
 		if ( ! $result ) {
-			WP_CLI::warning( 'Not updating domain restriction - Input matches current setting' );
+			WP_CLI::warning( 'Skipping Domain Restriction - Setting already matches' );
 		}
 
 	}
