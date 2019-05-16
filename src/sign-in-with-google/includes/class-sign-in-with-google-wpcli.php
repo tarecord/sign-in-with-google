@@ -73,6 +73,16 @@ class Sign_In_With_Google_WPCLI {
 		// Sanitize everything.
 		$this->sanitize_args( $assoc_args );
 
+		// Update the Client ID.
+		if ( isset( $assoc_args['client_id'] ) ) {
+			$this->update_client_id( $assoc_args['client_id'] );
+		}
+
+		// Update the Client Secret.
+		if ( isset( $assoc_args['client_secret'] ) ) {
+			$this->update_client_secret( $assoc_args['client_secret'] );
+		}
+
 		// Verify the list of domains and update the setting.
 		if ( isset( $assoc_args['domains'] ) ) {
 			$this->update_domain_restriction( $assoc_args['domains'] );
@@ -80,6 +90,40 @@ class Sign_In_With_Google_WPCLI {
 
 		WP_CLI::success( 'Plugin settings updated' );
 
+	}
+
+	/**
+	 * Handles updating siwg_google_client_id.
+	 *
+	 * @param string $client_id The ID to use with Google's Oauth.
+	 */
+	private function update_client_id( $client_id = '' ) {
+		if ( '' == $client_id ) {
+			WP_CLI::error( 'Please enter a valid Client ID' );
+		}
+
+		$result = update_option( 'siwg_google_client_id', $client_id );
+
+		if ( ! $result ) {
+			WP_CLI::warning( 'Skipping Client ID - Setting already matches' );
+		}
+	}
+
+	/**
+	 * Handles updating siwg_google_client_secret.
+	 *
+	 * @param string $client_secret The secret to use with Google's Oauth.
+	 */
+	private function update_client_secret( $client_secret = '' ) {
+		if ( '' == $client_secret ) {
+			WP_CLI::error( 'Please enter a valid Client Secret' );
+		}
+
+		$result = update_option( 'siwg_google_client_secret', $client_secret );
+
+		if ( ! $result ) {
+			WP_CLI::warning( 'Skipping Client Secret - Setting already matches' );
+		}
 	}
 
 	/**
