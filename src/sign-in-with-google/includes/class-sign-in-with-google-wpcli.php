@@ -98,6 +98,11 @@ class Sign_In_With_Google_WPCLI {
 			$this->update_custom_login_param( $assoc_args['custom_login_param'] );
 		}
 
+		// Update show on login form.
+		if ( isset( $assoc_args['show_on_login'] ) ) {
+			$this->update_show_on_login_form( $assoc_args['show_on_login'] );
+		}
+
 		WP_CLI::success( 'Plugin settings updated' );
 
 	}
@@ -185,6 +190,19 @@ class Sign_In_With_Google_WPCLI {
 
 		if ( ! $result ) {
 			WP_CLI::warning( 'Skipping Custom Login Parameter - Setting already matches' );
+		}
+	}
+
+	/**
+	 * Handles updating siwg_show_on_login.
+	 *
+	 * @param bool $show Show the Sign In With Google button on the login form.
+	 */
+	private function update_show_on_login_form( $show = false ) {
+		$result = update_option( 'siwg_show_on_login', $show );
+
+		if ( ! $result ) {
+			WP_CLI::warning( 'Skipping Show On Login - Setting already matches' );
 		}
 	}
 
