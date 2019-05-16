@@ -74,13 +74,31 @@ class Sign_In_With_Google_WPCLI {
 		$this->sanitize_args( $assoc_args );
 
 		// Verify the list of domains and update the setting.
-		if ( isset( $assoc_args['domains'] ) && Sign_In_With_Google_Utility::verify_domain_list( $assoc_args['domains'] ) ) {
-
-			update_option( 'siwg_google_domain_restriction', $assoc_args['domains'] );
-
+		if ( isset( $assoc_args['domains'] ) ) {
+			$this->update_domain_restriction( $assoc_args['domains'] );
 		}
 
-		WP_CLI::success( 'Settings updated: ' . print_r( $this->sanitize_args( $assoc_args ), true ) );
+		WP_CLI::success( 'Plugin settings updated' );
+
+	}
+
+	/**
+	 * Handles updating siwg_google_domain_restriction in the options table.
+	 *
+	 * @param string $domains The string of domains to verify and use.
+	 */
+	private function update_domain_restriction( $domains = '' ) {
+
+		if ( ! Sign_In_With_Google_Utility::verify_domain_list( $domains ) ) {
+			WP_CLI::error( 'Please use a valid list of domains' );
+		}
+
+		$result = update_option( 'siwg_google_domain_restriction', $domains );
+
+		if ( ! $result ) {
+			WP_CLI::warning( 'Not updating domain restriction - Input matches current setting' );
+		}
+
 	}
 
 	/**
