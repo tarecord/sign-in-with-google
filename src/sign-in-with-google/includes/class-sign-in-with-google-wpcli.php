@@ -59,7 +59,7 @@ class Sign_In_With_Google_WPCLI {
 	 *     https://www.example.com/my-custom-post?logmein // Log the user in and redirect to my-custom-post
 	 * ---
 	 *
-	 * [--show_on_login=<true|false>]
+	 * [--show_on_login=<1|0>]
 	 * : Show the "Sign In With Google" button on the login form.
 	 *
 	 * ## EXAMPLES
@@ -198,8 +198,8 @@ class Sign_In_With_Google_WPCLI {
 	 *
 	 * @param bool $show Show the Sign In With Google button on the login form.
 	 */
-	private function update_show_on_login_form( $show = false ) {
-		$result = update_option( 'siwg_show_on_login', $show );
+	private function update_show_on_login_form( $show = 0 ) {
+		$result = update_option( 'siwg_show_on_login', boolval( $show ) );
 
 		if ( ! $result ) {
 			WP_CLI::warning( 'Skipping Show On Login - Setting already matches' );
