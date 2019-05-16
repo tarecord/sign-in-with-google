@@ -32,7 +32,6 @@ class Sign_In_With_Google_WPCLI {
 	 * [--default_role=<role>]
 	 * : The role new users should have.
 	 * ---
-	 * default: subscriber
 	 * options:
 	 *   - subscriber
 	 *   - contributor
@@ -146,18 +145,21 @@ class Sign_In_With_Google_WPCLI {
 	 *
 	 * @param string $role The role applied for new users.
 	 */
-	private function update_default_role( $role = '' ) {
+	private function update_default_role( $role = 'subscriber' ) {
 		if ( '' == $role ) {
 			WP_CLI::error( 'Please enter a valid user role' );
 		}
 
-		// All role names are lowercase.
-		$role = strtolower( $role );
+		if ( 'subscriber' != $role ) {
 
-		$result = update_option( 'siwg_google_user_default_role', $role );
+			// All role names are lowercase.
+			$role = strtolower( $role );
 
-		if ( ! $result ) {
-			WP_CLI::warning( 'Skipping Default Role - Setting already matches' );
+			$result = update_option( 'siwg_google_user_default_role', $role );
+
+			if ( ! $result ) {
+				WP_CLI::warning( 'Skipping Default Role - Setting already matches' );
+			}
 		}
 	}
 
