@@ -110,6 +110,11 @@ class Sign_In_With_Google {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sign-in-with-google-i18n.php';
 
 		/**
+		 * A helpful ultility class.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sign-in-with-google-utility.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sign-in-with-google-admin.php';
