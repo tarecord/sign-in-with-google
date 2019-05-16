@@ -93,6 +93,11 @@ class Sign_In_With_Google_WPCLI {
 			$this->update_domain_restriction( $assoc_args['domains'] );
 		}
 
+		// Update the custom login parameter.
+		if ( isset( $assoc_args['custom_login_param'] ) ) {
+			$this->update_custom_login_param( $assoc_args['custom_login_param'] );
+		}
+
 		WP_CLI::success( 'Plugin settings updated' );
 
 	}
@@ -168,6 +173,19 @@ class Sign_In_With_Google_WPCLI {
 			WP_CLI::warning( 'Skipping Domain Restriction - Setting already matches' );
 		}
 
+	}
+
+	/**
+	 * Handles updating siwg_custom_login_param.
+	 *
+	 * @param string $param The string to use as the login parameter.
+	 */
+	private function update_custom_login_param( $param ) {
+		$result = update_option( 'siwg_custom_login_param', $param );
+
+		if ( ! $result ) {
+			WP_CLI::warning( 'Skipping Custom Login Parameter - Setting already matches' );
+		}
 	}
 
 	/**
