@@ -83,6 +83,11 @@ class Sign_In_With_Google_WPCLI {
 			$this->update_client_secret( $assoc_args['client_secret'] );
 		}
 
+		// Update the default new user role.
+		if ( isset( $assoc_args['default_role'] ) ) {
+			$this->update_default_role( $assoc_args['default_role'] );
+		}
+
 		// Verify the list of domains and update the setting.
 		if ( isset( $assoc_args['domains'] ) ) {
 			$this->update_domain_restriction( $assoc_args['domains'] );
@@ -123,6 +128,26 @@ class Sign_In_With_Google_WPCLI {
 
 		if ( ! $result ) {
 			WP_CLI::warning( 'Skipping Client Secret - Setting already matches' );
+		}
+	}
+
+	/**
+	 * Handles updating siwg_google_user_default_role.
+	 *
+	 * @param string $role The role applied for new users.
+	 */
+	private function update_default_role( $role = '' ) {
+		if ( '' == $role ) {
+			WP_CLI::error( 'Please enter a valid user role' );
+		}
+
+		// All role names are lowercase.
+		$role = strtolower( $role );
+
+		$result = update_option( 'siwg_google_user_default_role', $role );
+
+		if ( ! $result ) {
+			WP_CLI::warning( 'Skipping Default Role - Setting already matches' );
 		}
 	}
 
