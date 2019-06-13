@@ -150,7 +150,7 @@ class Sign_In_With_Google_WPCLI {
 	 *
 	 * @param string $domains The string of domains to verify and use.
 	 */
-	private function update_domain_restriction( $domains = '' ) {
+	private function update_domains( $domains = '' ) {
 
 		if ( ! Sign_In_With_Google_Utility::verify_domain_list( $domains ) ) {
 			WP_CLI::error( 'Please use a valid list of domains' );
@@ -182,7 +182,7 @@ class Sign_In_With_Google_WPCLI {
 	 *
 	 * @param bool $show Show the Sign In With Google button on the login form.
 	 */
-	private function update_show_on_login_form( $show = 0 ) {
+	private function update_show_on_login( $show = 0 ) {
 		$result = update_option( 'siwg_show_on_login', boolval( $show ) );
 
 		if ( ! $result ) {
