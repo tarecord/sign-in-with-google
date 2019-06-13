@@ -302,7 +302,7 @@ class Sign_In_With_Google_Admin {
 		// Strip all HTML and PHP tags and properly handle quoted strings.
 		$sanitized_input = strip_tags( stripslashes( $input ) );
 
-		if ( '' !== $sanitized_input && ! $this->verify_domain_list( $sanitized_input ) ) {
+		if ( '' !== $sanitized_input && ! Sign_In_With_Google_Utility::verify_domain_list( $sanitized_input ) ) {
 
 			add_settings_error(
 				'siwg_settings',
@@ -471,21 +471,6 @@ class Sign_In_With_Google_Admin {
 		wp_redirect( $redirect );
 		exit;
 
-	}
-
-	/**
-	 * Checks a string of comma separated domains to make sure they're in the correct format.
-	 *
-	 * @since    1.0.0
-	 * @param string $input A string of one or more comma dilimited domains.
-	 */
-	public function verify_domain_list( $input ) {
-
-		if ( preg_match( '~^\s*(?:(?:\w+(?:-+\w+)*\.)+[a-z]+)\s*(?:,\s*(?:(?:\w+(?:-+\w+)*\.)+[a-z]+)\s*)*$~', $input ) ) {
-			return true;
-		}
-
-		return false;
 	}
 
 	/**
