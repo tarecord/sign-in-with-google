@@ -64,6 +64,11 @@ class Sign_In_With_Google_WPCLI {
 	 */
 	public function settings( $args = array(), $assoc_args = array() ) {
 
+		// Quit if no arguments are provided.
+		if ( empty( $assoc_args ) ) {
+			return;
+		}
+
 		// Sanitize everything.
 		$sanitized_args = $this->sanitize_args( $assoc_args );
 
