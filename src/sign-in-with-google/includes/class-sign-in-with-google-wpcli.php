@@ -31,14 +31,6 @@ class Sign_In_With_Google_WPCLI {
 	 *
 	 * [--default_role=<role>]
 	 * : The role new users should have.
-	 * ---
-	 * options:
-	 *   - subscriber
-	 *   - contributor
-	 *   - author
-	 *   - editor
-	 *   - administrator
-	 * ---
 	 *
 	 * [--domains=<domains>]
 	 * : A comma separated list of domains to restrict new users to.
@@ -157,6 +149,13 @@ class Sign_In_With_Google_WPCLI {
 
 			// All role names are lowercase.
 			$role = strtolower( $role );
+
+			// Get a list of all the existing roles.
+			$existing_roles = array_keys( get_editable_roles() );
+
+			if ( ! in_array( $role, $existing_roles ) ) {
+				WP_CLI::error( 'Role does not exist.' );
+			}
 
 			$result = update_option( 'siwg_google_user_default_role', $role );
 
