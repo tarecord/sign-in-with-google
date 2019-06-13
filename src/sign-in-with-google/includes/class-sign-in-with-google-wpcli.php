@@ -65,36 +65,11 @@ class Sign_In_With_Google_WPCLI {
 	public function settings( $args = array(), $assoc_args = array() ) {
 
 		// Sanitize everything.
-		$this->sanitize_args( $assoc_args );
+		$sanitized_args = $this->sanitize_args( $assoc_args );
 
-		// Update the Client ID.
-		if ( isset( $assoc_args['client_id'] ) ) {
-			$this->update_client_id( $assoc_args['client_id'] );
-		}
-
-		// Update the Client Secret.
-		if ( isset( $assoc_args['client_secret'] ) ) {
-			$this->update_client_secret( $assoc_args['client_secret'] );
-		}
-
-		// Update the default new user role.
-		if ( isset( $assoc_args['default_role'] ) ) {
-			$this->update_default_role( $assoc_args['default_role'] );
-		}
-
-		// Verify the list of domains and update the setting.
-		if ( isset( $assoc_args['domains'] ) ) {
-			$this->update_domain_restriction( $assoc_args['domains'] );
-		}
-
-		// Update the custom login parameter.
-		if ( isset( $assoc_args['custom_login_param'] ) ) {
-			$this->update_custom_login_param( $assoc_args['custom_login_param'] );
-		}
-
-		// Update show on login form.
-		if ( isset( $assoc_args['show_on_login'] ) ) {
-			$this->update_show_on_login_form( $assoc_args['show_on_login'] );
+		foreach ( $sanitized_args as $key => $value ) {
+			$method = 'update_' . $key;
+			$this->$method( $value );
 		}
 
 		WP_CLI::success( 'Plugin settings updated' );
