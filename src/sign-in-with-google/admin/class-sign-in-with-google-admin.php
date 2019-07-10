@@ -82,6 +82,15 @@ class Sign_In_With_Google_Admin {
 	}
 
 	/**
+	 * Load assets for admin.
+	 *
+	 * @since 1.3.0
+	 */
+	public function enqueue_styles() {
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/sign-in-with-google-admin.css', array(), $this->version, 'all' );
+	}
+
+	/**
 	 * Add the plugin settings link found on the plugin page.
 	 *
 	 * @since    1.0.0
@@ -95,6 +104,28 @@ class Sign_In_With_Google_Admin {
 
 		return array_merge( $links, $mylinks );
 
+	}
+
+	/**
+	 * Add "Connect With Google" button to user profile settings.
+	 *
+	 * @since 1.3.0
+	 */
+	public function add_connect_button_to_profile() {
+
+		$url = site_url( '?google_redirect' );
+		?>
+		<h2>Sign In With Google</h2>
+		<table class="form-table">
+			<tr>
+				<th>Connect</th>
+				<td>
+					<a id="ConnectWithGoogleButton" href="<?php echo $url; ?>">Connect to Google</a>
+					<span class="description">Connect your user profile so you can sign in with Google</span>
+				</td>
+			</tr>
+		</table>
+		<?php
 	}
 
 	/**
