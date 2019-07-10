@@ -499,15 +499,35 @@ class Sign_In_With_Google_Admin {
 		$raw_state = ( isset( $_GET['state'] ) ) ? $_GET['state'] : '';
 		$state     = json_decode( base64_decode( $raw_state ) );
 
-		$this->check_domain_restriction();
+		// Check if a user is linked to this Google account.
+		$linked_user = get_users(
+			array(
+				'meta_key'   => 'siwg_google_account',
+				'meta_value' => $this->user->email,
+			)
+		);
 
-		$user = $this->find_by_email_or_create( $this->user );
+		// If user is linked to Google account, sign them in. Otherwise, check the domain
+		// and create the user if necessary.
+		if ( ! empty( $linked_user ) ) {
 
-		// Log in the user.
-		if ( $user ) {
-			wp_set_current_user( $user->ID, $user->user_login );
-			wp_set_auth_cookie( $user->ID );
-			do_action( 'wp_login', $user->user_login ); // phpcs:ignore
+			$connected_user = $linked_user[0];
+			wp_set_current_user( $connected_user->ID, $connected_user->user_login );
+			wp_set_auth_cookie( $connected_user->ID );
+			do_action( 'wp_login', $connected_user->user_login ); // phpcs:ignore
+
+		} else {
+
+			$this->check_domain_restriction();
+
+			$user = $this->find_by_email_or_create( $this->user );
+
+			// Log in the user.
+			if ( $user ) {
+				wp_set_current_user( $user->ID, $user->user_login );
+				wp_set_auth_cookie( $user->ID );
+				do_action( 'wp_login', $user->user_login ); // phpcs:ignore
+			}
 		}
 
 		if ( isset( $state->redirect_to ) && '' !== $state->redirect_to ) {
