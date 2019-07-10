@@ -113,15 +113,24 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function add_connect_button_to_profile() {
 
-		$url = site_url( '?google_redirect' );
+		$url            = site_url( '?google_redirect' );
+		$linked_account = get_usermeta( get_current_user_id(), 'siwg_google_account' );
 		?>
 		<h2>Sign In With Google</h2>
 		<table class="form-table">
 			<tr>
 				<th>Connect</th>
 				<td>
+				<?php if ( $linked_account ) : ?>
+					<?php echo $linked_account; ?>
+					<form method="post">
+						<input type="submit" role="button" value="Unlink Account">
+						<?php wp_nonce_field( 'siwg_unlink_account', '_siwg_account_nonce' ); ?>
+					</form>
+				<?php else : ?>
 					<a id="ConnectWithGoogleButton" href="<?php echo $url; ?>">Connect to Google</a>
 					<span class="description">Connect your user profile so you can sign in with Google</span>
+				<?php endif; ?>
 				</td>
 			</tr>
 		</table>
@@ -476,6 +485,16 @@ class Sign_In_With_Google_Admin {
 
 		$this->set_user_info();
 
+		// If the user is logged in, just connect the authenticated Google account.
+		if ( is_user_logged_in() ) {
+			// link the account.
+			$this->connect_account( $this->user->email );
+
+			// redirect back to the profile edit page.
+			wp_redirect( admin_url( 'profile.php' ) );
+			exit;
+		}
+
 		// Decode passed back state.
 		$raw_state = ( isset( $_GET['state'] ) ) ? $_GET['state'] : '';
 		$state     = json_decode( base64_decode( $raw_state ) );
@@ -640,6 +659,47 @@ class Sign_In_With_Google_Admin {
 	 */
 	protected function set_user_info() {
 		$this->user = $this->get_user_by_token();
+	}
+
+	/**
+	 * Add usermeta for current user and Google account email.
+	 *
+	 * @since 1.3.0
+	 * @param string $email The users authenticated Google account email.
+	 */
+	protected function connect_account( $email = '' ) {
+
+		if ( ! $email ) {
+			return false;
+		}
+
+		$current_user = wp_get_current_user();
+
+		if ( ! ( $current_user instanceof WP_User ) ) {
+			return false;
+		}
+
+		return add_user_meta( $current_user->ID, 'siwg_google_account', $email, true );
+	}
+
+	/**
+	 * Remove usermeta for current user and Google account email.
+	 *
+	 * @since 1.3.0
+	 */
+	public function disconnect_account() {
+
+		if ( ! isset( $_POST['_siwg_account_nonce'] ) || ! wp_verify_nonce( $_POST['_siwg_account_nonce'], 'siwg_unlink_account' ) ) {
+			wp_die( __( 'Unauthorized', 'siwg' ) );
+		}
+
+		$current_user = wp_get_current_user();
+
+		if ( ! ( $current_user instanceof WP_User ) ) {
+			return false;
+		}
+
+		return delete_user_meta( $current_user->ID, 'siwg_google_account' );
 	}
 
 	/**
