@@ -84,7 +84,7 @@ class Sign_In_With_Google_Admin {
 	/**
 	 * Load assets for admin.
 	 *
-	 * @since 1.3.0
+	 * @since 1.3.1
 	 */
 	public function enqueue_styles() {
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/sign-in-with-google-admin.css', array(), $this->version, 'all' );
@@ -109,7 +109,7 @@ class Sign_In_With_Google_Admin {
 	/**
 	 * Add "Connect With Google" button to user profile settings.
 	 *
-	 * @since 1.3.0
+	 * @since 1.3.1
 	 */
 	public function add_connect_button_to_profile() {
 
@@ -684,7 +684,7 @@ class Sign_In_With_Google_Admin {
 	/**
 	 * Add usermeta for current user and Google account email.
 	 *
-	 * @since 1.3.0
+	 * @since 1.3.1
 	 * @param string $email The users authenticated Google account email.
 	 */
 	protected function connect_account( $email = '' ) {
@@ -705,7 +705,7 @@ class Sign_In_With_Google_Admin {
 	/**
 	 * Remove usermeta for current user and Google account email.
 	 *
-	 * @since 1.3.0
+	 * @since 1.3.1
 	 */
 	public function disconnect_account() {
 
