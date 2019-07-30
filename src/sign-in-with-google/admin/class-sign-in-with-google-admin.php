@@ -128,7 +128,7 @@ class Sign_In_With_Google_Admin {
 						<?php wp_nonce_field( 'siwg_unlink_account', '_siwg_account_nonce' ); ?>
 					</form>
 				<?php else : ?>
-					<a id="ConnectWithGoogleButton" href="<?php echo $url; ?>">Connect to Google</a>
+					<a id="ConnectWithGoogleButton" href="<?php echo esc_attr( $url ); ?>">Connect to Google</a>
 					<span class="description">Connect your user profile so you can sign in with Google</span>
 				<?php endif; ?>
 				</td>
