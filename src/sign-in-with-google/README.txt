@@ -60,6 +60,7 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 == Changelog ==
 
 = 1.4.0 =
+* Updated verbiage of button to "Log In With Google".
 * Added ability to link/unlink Google account in user profile.
 
 = 1.3.0 =
