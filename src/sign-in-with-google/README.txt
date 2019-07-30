@@ -3,7 +3,7 @@ Contributors: tarecord, chrismkindred
 Tags: Google, sign in, users, registration, register, Google Apps, G Suite, OAuth
 Requires at least: 4.8.1
 Tested up to: 5.2.2
-Stable tag: 1.3.1
+Stable tag: 1.4.0
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -59,7 +59,7 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 
 == Changelog ==
 
-= 1.3.1 =
+= 1.4.0 =
 * Added ability to link/unlink Google account in user profile.
 
 = 1.3.0 =
