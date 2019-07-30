@@ -2,8 +2,8 @@
 Contributors: tarecord, chrismkindred
 Tags: Google, sign in, users, registration, register, Google Apps, G Suite, OAuth
 Requires at least: 4.8.1
-Tested up to: 5.2.1
-Stable tag: 1.3.0
+Tested up to: 5.2.2
+Stable tag: 1.4.0
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -19,6 +19,7 @@ This is great for Agencies or sites that have lots of users and need a way to ma
 * Show/Hide the "Sign In with Google" button on the login form
 * Restrict user logins to a specific domain
 * If a user is already logged in to Google, they will be automatically redirected without much fuss
+* Connect existing user accounts with a Google account
 * A custom login parameter can be added to the URL of the site as a "hidden" login. For example adding `?mysitename_login` to your url (for example: `https://mysitename.com/?mysitename_login`) will log in the user, or redirect them to log in with Google.
 
 = WARNING =
@@ -57,6 +58,10 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 2. This is the second screen shot
 
 == Changelog ==
+
+= 1.4.0 =
+* Updated verbiage of button to "Log In With Google".
+* Added ability to link/unlink Google account in user profile.
 
 = 1.3.0 =
 * Added WP-CLI functionality

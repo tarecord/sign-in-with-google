@@ -170,6 +170,12 @@ class Sign_In_With_Google {
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'settings_menu_init' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'process_settings_export' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'process_settings_import' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+		$this->loader->add_action( 'show_user_profile', $plugin_admin, 'add_connect_button_to_profile' );
+
+		if ( isset( $_POST['_siwg_account_nonce'] ) ) {
+			$this->loader->add_action( 'admin_init', $plugin_admin, 'disconnect_account' );
+		}
 
 		if ( isset( $_GET['google_redirect'] ) ) {
 			$this->loader->add_action( 'template_redirect', $plugin_admin, 'google_auth_redirect' );
