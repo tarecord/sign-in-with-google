@@ -55,7 +55,7 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 == Screenshots ==
 
 1. The login form with the "Sign in with Google" button added.
-2. This is the second screen shot
+2. The settings screen.
 
 == Changelog ==
 
