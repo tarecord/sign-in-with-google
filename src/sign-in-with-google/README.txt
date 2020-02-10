@@ -8,7 +8,7 @@ Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Adds a "Sign in with Google" option to the login form so users can sign in with their G Suite account.
+Adds a "Log in with Google" option to the login form so users can sign in with their G Suite account.
 
 == Description ==
 
@@ -16,7 +16,7 @@ This plugin gives your users the ability to sign in with their G Suite account. 
 This is great for Agencies or sites that have lots of users and need a way to make signing in a quick and painless process.
 
 = Features =
-* Show/Hide the "Sign In with Google" button on the login form
+* Show/Hide the "Log In with Google" button on the login form
 * Restrict user logins to a specific domain
 * If a user is already logged in to Google, they will be automatically redirected without much fuss
 * Connect existing user accounts with a Google account
@@ -24,7 +24,7 @@ This is great for Agencies or sites that have lots of users and need a way to ma
 
 = WARNING =
 
-If you leave the "Sign in with Google" button shown on the login form, make sure that you are comfortable with the new user role that is set. Since this plugin creates user accounts for those that do not already have an account on the site, use domain restriction or set a low level role to the users.
+If you leave the "Log in with Google" button shown on the login form, make sure that you are comfortable with the new user role that is set. Since this plugin creates user accounts for those that do not already have an account on the site, use domain restriction or set a low level role to the users.
 
 == Development ==
 
@@ -54,7 +54,7 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 
 == Screenshots ==
 
-1. The login form with the "Sign in with Google" button added.
+1. The login form with the "Log in with Google" button added.
 2. This is the second screen shot
 
 == Changelog ==
