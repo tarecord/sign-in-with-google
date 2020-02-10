@@ -1,4 +1,5 @@
 sudo: false
+dist: trusty
 
 language: php
 
@@ -19,7 +20,9 @@ env:
 
 matrix:
   include:
-    - php: 7.0
+	- php: 7.2
+      env: WP_VERSION=latest
+	- php: 7.1
       env: WP_VERSION=latest
     - php: 5.6
       env: WP_VERSION=latest
@@ -69,7 +72,7 @@ deploy:
     skip_cleanup: true
     on:
       tags: true
-      php: 7.0
+      php: 7.2
 
   # Auto-deploys the built plugin to WordPress.org
   - provider: script
@@ -78,4 +81,4 @@ deploy:
       - php build/plugin-build $WP_ORG_PASSWORD $WP_ORG_USERNAME sign-in-with-google
     on:
       tags: true
-      php: 7.0
+      php: 7.2
