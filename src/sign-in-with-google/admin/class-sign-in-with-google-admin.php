@@ -514,7 +514,7 @@ class Sign_In_With_Google_Admin {
 			$connected_user = $linked_user[0];
 			wp_set_current_user( $connected_user->ID, $connected_user->user_login );
 			wp_set_auth_cookie( $connected_user->ID );
-			do_action( 'wp_login', $connected_user->user_login ); // phpcs:ignore
+			do_action( 'wp_login', $connected_user->user_login, $connected_user ); // phpcs:ignore
 
 		} else {
 
@@ -526,7 +526,7 @@ class Sign_In_With_Google_Admin {
 			if ( $user ) {
 				wp_set_current_user( $user->ID, $user->user_login );
 				wp_set_auth_cookie( $user->ID );
-				do_action( 'wp_login', $user->user_login ); // phpcs:ignore
+				do_action( 'wp_login', $user->user_login, $user ); // phpcs:ignore
 			}
 		}
 
