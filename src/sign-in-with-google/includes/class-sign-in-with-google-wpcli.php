@@ -58,6 +58,11 @@ class Sign_In_With_Google_WPCLI {
 	 * [--show_unlink_in_profile=<1|0>]
 	 * : Show the "Unlink account" button in user profile.
 	 *
+	 * ---
+	 *
+	 * [--siwg_allow_mail_change=<1|0>]
+	 * : Allow users to change email
+	 *
 	 * ## EXAMPLES
 	 *
 	 *     wp siwg settings --client_id=XXXXXX.apps.googleusercontent.com
@@ -205,6 +210,19 @@ class Sign_In_With_Google_WPCLI {
 
 		if ( ! $result ) {
 			WP_CLI::warning( 'Skipping Show Unlink in Profile - Setting already matches' );
+		}
+	}
+	
+	/**
+	 * Handles updating siwg_allow_mail_change.
+	 *
+	 * @param bool $allow Allow users to change their email
+	 */
+	private function update_allow_mail_change( $show = 0 ) {
+		$result = update_option( 'siwg_allow_mail_change', boolval( $show ) );
+
+		if ( ! $result ) {
+			WP_CLI::warning( 'Skipping Allow users to change mail - Setting already matches' );
 		}
 	}
 	

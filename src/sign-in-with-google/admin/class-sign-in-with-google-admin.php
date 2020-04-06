@@ -226,6 +226,14 @@ class Sign_In_With_Google_Admin {
 			'siwg_section'
 		);
 
+		add_settings_field(
+			'siwg_allow_mail_change',
+			'Allow users to change their email address (to other than their registered Google mail address)',
+			array( $this, 'siwg_allow_mail_change' ),
+			'siwg_settings',
+			'siwg_section'
+		);
+
 		register_setting( 'siwg_settings', 'siwg_google_client_id', array( $this, 'input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_google_client_secret', array( $this, 'input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_google_user_default_role' );
@@ -233,6 +241,7 @@ class Sign_In_With_Google_Admin {
 		register_setting( 'siwg_settings', 'siwg_custom_login_param', array( $this, 'custom_login_input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_show_on_login' );
 		register_setting( 'siwg_settings', 'siwg_show_unlink_in_profile' );
+		register_setting( 'siwg_settings', 'siwg_allow_mail_change' );
 	}
 
 	/**
@@ -336,6 +345,16 @@ class Sign_In_With_Google_Admin {
 	public function siwg_show_unlink_in_profile() {
 
 		echo '<input type="checkbox" name="siwg_show_unlink_in_profile" id="siwg_show_unlink_in_profile" value="1" ' . checked( get_option( 'siwg_show_unlink_in_profile' ), true, false ) . ' />';
+
+	}
+	/**
+	 * Callback function for Allow users to change mail
+	 *
+	 * @since    1.0.0
+	 */
+	public function siwg_allow_mail_change() {
+
+		echo '<input type="checkbox" name="siwg_allow_mail_change" id="siwg_allow_mail_change" value="1" ' . checked( get_option( 'siwg_allow_mail_change' ), true, false ) . ' />';
 
 	}
 
@@ -601,7 +620,8 @@ class Sign_In_With_Google_Admin {
 			'siwg_google_domain_restriction' => get_option( 'siwg_google_domain_restriction' ),
 			'siwg_custom_login_param'        => get_option( 'siwg_custom_login_param' ),
 			'siwg_show_on_login'             => get_option( 'siwg_show_on_login' ),
-			'siwg_show_unlink_in_profile'    => get_option( 'siwg_show_unlink_in_profile' )
+			'siwg_show_unlink_in_profile'    => get_option( 'siwg_show_unlink_in_profile' ),
+			'siwg_allow_mail_change'         => get_option( 'siwg_allow_mail_change' )
 		);
 
 		ignore_user_abort( true );
@@ -704,7 +724,33 @@ class Sign_In_With_Google_Admin {
 	protected function set_user_info() {
 		$this->user = $this->get_user_by_token();
 	}
-
+		
+		
+	/**
+	 * Disable User change action
+	 *    https://wordpress.stackexchange.com/a/363376/33667
+	 * @since 1.3.1
+	 */
+	public function disallow_email_changes()
+	{
+		if ( ! $this->allowed_to_modify_option( 'siwg_allow_mail_change' ) ) 
+		{
+			add_action( 'personal_options_update',  [$this, 'disable_mail_change_BACKEND'], 5  );
+			add_action( 'show_user_profile',        [$this, 'disable_mail_change_HTML']  ); 
+		}
+	}
+	public function disable_mail_change_BACKEND($user_id) {
+        if ( !current_user_can( 'manage_options' ) ) { 
+            $user = get_user_by('id', $user_id ); $_POST['email']=$user->user_email; 
+        } 
+    }
+	public function disable_mail_change_HTML($user) {
+        if ( !current_user_can( 'manage_options' ) ) { 
+            ?><script>document.getElementById("email").setAttribute("disabled", "disabled");</script> <?php 
+        } 
+    }
+		
+		
 	/**
 	 * Add usermeta for current user and Google account email.
 	 *
