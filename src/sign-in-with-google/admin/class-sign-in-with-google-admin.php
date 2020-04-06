@@ -114,7 +114,7 @@ class Sign_In_With_Google_Admin {
 	public function add_connect_button_to_profile() {
 
 		$url            = site_url( '?google_redirect' );
-		$linked_account = get_usermeta( get_current_user_id(), 'siwg_google_account' );
+		$linked_account = get_user_meta( get_current_user_id(), 'siwg_google_account', true );
 		?>
 		<h2>Sign In With Google</h2>
 		<table class="form-table">
@@ -794,7 +794,7 @@ class Sign_In_With_Google_Admin {
 	 */
 	protected function check_domain_restriction() {
 		// The user doesn't have the correct domain, don't authenticate them.
-		$domains     = explode( ', ', get_option( 'siwg_google_domain_restriction' ) );
+		$domains     = array_filter( explode( ', ', get_option( 'siwg_google_domain_restriction' ) ) );
 		$user_domain = explode( '@', $this->user->email );
 
 		if ( ! empty( $domains ) && ! in_array( $user_domain[1], $domains ) ) {
