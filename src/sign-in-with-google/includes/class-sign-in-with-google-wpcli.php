@@ -53,6 +53,11 @@ class Sign_In_With_Google_WPCLI {
 	 * [--show_on_login=<1|0>]
 	 * : Show the "Sign In With Google" button on the login form.
 	 *
+	 * ---
+	 *
+	 * [--show_unlink_in_profile=<1|0>]
+	 * : Show the "Unlink account" button in user profile.
+	 *
 	 * ## EXAMPLES
 	 *
 	 *     wp siwg settings --client_id=XXXXXX.apps.googleusercontent.com
@@ -190,6 +195,19 @@ class Sign_In_With_Google_WPCLI {
 		}
 	}
 
+	/**
+	 * Handles updating siwg_show_unlink_in_profile.
+	 *
+	 * @param bool $show Show the Unlink Account button in user profile page.
+	 */
+	private function update_show_unlink_in_profile( $show = 0 ) {
+		$result = update_option( 'siwg_show_unlink_in_profile', boolval( $show ) );
+
+		if ( ! $result ) {
+			WP_CLI::warning( 'Skipping Show Unlink in Profile - Setting already matches' );
+		}
+	}
+	
 	/**
 	 * Sanitize command arguments
 	 *

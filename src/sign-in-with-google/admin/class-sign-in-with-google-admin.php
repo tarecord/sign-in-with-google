@@ -123,10 +123,12 @@ class Sign_In_With_Google_Admin {
 				<td>
 				<?php if ( $linked_account ) : ?>
 					<?php echo $linked_account; ?>
-					<form method="post">
-						<input type="submit" role="button" value="Unlink Account">
-						<?php wp_nonce_field( 'siwg_unlink_account', '_siwg_account_nonce' ); ?>
-					</form>
+					<?php if ( $this->allowed_to_modify_option( 'siwg_show_unlink_in_profile' ) ) { ?>
+						<form method="post">
+							<input type="submit" role="button" value="Unlink Account">
+							<?php wp_nonce_field( 'siwg_unlink_account', '_siwg_account_nonce' ); ?>
+						</form>
+					<?php } ?>
 				<?php else : ?>
 					<a id="ConnectWithGoogleButton" href="<?php echo esc_attr( $url ); ?>">Connect to Google</a>
 					<span class="description">Connect your user profile so you can sign in with Google</span>
@@ -216,12 +218,21 @@ class Sign_In_With_Google_Admin {
 			'siwg_section'
 		);
 
+		add_settings_field(
+			'siwg_show_unlink_in_profile',
+			'Allow unlink button in user profile',
+			array( $this, 'siwg_show_unlink_in_profile' ),
+			'siwg_settings',
+			'siwg_section'
+		);
+
 		register_setting( 'siwg_settings', 'siwg_google_client_id', array( $this, 'input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_google_client_secret', array( $this, 'input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_google_user_default_role' );
 		register_setting( 'siwg_settings', 'siwg_google_domain_restriction', array( $this, 'domain_input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_custom_login_param', array( $this, 'custom_login_input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_show_on_login' );
+		register_setting( 'siwg_settings', 'siwg_show_unlink_in_profile' );
 	}
 
 	/**
@@ -232,7 +243,7 @@ class Sign_In_With_Google_Admin {
 	 * @since    1.0.0
 	 */
 	public function siwg_section() {
-		echo '<p>Please paste in the necessary credentials so that we can authenticate your users.</p>';
+		_e('<p>Please paste in the necessary credentials so that we can authenticate your users. ( <a href="https://wordpress.org/plugins/sign-in-with-google/#where%20can%20i%20get%20a%20client%20id%20and%20client%20secret%3F">Read more</a> )</p>');
 	}
 
 	/**
@@ -314,6 +325,17 @@ class Sign_In_With_Google_Admin {
 	public function siwg_show_on_login() {
 
 		echo '<input type="checkbox" name="siwg_show_on_login" id="siwg_show_on_login" value="1" ' . checked( get_option( 'siwg_show_on_login' ), true, false ) . ' />';
+
+	}
+
+	/**
+	 * Callback function for Show Unlink button in user-profile
+	 *
+	 * @since    1.0.0
+	 */
+	public function siwg_show_unlink_in_profile() {
+
+		echo '<input type="checkbox" name="siwg_show_unlink_in_profile" id="siwg_show_unlink_in_profile" value="1" ' . checked( get_option( 'siwg_show_unlink_in_profile' ), true, false ) . ' />';
 
 	}
 
@@ -436,10 +458,11 @@ class Sign_In_With_Google_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function google_auth_redirect() {
+	public function google_auth_redirect($redirect_to=false) {
 
 		// Gather necessary elements for 'state' parameter.
-		$redirect_to = isset( $_GET['redirect_to'] ) ? $_GET['redirect_to'] : '';
+		if( ! $redirect_to && $_GET['redirect_to'] )
+			$redirect_to = $_GET['redirect_to'];
 
 		$this->state = array(
 			'redirect_to' => $redirect_to,
@@ -464,7 +487,7 @@ class Sign_In_With_Google_Admin {
 		$scopes[] = 'https://www.googleapis.com/auth/userinfo.email';
 		$scopes[] = 'https://www.googleapis.com/auth/userinfo.profile';
 
-		apply_filters( 'siwg_scopes', $scopes ); // Allow scopes to be adjusted.
+		$scopes = apply_filters( 'siwg_scopes', $scopes ); // Allow scopes to be adjusted.
 
 		$scope        = urlencode( implode( ' ', $scopes ) );
 		$redirect_uri = urlencode( site_url( '?google_response' ) );
@@ -536,7 +559,7 @@ class Sign_In_With_Google_Admin {
 			$redirect = admin_url(); // Send users to the dashboard by default.
 		}
 
-		apply_filters( 'siwg_auth_redirect', $redirect ); // Allow the redirect to be adjusted.
+		$redirect = apply_filters( 'siwg_auth_redirect', $redirect ); // Allow the redirect to be adjusted.
 
 		wp_redirect( $redirect );
 		exit;
@@ -578,6 +601,7 @@ class Sign_In_With_Google_Admin {
 			'siwg_google_domain_restriction' => get_option( 'siwg_google_domain_restriction' ),
 			'siwg_custom_login_param'        => get_option( 'siwg_custom_login_param' ),
 			'siwg_show_on_login'             => get_option( 'siwg_show_on_login' ),
+			'siwg_show_unlink_in_profile'    => get_option( 'siwg_show_unlink_in_profile' )
 		);
 
 		ignore_user_abort( true );
@@ -703,12 +727,26 @@ class Sign_In_With_Google_Admin {
 	}
 
 	/**
+	 * Check if user is allowed to modify the specific option
+	 *
+	 * @since 1.3.1
+	 */
+	public function allowed_to_modify_option( $option_name ) {
+	
+		return current_user_can( 'manage_options' ) || get_option( $option_name );
+
+	}
+	 
+	/**
 	 * Remove usermeta for current user and Google account email.
 	 *
 	 * @since 1.3.1
 	 */
 	public function disconnect_account() {
-
+		
+		if ( ! $this->allowed_to_modify_option( 'siwg_show_unlink_in_profile' ) ) 
+			return;
+		
 		if ( ! isset( $_POST['_siwg_account_nonce'] ) || ! wp_verify_nonce( $_POST['_siwg_account_nonce'], 'siwg_unlink_account' ) ) {
 			wp_die( __( 'Unauthorized', 'siwg' ) );
 		}
@@ -722,6 +760,8 @@ class Sign_In_With_Google_Admin {
 		return delete_user_meta( $current_user->ID, 'siwg_google_account' );
 	}
 
+
+	
 	/**
 	 * Gets a user by email or creates a new user.
 	 *
@@ -730,18 +770,31 @@ class Sign_In_With_Google_Admin {
 	 */
 	protected function find_by_email_or_create( $user_data ) {
 
-		$user = get_user_by( 'email', $user_data->email );
+		$sanitized_email = Sign_In_With_Google_Utility::sanitize_google_email( $user_data->email );
 
+		$user = get_user_by( 'email', $sanitized_email );
+
+		// allow to be hooked to disallow specific user login/registration (i.e. banned emails)
+		if ( ! apply_filters( 'siwg_allow_authorisation', $allow=true, $user_data, $user, $sanitized_email ) ) {
+			add_filter('siwg_auth_redirect', function($url){ return trailingslashit(home_url()).'?g-login-status=disallowed';} );
+			return false;
+		}
+		
 		if ( false !== $user ) {
-			update_user_meta( $user->ID, 'first_name', $user_data->given_name );
-			update_user_meta( $user->ID, 'last_name', $user_data->family_name );
+			do_action( 'siwg_email_already_exists', $user );
+			update_user_meta( $user->ID, 'first_name', $user_data->given_name  );
+			update_user_meta( $user->ID, 'last_name',  $user_data->family_name );
 			return $user;
 		}
+		
 
-		$user_pass       = wp_generate_password( 12 );
-		$user_email      = $user_data->email;
+		$user_pass       = wp_generate_password( 15 );
+		$user_email      = $sanitized_email;
 		$user_email_data = explode( '@', $user_email );
 		$user_login      = $user_email_data[0];
+		while ( username_exists($user_login))  
+			$user_login  = $user_login . rand(1,10);
+		
 		$first_name      = $user_data->given_name;
 		$last_name       = $user_data->family_name;
 		$display_name    = $first_name . ' ' . $last_name;
@@ -758,15 +811,24 @@ class Sign_In_With_Google_Admin {
 			'role'            => $role,
 		);
 
+		$user =apply_filters( 'siwg_user_preregister', $user );
+		
+		
 		$new_user = wp_insert_user( $user );
 
 		if ( is_wp_error( $new_user ) ) {
 			error_log( $new_user->get_error_message() );
 			return false;
 		} else {
+			
+			// add profile image from google, that can be used as alternative to gravatar
+			if ( ! get_user_meta($new_user, 'siwg_profile_image', true) && property_exists( $user_data, 'picture' ) )
+				update_user_meta($new_user, 'siwg_profile_image', $user_data->picture);
+			
 			return get_user_by( 'id', $new_user );
-		}
-
+		} 
+		
+		return false;
 	}
 
 	/**
