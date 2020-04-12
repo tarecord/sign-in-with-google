@@ -217,6 +217,14 @@ class Sign_In_With_Google_Admin {
 			'siwg_settings',
 			'siwg_section'
 		);
+		
+		add_settings_field(
+			'siwg_disable_login_page',
+			'Disable login page at all & redirect users directly to Google Sign-In page',
+			array( $this, 'siwg_disable_login_page' ),
+			'siwg_settings',
+			'siwg_section'
+		);
 
 		add_settings_field(
 			'siwg_show_unlink_in_profile',
@@ -242,6 +250,7 @@ class Sign_In_With_Google_Admin {
 		register_setting( 'siwg_settings', 'siwg_show_on_login' );
 		register_setting( 'siwg_settings', 'siwg_show_unlink_in_profile' );
 		register_setting( 'siwg_settings', 'siwg_allow_mail_change' );
+		register_setting( 'siwg_settings', 'siwg_disable_login_page' );
 	}
 
 	/**
@@ -357,6 +366,17 @@ class Sign_In_With_Google_Admin {
 		echo '<input type="checkbox" name="siwg_allow_mail_change" id="siwg_allow_mail_change" value="1" ' . checked( get_option( 'siwg_allow_mail_change' ), true, false ) . ' />';
 
 	}
+	
+	/**
+	 * Callback function for Disable Login Page
+	 *
+	 * @since    1.0.0
+	 */
+	public function siwg_disable_login_page() {
+
+		echo '<input type="checkbox" name="siwg_disable_login_page" id="siwg_disable_login_page" value="1" ' . checked( get_option( 'siwg_disable_login_page' ), true, false ) . ' />';
+
+	}
 
 	/**
 	 * Callback function for validating the form inputs.
@@ -436,6 +456,21 @@ class Sign_In_With_Google_Admin {
 		</div>
 
 		<div class="metabox-holder">
+		
+			<div class="postbox">
+				<h3><span><?php _e( 'Programmatic hooks', 'siwg' ); ?></span></h3>
+				<div class="inside">
+					<p><?php _e( 'To output Sign-In-With-Google button:', 'siwg' ); ?> (<a href="<?php echo wp_login_url();?>" target="_blank"><?php _e("Like it is on Login page");?></a>)</p>
+					<code>&lt;?php echo do_shortcode('[siwg_google_signin_button styled=1]'); ?&gt;</code>
+				</div><!-- .inside -->
+				<div class="inside">
+					<p><?php _e( 'To redirect to Google Login page automatically from external functions:', 'siwg' ); ?></p>
+					<code>&lt;?php do_action('siwg_google_auth_redirect'); ?&gt;</code>
+					<p>(<?php _e( 'Which is equal to visiting: ', 'siwg' ); ?> <code><?php echo home_url();?>/?google_redirect</code>)</p>
+					
+				</div><!-- .inside -->
+			</div><!-- .postbox -->
+			
 			<div class="postbox">
 				<h3><span><?php _e( 'Export Settings', 'siwg' ); ?></span></h3>
 				<div class="inside">
@@ -621,7 +656,8 @@ class Sign_In_With_Google_Admin {
 			'siwg_custom_login_param'        => get_option( 'siwg_custom_login_param' ),
 			'siwg_show_on_login'             => get_option( 'siwg_show_on_login' ),
 			'siwg_show_unlink_in_profile'    => get_option( 'siwg_show_unlink_in_profile' ),
-			'siwg_allow_mail_change'         => get_option( 'siwg_allow_mail_change' )
+			'siwg_allow_mail_change'         => get_option( 'siwg_allow_mail_change' ),
+			'siwg_disable_login_page'        => get_option( 'siwg_disable_login_page' ),
 		);
 
 		ignore_user_abort( true );
@@ -749,8 +785,22 @@ class Sign_In_With_Google_Admin {
             ?><script>document.getElementById("email").setAttribute("disabled", "disabled");</script> <?php 
         } 
     }
-		
-		
+	
+			
+	/**
+	 * Disable Login page & redirect directly to google login
+	 *
+	 * @since 1.3.1
+	 */ 
+	public function check_login_redirection()
+	{
+		if ( get_option( 'siwg_disable_login_page' ) ) 
+		{
+			do_action( 'siwg_google_auth_redirect' );
+		}
+	}	
+
+
 	/**
 	 * Add usermeta for current user and Google account email.
 	 *
