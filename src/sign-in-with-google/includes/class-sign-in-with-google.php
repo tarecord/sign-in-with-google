@@ -165,17 +165,16 @@ class Sign_In_With_Google {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Sign_In_With_Google_Admin( $this->get_plugin_name(), $this->get_version() );
-
+		$this->plugin_admin = $plugin_admin;
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'settings_api_init' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'settings_menu_init' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'process_settings_export' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'process_settings_import' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'show_user_profile', $plugin_admin, 'add_connect_button_to_profile' );
-		// to expose publicly, to be called do_action('siwg_google_auth_redirect')
-		$this->loader->add_action( 'siwg_google_auth_redirect', $plugin_admin, 'google_auth_redirect' );
 		// check to disallow email changes
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'disallow_email_changes' );
+		$this->loader->add_action( 'login_init', $plugin_admin, 'check_login_redirection' );
 
 		if ( isset( $_POST['_siwg_account_nonce'] ) ) {
 			$this->loader->add_action( 'admin_init', $plugin_admin, 'disconnect_account' );
@@ -218,6 +217,10 @@ class Sign_In_With_Google {
 		$this->loader->add_action( 'login_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'login_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'login_form', $plugin_public, 'add_signin_button' );
+		// expose publicly, to be called : echo do_shortcode('siwg_google_signin_button')
+		add_shortcode( 'siwg_google_signin_button', [$plugin_public, 'siwg_google_signin_button'] );
+		// expose publicly, to be called : do_action('siwg_google_auth_redirect')
+		$this->loader->add_action( 'siwg_google_auth_redirect', $this->plugin_admin, 'google_auth_redirect' );
 
 	}
 

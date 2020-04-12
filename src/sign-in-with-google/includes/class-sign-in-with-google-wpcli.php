@@ -63,6 +63,11 @@ class Sign_In_With_Google_WPCLI {
 	 * [--siwg_allow_mail_change=<1|0>]
 	 * : Allow users to change email
 	 *
+	 * ---
+	 *
+	 * [--siwg_disable_login_page=<1|0>]
+	 * : Disable login page
+	 *
 	 * ## EXAMPLES
 	 *
 	 *     wp siwg settings --client_id=XXXXXX.apps.googleusercontent.com
@@ -223,6 +228,19 @@ class Sign_In_With_Google_WPCLI {
 
 		if ( ! $result ) {
 			WP_CLI::warning( 'Skipping Allow users to change mail - Setting already matches' );
+		}
+	}
+		
+	/**
+	 * Handles updating siwg_disable_login_page.
+	 *
+	 * @param bool $allow Disable Login page
+	 */
+	private function update_disable_login_page( $show = 0 ) {
+		$result = update_option( 'siwg_disable_login_page', boolval( $show ) );
+
+		if ( ! $result ) {
+			WP_CLI::warning( 'Skipping Disable Login Page - Setting already matches' );
 		}
 	}
 	
