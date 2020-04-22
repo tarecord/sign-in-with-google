@@ -114,7 +114,7 @@ class Sign_In_With_Google_Admin {
 	public function add_connect_button_to_profile() {
 
 		$url            = site_url( '?google_redirect' );
-		$linked_account = get_usermeta( get_current_user_id(), 'siwg_google_account' );
+		$linked_account = get_user_meta( get_current_user_id(), 'siwg_google_account', true );
 		?>
 		<h2>Sign In With Google</h2>
 		<table class="form-table">
