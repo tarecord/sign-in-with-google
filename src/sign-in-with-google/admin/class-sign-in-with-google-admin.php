@@ -464,7 +464,7 @@ class Sign_In_With_Google_Admin {
 		$scopes[] = 'https://www.googleapis.com/auth/userinfo.email';
 		$scopes[] = 'https://www.googleapis.com/auth/userinfo.profile';
 
-		apply_filters( 'siwg_scopes', $scopes ); // Allow scopes to be adjusted.
+		$scopes = apply_filters( 'siwg_scopes', $scopes ); // Allow scopes to be adjusted.
 
 		$scope        = urlencode( implode( ' ', $scopes ) );
 		$redirect_uri = urlencode( site_url( '?google_response' ) );
@@ -536,7 +536,7 @@ class Sign_In_With_Google_Admin {
 			$redirect = admin_url(); // Send users to the dashboard by default.
 		}
 
-		apply_filters( 'siwg_auth_redirect', $redirect ); // Allow the redirect to be adjusted.
+		$redirect = apply_filters( 'siwg_auth_redirect', $redirect ); // Allow the redirect to be adjusted.
 
 		wp_redirect( $redirect );
 		exit;
