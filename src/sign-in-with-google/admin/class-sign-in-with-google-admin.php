@@ -797,7 +797,7 @@ class Sign_In_With_Google_Admin {
 		$domains     = array_filter( explode( ', ', get_option( 'siwg_google_domain_restriction' ) ) );
 		$user_domain = explode( '@', $this->user->email );
 
-		if ( ! empty( $domains ) && ! in_array( $user_domain[1], $domains ) ) {
+		if ( ! empty( $domains ) && ! in_array( $user_domain[1], $domains, true ) ) {
 			wp_redirect( wp_login_url() . '?google_login=incorrect_domain' );
 			exit;
 		}
