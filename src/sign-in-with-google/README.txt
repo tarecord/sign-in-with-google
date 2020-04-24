@@ -60,6 +60,7 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 == Changelog ==
 
 = 1.5.1 =
+* Fixed an issue where leaving the "Restrict To Domain" field blank would cause issues logging some issues in.
 
 = 1.5.0 =
 * Fixed failures with plugins that rely on the 'wp_login' action
