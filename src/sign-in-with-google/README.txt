@@ -2,8 +2,8 @@
 Contributors: tarecord, chrismkindred
 Tags: Google, sign in, users, registration, register, Google Apps, G Suite, OAuth
 Requires at least: 4.8.1
-Tested up to: 5.3.2
-Stable tag: 1.5.0
+Tested up to: 5.4.0
+Stable tag: 1.5.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -58,6 +58,8 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 2. This is the second screen shot
 
 == Changelog ==
+
+= 1.5.1 =
 
 = 1.5.0 =
 * Fixed failures with plugins that rely on the 'wp_login' action
