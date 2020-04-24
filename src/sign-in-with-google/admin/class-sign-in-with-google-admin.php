@@ -114,7 +114,7 @@ class Sign_In_With_Google_Admin {
 	public function add_connect_button_to_profile() {
 
 		$url            = site_url( '?google_redirect' );
-		$linked_account = get_usermeta( get_current_user_id(), 'siwg_google_account' );
+		$linked_account = get_user_meta( get_current_user_id(), 'siwg_google_account', true );
 		?>
 		<h2>Sign In With Google</h2>
 		<table class="form-table">
@@ -464,7 +464,7 @@ class Sign_In_With_Google_Admin {
 		$scopes[] = 'https://www.googleapis.com/auth/userinfo.email';
 		$scopes[] = 'https://www.googleapis.com/auth/userinfo.profile';
 
-		apply_filters( 'siwg_scopes', $scopes ); // Allow scopes to be adjusted.
+		$scopes = apply_filters( 'siwg_scopes', $scopes ); // Allow scopes to be adjusted.
 
 		$scope        = urlencode( implode( ' ', $scopes ) );
 		$redirect_uri = urlencode( site_url( '?google_response' ) );
@@ -536,7 +536,7 @@ class Sign_In_With_Google_Admin {
 			$redirect = admin_url(); // Send users to the dashboard by default.
 		}
 
-		apply_filters( 'siwg_auth_redirect', $redirect ); // Allow the redirect to be adjusted.
+		$redirect = apply_filters( 'siwg_auth_redirect', $redirect ); // Allow the redirect to be adjusted.
 
 		wp_redirect( $redirect );
 		exit;
@@ -794,10 +794,10 @@ class Sign_In_With_Google_Admin {
 	 */
 	protected function check_domain_restriction() {
 		// The user doesn't have the correct domain, don't authenticate them.
-		$domains     = explode( ', ', get_option( 'siwg_google_domain_restriction' ) );
+		$domains     = array_filter( explode( ', ', get_option( 'siwg_google_domain_restriction' ) ) );
 		$user_domain = explode( '@', $this->user->email );
 
-		if ( ! empty( $domains ) && ! in_array( $user_domain[1], $domains ) ) {
+		if ( ! empty( $domains ) && ! in_array( $user_domain[1], $domains, true ) ) {
 			wp_redirect( wp_login_url() . '?google_login=incorrect_domain' );
 			exit;
 		}
