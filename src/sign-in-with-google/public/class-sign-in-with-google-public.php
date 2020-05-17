@@ -125,8 +125,7 @@ class Sign_In_With_Google_Public {
 		$output = '';
 		if ( isset ( $atts['styled'] ) )
 		{
-			$style = file_get_contents( __DIR__ . '/css/sign-in-with-google-public.css' );
-			$output .= '<style>'.$style.'</style>';
+			$output .= '<style>'.file_get_contents( __DIR__ . '/css/sign-in-with-google-public.css' ).'</style>';
 		}
 		$output .= $this->signin_button();
 		return $output;

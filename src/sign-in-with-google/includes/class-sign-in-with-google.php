@@ -174,7 +174,7 @@ class Sign_In_With_Google {
 		$this->loader->add_action( 'show_user_profile', $plugin_admin, 'add_connect_button_to_profile' );
 		// check to disallow email changes
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'disallow_email_changes' );
-		$this->loader->add_action( 'login_init', $plugin_admin, 'check_login_redirection' );
+		$this->loader->add_action( 'login_init', $plugin_admin, 'check_login_redirection', 888 ); //to allow "logout" and other hooks
 
 		if ( isset( $_POST['_siwg_account_nonce'] ) ) {
 			$this->loader->add_action( 'admin_init', $plugin_admin, 'disconnect_account' );

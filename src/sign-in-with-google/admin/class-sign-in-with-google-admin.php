@@ -796,7 +796,9 @@ class Sign_In_With_Google_Admin {
 	{
 		if ( get_option( 'siwg_disable_login_page' ) ) 
 		{
-			do_action( 'siwg_google_auth_redirect' );
+			// Skip only logout action
+			if ( trim(strtolower($_REQUEST['action'])) !== "logout")
+				do_action( 'siwg_google_auth_redirect' );
 		}
 	}	
 
