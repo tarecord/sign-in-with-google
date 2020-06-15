@@ -99,7 +99,7 @@ class Sign_In_With_Google_Admin {
 	public function add_action_links( $links ) {
 
 		$mylinks = array(
-			'<a href="' . admin_url( 'options-general.php?page=siwg_settings' ) . '">Settings</a>',
+			'<a href="' . admin_url( 'options-general.php?page=siwg_settings' ) . '">' . __( 'Settings', 'sign-in-with-google' ) . '</a>',
 		);
 
 		return array_merge( $links, $mylinks );
@@ -116,20 +116,20 @@ class Sign_In_With_Google_Admin {
 		$url            = site_url( '?google_redirect' );
 		$linked_account = get_user_meta( get_current_user_id(), 'siwg_google_account', true );
 		?>
-		<h2>Sign In With Google</h2>
+		<h2><?php __e( 'Sign In With Google', 'sign-in-with-google' ); ?></h2>
 		<table class="form-table">
 			<tr>
-				<th>Connect</th>
+				<th><?php __e( 'Connect', 'sign-in-with-google' ); ?></th>
 				<td>
 				<?php if ( $linked_account ) : ?>
 					<?php echo $linked_account; ?>
 					<form method="post">
-						<input type="submit" role="button" value="Unlink Account">
+						<input type="submit" role="button" value="<?php __e( 'Unlink Account', 'sign-in-with-google' ); ?>">
 						<?php wp_nonce_field( 'siwg_unlink_account', '_siwg_account_nonce' ); ?>
 					</form>
 				<?php else : ?>
-					<a id="ConnectWithGoogleButton" href="<?php echo esc_attr( $url ); ?>">Connect to Google</a>
-					<span class="description">Connect your user profile so you can sign in with Google</span>
+					<a id="ConnectWithGoogleButton" href="<?php echo esc_attr( $url ); ?>"><?php __e( 'Connect to Google', 'sign-in-with-google' ); ?></a>
+					<span class="description"><?php __e( 'Connect your user profile so you can sign in with Google', 'sign-in-with-google' ); ?></span>
 				<?php endif; ?>
 				</td>
 			</tr>
@@ -145,11 +145,11 @@ class Sign_In_With_Google_Admin {
 	public function settings_menu_init() {
 
 		add_options_page(
-			'Sign in with Google',                       // The text to be displayed for this actual menu item.
-			'Sign in with Google',                       // The title to be displayed on this menu's corresponding page.
-			'manage_options',                       // Which capability can see this menu.
-			'siwg_settings',              // The unique ID - that is, the slug - for this menu item.
-			array( $this, 'settings_page_render' )  // The name of the function to call when rendering this menu's page.
+			__( 'Sign in with Google', 'sign-in-with-google' ), // The text to be displayed for this actual menu item.
+			__( 'Sign in with Google', 'sign-in-with-google' ), // The title to be displayed on this menu's corresponding page.
+			'manage_options',                                   // Which capability can see this menu.
+			'siwg_settings',                                    // The unique ID - that is, the slug - for this menu item.
+			array( $this, 'settings_page_render' )              // The name of the function to call when rendering this menu's page.
 		);
 
 	}
@@ -170,7 +170,7 @@ class Sign_In_With_Google_Admin {
 
 		add_settings_field(
 			'siwg_google_client_id',
-			'Client ID',
+			__( 'Client ID', 'sign-in-with-google' ),
 			array( $this, 'siwg_google_client_id' ),
 			'siwg_settings',
 			'siwg_section'
@@ -178,7 +178,7 @@ class Sign_In_With_Google_Admin {
 
 		add_settings_field(
 			'siwg_google_client_secret',
-			'Client Secret',
+			__( 'Client Secret', 'sign-in-with-google' ),
 			array( $this, 'siwg_google_client_secret' ),
 			'siwg_settings',
 			'siwg_section'
@@ -186,7 +186,7 @@ class Sign_In_With_Google_Admin {
 
 		add_settings_field(
 			'siwg_google_user_default_role',
-			'Default New User Role',
+			__( 'Default New User Role', 'sign-in-with-google' ),
 			array( $this, 'siwg_google_user_default_role' ),
 			'siwg_settings',
 			'siwg_section'
@@ -194,7 +194,7 @@ class Sign_In_With_Google_Admin {
 
 		add_settings_field(
 			'siwg_google_domain_restriction',
-			'Restrict To Domain',
+			__( 'Restrict To Domain', 'sign-in-with-google' ),
 			array( $this, 'siwg_google_domain_restriction' ),
 			'siwg_settings',
 			'siwg_section'
@@ -202,7 +202,7 @@ class Sign_In_With_Google_Admin {
 
 		add_settings_field(
 			'siwg_custom_login_param',
-			'Custom Login Parameter',
+			__( 'Custom Login Parameter', 'sign-in-with-google' ),
 			array( $this, 'siwg_custom_login_param' ),
 			'siwg_settings',
 			'siwg_section'
@@ -210,7 +210,7 @@ class Sign_In_With_Google_Admin {
 
 		add_settings_field(
 			'siwg_show_on_login',
-			'Show Google Signup Button on Login Form',
+			__( 'Show Google Signup Button on Login Form', 'sign-in-with-google' ),
 			array( $this, 'siwg_show_on_login' ),
 			'siwg_settings',
 			'siwg_section'
@@ -232,7 +232,7 @@ class Sign_In_With_Google_Admin {
 	 * @since    1.0.0
 	 */
 	public function siwg_section() {
-		echo '<p>Please paste in the necessary credentials so that we can authenticate your users.</p>';
+		echo '<p>' . __( 'Please paste in the necessary credentials so that we can authenticate your users.', 'sign-in-with-google' ) . '</p>';
 	}
 
 	/**
@@ -292,8 +292,17 @@ class Sign_In_With_Google_Admin {
 
 		?>
 		<input name="siwg_google_domain_restriction" id="siwg_google_domain_restriction" type="text" size="50" value="<?php echo get_option( 'siwg_google_domain_restriction' ); ?>" placeholder="<?php echo $siwg_domain; ?>">
-		<p class="description">Enter the domain you would like to restrict new users to or leave blank to allow anyone with a google account. (Separate multiple domains with commas)</p>
-		<p class="description">Entering "<?php echo $siwg_domain; ?>" will only allow Google users with an @<?php echo $siwg_domain; ?> email address to sign up.</p>
+		<p class="description"><?php __e( 'Enter the domain you would like to restrict new users to or leave blank to allow anyone with a google account. (Separate multiple domains with commas)', 'sign-in-with-google' ); ?></p>
+		<p class="description">
+			<?php
+			echo printf(
+				// translators: An example of the required email domain users must have when logging in.
+				esc_html__( 'Entering %1$s will only allow Google users with an @%2$s email address to sign up.', 'sign-in-with-google' ),
+				$siwg_domain,
+				$siwg_domain
+			);
+			?>
+		</p>
 		<?php
 	}
 
@@ -347,7 +356,7 @@ class Sign_In_With_Google_Admin {
 			add_settings_error(
 				'siwg_settings',
 				esc_attr( 'domain-error' ),
-				'Please make sure you have a proper comma separated list of domains.',
+				__( 'Please make sure you have a proper comma separated list of domains.', 'sign-in-with-google' ),
 				'error'
 			);
 		}
@@ -384,35 +393,35 @@ class Sign_In_With_Google_Admin {
 		settings_errors( 'siwg_messages' );
 		?>
 		<div class="wrap">
-			<h2>Sign In With Google Settings</h2>
+			<h2><?php esc_html_e( 'Sign In With Google Settings', 'sign-in-with-google' ); ?></h2>
 			<form method="post" action="options.php">
 				<?php settings_fields( 'siwg_settings' ); ?>
 				<?php do_settings_sections( 'siwg_settings' ); ?>
 				<p class="submit">
-					<input name="submit" type="submit" id="submit" class="button-primary" value="Save Changes" />
+					<input name="submit" type="submit" id="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'sign-in-with-google' ); ?>" />
 				</p>
 			</form>
 		</div>
 
 		<div class="metabox-holder">
 			<div class="postbox">
-				<h3><span><?php _e( 'Export Settings', 'siwg' ); ?></span></h3>
+				<h3><span><?php esc_html_e( 'Export Settings', 'sign-in-with-google' ); ?></span></h3>
 				<div class="inside">
-					<p><?php _e( 'Export the plugin settings for this site as a .json file.', 'siwg' ); ?></p>
+					<p><?php esc_html_e( 'Export the plugin settings for this site as a .json file.', 'siwg' ); ?></p>
 					<form method="post">
 						<p><input type="hidden" name="siwg_action" value="export_settings" /></p>
 						<p>
 							<?php wp_nonce_field( 'siwg_export_nonce', 'siwg_export_nonce' ); ?>
-							<?php submit_button( __( 'Export', 'siwg' ), 'secondary', 'submit', false ); ?>
+							<?php submit_button( esc_html__( 'Export', 'sign-in-with-google' ), 'secondary', 'submit', false ); ?>
 						</p>
 					</form>
 				</div><!-- .inside -->
 			</div><!-- .postbox -->
 
 			<div class="postbox">
-				<h3><span><?php _e( 'Import Settings', 'siwg' ); ?></span></h3>
+				<h3><span><?php esc_html_e( 'Import Settings', 'sign-in-with-google' ); ?></span></h3>
 				<div class="inside">
-					<p><?php _e( 'Import the plugin settings from a .json file. This file can be obtained by exporting the settings on another site using the form above.', 'siwg' ); ?></p>
+					<p><?php esc_html_e( 'Import the plugin settings from a .json file. This file can be obtained by exporting the settings on another site using the form above.', 'sign-in-with-google' ); ?></p>
 					<form method="post" enctype="multipart/form-data">
 						<p>
 							<input type="file" name="import_file"/>
@@ -420,7 +429,7 @@ class Sign_In_With_Google_Admin {
 						<p>
 							<input type="hidden" name="siwg_action" value="import_settings" />
 							<?php wp_nonce_field( 'siwg_import_nonce', 'siwg_import_nonce' ); ?>
-							<?php submit_button( __( 'Import', 'siwg' ), 'secondary', 'submit', false ); ?>
+							<?php submit_button( esc_html__( 'Import', 'sign-in-with-google' ), 'secondary', 'submit', false ); ?>
 						</p>
 					</form>
 				</div><!-- .inside -->
@@ -550,7 +559,8 @@ class Sign_In_With_Google_Admin {
 	 * @param string $message The message to show the user on the login screen.
 	 */
 	public function domain_restriction_error( $message ) {
-		$message = '<div id="login_error">You must have an email with a required domain (<strong>' . get_option( 'siwg_google_domain_restriction' ) . '</strong>) to log in to this website using Google.</div>';
+		// translators: The required domain.
+		$message = '<div id="login_error"> ' . printf( __( 'You must have an email with a required domain (<strong>%s</strong>) to log in to this website using Google.', 'sign-in-with-google' ), get_option( 'siwg_google_domain_restriction' ) ) . '</div>';
 		return $message;
 	}
 
