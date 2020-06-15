@@ -295,7 +295,7 @@ class Sign_In_With_Google_Admin {
 		<p class="description"><?php _e( 'Enter the domain you would like to restrict new users to or leave blank to allow anyone with a google account. (Separate multiple domains with commas)', 'sign-in-with-google' ); ?></p>
 		<p class="description">
 			<?php
-			echo printf(
+			printf(
 				// translators: An example of the required email domain users must have when logging in.
 				esc_html__( 'Entering %1$s will only allow Google users with an @%2$s email address to sign up.', 'sign-in-with-google' ),
 				$siwg_domain,
