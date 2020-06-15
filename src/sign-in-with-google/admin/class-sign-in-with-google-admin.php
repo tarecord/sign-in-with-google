@@ -99,7 +99,7 @@ class Sign_In_With_Google_Admin {
 	public function add_action_links( $links ) {
 
 		$mylinks = array(
-			'<a href="' . admin_url( 'options-general.php?page=siwg_settings' ) . '">' . __( 'Settings', 'sign-in-with-google' ) . '</a>',
+			'<a href="' . admin_url( 'options-general.php?page=siwg_settings' ) . '">' . esc_html__( 'Settings', 'sign-in-with-google' ) . '</a>',
 		);
 
 		return array_merge( $links, $mylinks );
@@ -116,20 +116,20 @@ class Sign_In_With_Google_Admin {
 		$url            = site_url( '?google_redirect' );
 		$linked_account = get_user_meta( get_current_user_id(), 'siwg_google_account', true );
 		?>
-		<h2><?php __e( 'Sign In With Google', 'sign-in-with-google' ); ?></h2>
+		<h2><?php esc_html_e( 'Sign In With Google', 'sign-in-with-google' ); ?></h2>
 		<table class="form-table">
 			<tr>
-				<th><?php __e( 'Connect', 'sign-in-with-google' ); ?></th>
+				<th><?php esc_html_e( 'Connect', 'sign-in-with-google' ); ?></th>
 				<td>
 				<?php if ( $linked_account ) : ?>
 					<?php echo $linked_account; ?>
 					<form method="post">
-						<input type="submit" role="button" value="<?php __e( 'Unlink Account', 'sign-in-with-google' ); ?>">
+						<input type="submit" role="button" value="<?php esc_html_e( 'Unlink Account', 'sign-in-with-google' ); ?>">
 						<?php wp_nonce_field( 'siwg_unlink_account', '_siwg_account_nonce' ); ?>
 					</form>
 				<?php else : ?>
-					<a id="ConnectWithGoogleButton" href="<?php echo esc_attr( $url ); ?>"><?php __e( 'Connect to Google', 'sign-in-with-google' ); ?></a>
-					<span class="description"><?php __e( 'Connect your user profile so you can sign in with Google', 'sign-in-with-google' ); ?></span>
+					<a id="ConnectWithGoogleButton" href="<?php echo esc_attr( $url ); ?>"><?php esc_html_e( 'Connect to Google', 'sign-in-with-google' ); ?></a>
+					<span class="description"><?php esc_html_e( 'Connect your user profile so you can sign in with Google', 'sign-in-with-google' ); ?></span>
 				<?php endif; ?>
 				</td>
 			</tr>
