@@ -45,7 +45,7 @@
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="siwg"/>
+			<property name="text_domain" type="array" value="sign-in-with-google"/>
 		</properties>
 	</rule>
 
