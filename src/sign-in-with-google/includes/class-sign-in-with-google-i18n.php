@@ -36,7 +36,7 @@ class Sign_In_With_Google_I18n {
 		load_plugin_textdomain(
 			'sign-in-with-google',
 			false,
-			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
+			plugin_dir_path( SIWG_PLUGIN_FILE ) . '/languages/'
 		);
 
 	}
