@@ -595,7 +595,7 @@ class Sign_In_With_Google_Admin {
 		nocache_headers();
 
 		header( 'Content-Type: application/json; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename=siwg-settings-export-' . date( 'm-d-Y' ) . '.json' );
+		header( 'Content-Disposition: attachment; filename=siwg-settings-export-' . gmdate( 'm-d-Y' ) . '.json' );
 		header( 'Expires: 0' );
 
 		echo json_encode( $settings );
@@ -764,7 +764,7 @@ class Sign_In_With_Google_Admin {
 			'display_name'    => $display_name,
 			'first_name'      => $first_name,
 			'last_name'       => $last_name,
-			'user_registered' => date( 'Y-m-d H:i:s' ),
+			'user_registered' => gmdate( 'Y-m-d H:i:s' ),
 			'role'            => $role,
 		);
 
