@@ -265,7 +265,7 @@ class Sign_In_With_Google_Admin {
 			$siwg_roles = get_editable_roles();
 			foreach ( $siwg_roles as $key => $value ) :
 				$siwg_selected = '';
-				if ( get_option( 'siwg_google_user_default_role', 'subscriber' ) == $key ) {
+				if ( get_option( 'siwg_google_user_default_role', 'subscriber' ) === $key ) {
 					$siwg_selected = 'selected';
 				}
 				?>
@@ -569,7 +569,7 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function process_settings_export() {
 
-		if ( empty( $_POST['siwg_action'] ) || 'export_settings' != $_POST['siwg_action'] ) {
+		if ( empty( $_POST['siwg_action'] ) || 'export_settings' !== $_POST['siwg_action'] ) {
 			return;
 		}
 
@@ -607,7 +607,7 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function process_settings_import() {
 
-		if ( empty( $_POST['siwg_action'] ) || 'import_settings' != $_POST['siwg_action'] ) {
+		if ( empty( $_POST['siwg_action'] ) || 'import_settings' !== $_POST['siwg_action'] ) {
 			return;
 		}
 
@@ -621,7 +621,7 @@ class Sign_In_With_Google_Admin {
 
 		$extension = end( explode( '.', $_FILES['import_file']['name'] ) );
 
-		if ( 'json' != $extension ) {
+		if ( 'json' !== $extension ) {
 			wp_die( __( 'Please upload a valid .json file', 'siwg' ) );
 		}
 
@@ -674,7 +674,7 @@ class Sign_In_With_Google_Admin {
 
 		$body = json_decode( $response['body'] );
 
-		if ( '' != $body->access_token ) {
+		if ( '' !== $body->access_token ) {
 			$this->access_token = $body->access_token;
 			return $this->access_token;
 		}

@@ -86,7 +86,7 @@ class Sign_In_With_Google_WPCLI {
 	 * @param string $client_id The ID to use with Google's Oauth.
 	 */
 	private function update_client_id( $client_id = '' ) {
-		if ( '' == $client_id ) {
+		if ( '' === $client_id ) {
 			WP_CLI::error( 'Please enter a valid Client ID' );
 		}
 
@@ -103,7 +103,7 @@ class Sign_In_With_Google_WPCLI {
 	 * @param string $client_secret The secret to use with Google's Oauth.
 	 */
 	private function update_client_secret( $client_secret = '' ) {
-		if ( '' == $client_secret ) {
+		if ( '' === $client_secret ) {
 			WP_CLI::error( 'Please enter a valid Client Secret' );
 		}
 
@@ -120,11 +120,11 @@ class Sign_In_With_Google_WPCLI {
 	 * @param string $role The role applied for new users.
 	 */
 	private function update_default_role( $role = 'subscriber' ) {
-		if ( '' == $role ) {
+		if ( '' === $role ) {
 			WP_CLI::error( 'Please enter a valid user role' );
 		}
 
-		if ( 'subscriber' != $role ) {
+		if ( 'subscriber' !== $role ) {
 
 			// All role names are lowercase.
 			$role = strtolower( $role );
@@ -132,7 +132,7 @@ class Sign_In_With_Google_WPCLI {
 			// Get a list of all the existing roles.
 			$existing_roles = array_keys( get_editable_roles() );
 
-			if ( ! in_array( $role, $existing_roles ) ) {
+			if ( ! in_array( $role, $existing_roles, true ) ) {
 				WP_CLI::error( 'Role does not exist.' );
 			}
 
