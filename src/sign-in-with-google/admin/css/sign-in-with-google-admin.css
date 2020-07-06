@@ -1,17 +1,17 @@
 #ConnectWithGoogleButton {
 	display: flex;
-    justify-content: center;
+	justify-content: center;
 	align-items: center;
 	width: 200px;
 	padding: 8px 4px;
 	margin: 0 0 10px;
-    color: rgba(0,0,0,.54);
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    background: #FFF;
-    border: 1px solid rgba(0,0,0,.25);
-    border-radius: 4px;
+	color: rgba(0,0,0,.54);
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	background: #FFF;
+	border: 1px solid rgba(0,0,0,.25);
+	border-radius: 4px;
 }
 
 #ConnectWithGoogleButton:before {
