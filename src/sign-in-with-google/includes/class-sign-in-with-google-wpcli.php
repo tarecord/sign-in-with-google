@@ -59,10 +59,9 @@ class Sign_In_With_Google_WPCLI {
 	 *
 	 * @when after_wp_load
 	 *
-	 * @param array $args       Array of values to update.
 	 * @param array $assoc_args An associative array of settings and values to update.
 	 */
-	public function settings( $args = array(), $assoc_args = array() ) {
+	public function settings( $assoc_args = array() ) {
 
 		// Quit if no arguments are provided.
 		if ( empty( $assoc_args ) ) {
