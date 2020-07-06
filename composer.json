@@ -1,0 +1,14 @@
+{
+    "name": "north-star-marketing/sign-in-with-google",
+    "type": "project",
+    "license": "GPLv2",
+    "authors": [
+        {
+            "name": "North Star Marketing",
+            "email": "tech@northstarmarketing.com"
+        }
+    ],
+    "require": {
+        "phpunit/phpunit": "^7"
+    }
+}

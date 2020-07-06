@@ -46,3 +46,14 @@ Verify that you can log in with Google.
 ## Contribution
 
 All active plugin development is handled here. Feel free to submit pull requests and issues.
+
+To run tests:
+1. Clone the repository
+2. Install dependencies
+```sh
+composer install
+```
+3. Run PHP Unit tests with [Human Made's plugin-tester](https://github.com/humanmade/plugin-tester)
+```sh
+docker run --rm -v "$PWD:/code" humanmade/plugin-tester
+```
