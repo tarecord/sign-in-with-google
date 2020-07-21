@@ -265,7 +265,7 @@ class Sign_In_With_Google_Admin {
 			$siwg_roles = get_editable_roles();
 			foreach ( $siwg_roles as $key => $value ) :
 				$siwg_selected = '';
-				if ( get_option( 'siwg_google_user_default_role', 'subscriber' ) == $key ) {
+				if ( get_option( 'siwg_google_user_default_role', 'subscriber' ) === $key ) {
 					$siwg_selected = 'selected';
 				}
 				?>
@@ -407,7 +407,7 @@ class Sign_In_With_Google_Admin {
 			<div class="postbox">
 				<h3><span><?php esc_html_e( 'Export Settings', 'sign-in-with-google' ); ?></span></h3>
 				<div class="inside">
-					<p><?php esc_html_e( 'Export the plugin settings for this site as a .json file.', 'siwg' ); ?></p>
+					<p><?php esc_html_e( 'Export the plugin settings for this site as a .json file.', 'sign-in-with-google' ); ?></p>
 					<form method="post">
 						<p><input type="hidden" name="siwg_action" value="export_settings" /></p>
 						<p>
@@ -569,7 +569,7 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function process_settings_export() {
 
-		if ( empty( $_POST['siwg_action'] ) || 'export_settings' != $_POST['siwg_action'] ) {
+		if ( empty( $_POST['siwg_action'] ) || 'export_settings' !== $_POST['siwg_action'] ) {
 			return;
 		}
 
@@ -595,7 +595,7 @@ class Sign_In_With_Google_Admin {
 		nocache_headers();
 
 		header( 'Content-Type: application/json; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename=siwg-settings-export-' . date( 'm-d-Y' ) . '.json' );
+		header( 'Content-Disposition: attachment; filename=siwg-settings-export-' . gmdate( 'm-d-Y' ) . '.json' );
 		header( 'Expires: 0' );
 
 		echo json_encode( $settings );
@@ -607,7 +607,7 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function process_settings_import() {
 
-		if ( empty( $_POST['siwg_action'] ) || 'import_settings' != $_POST['siwg_action'] ) {
+		if ( empty( $_POST['siwg_action'] ) || 'import_settings' !== $_POST['siwg_action'] ) {
 			return;
 		}
 
@@ -621,14 +621,14 @@ class Sign_In_With_Google_Admin {
 
 		$extension = end( explode( '.', $_FILES['import_file']['name'] ) );
 
-		if ( 'json' != $extension ) {
-			wp_die( __( 'Please upload a valid .json file', 'siwg' ) );
+		if ( 'json' !== $extension ) {
+			wp_die( __( 'Please upload a valid .json file', 'sign-in-with-google' ) );
 		}
 
 		$import_file = $_FILES['import_file']['tmp_name'];
 
 		if ( empty( $import_file ) ) {
-			wp_die( __( 'Please upload a file to import', 'siwg' ) );
+			wp_die( __( 'Please upload a file to import', 'sign-in-with-google' ) );
 		}
 
 		// Retrieve the settings from the file and convert the json object to an array.
@@ -674,7 +674,7 @@ class Sign_In_With_Google_Admin {
 
 		$body = json_decode( $response['body'] );
 
-		if ( '' != $body->access_token ) {
+		if ( '' !== $body->access_token ) {
 			$this->access_token = $body->access_token;
 			return $this->access_token;
 		}
@@ -720,7 +720,7 @@ class Sign_In_With_Google_Admin {
 	public function disconnect_account() {
 
 		if ( ! isset( $_POST['_siwg_account_nonce'] ) || ! wp_verify_nonce( $_POST['_siwg_account_nonce'], 'siwg_unlink_account' ) ) {
-			wp_die( __( 'Unauthorized', 'siwg' ) );
+			wp_die( __( 'Unauthorized', 'sign-in-with-google' ) );
 		}
 
 		$current_user = wp_get_current_user();
@@ -764,7 +764,7 @@ class Sign_In_With_Google_Admin {
 			'display_name'    => $display_name,
 			'first_name'      => $first_name,
 			'last_name'       => $last_name,
-			'user_registered' => date( 'Y-m-d H:i:s' ),
+			'user_registered' => gmdate( 'Y-m-d H:i:s' ),
 			'role'            => $role,
 		);
 
