@@ -2,7 +2,7 @@
 /**
  * PHPUnit bootstrap file
  *
- * @package Google_Sign_Up
+ * @package Sign_In_With_Google
  */
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
