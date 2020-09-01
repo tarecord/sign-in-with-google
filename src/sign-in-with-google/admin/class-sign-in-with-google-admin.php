@@ -232,7 +232,12 @@ class Sign_In_With_Google_Admin {
 	 * @since    1.0.0
 	 */
 	public function siwg_section() {
-		echo '<p>' . __( 'Please paste in the necessary credentials so that we can authenticate your users.', 'sign-in-with-google' ) . '</p>';
+		echo sprintf(
+			'<p>%s <a href="%s" rel="noopener" target="_blank">%s</a></p>',
+			__( 'Please paste in the necessary credentials so that we can authenticate your users.', 'sign-in-with-google' ),
+			'https://wordpress.org/plugins/sign-in-with-google/#where%20can%20i%20get%20a%20client%20id%20and%20client%20secret%3F',
+			__( 'Learn More', 'sign-in-with-google' )
+		);
 	}
 
 	/**
