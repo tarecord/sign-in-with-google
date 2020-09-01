@@ -34,4 +34,18 @@ class Sign_In_With_Google_Utility {
 		return false;
 	}
 
+	/**
+	 * Remove `.` and `+` from gmail to avoid abuse and manipulations
+	 *	 (i.e. `jos.hu.a+is.cheating.32@gmail.com`—`joshua@gmail.com`)
+	 *
+	 * @see https://stackoverflow.com/a/41313340/2377343
+	 * @since 1.5.2
+	 * @param object $user_mail  The Google email address.
+	 */
+	public static function sanitize_google_email( $user_mail ) {
+
+		$sanitized_email = preg_replace( '/\+.*\@/s', '@', $user_mail );
+
+		return $sanitized_email;
+	}
 }
