@@ -53,7 +53,9 @@ To run tests:
 ```sh
 composer install
 ```
-3. Run PHP Unit tests with [Human Made's plugin-tester](https://github.com/humanmade/plugin-tester)
+1. Install and Run PHPUnit tests
 ```sh
-docker run --rm -v "$PWD:/code" humanmade/plugin-tester
+bash bin/install-wp-tests.sh wordpress_test root '' localhost latest
+
+./vendor/bin/phpunit
 ```
