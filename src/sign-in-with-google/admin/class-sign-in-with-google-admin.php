@@ -74,7 +74,7 @@ class Sign_In_With_Google_Admin {
 	 * @access private
 	 * @var object
 	 */
-	private $GoogleAuth;
+	private $google_auth;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -87,7 +87,7 @@ class Sign_In_With_Google_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-		$this->GoogleAuth  = new GoogleAuth();
+		$this->google_auth = new GoogleAuth( get_option( 'siwg_google_client_id' ) );
 
 	}
 
@@ -469,7 +469,7 @@ class Sign_In_With_Google_Admin {
 			'redirect_to' => $redirect_to,
 		);
 
-		$url = $this->GoogleAuth->build_google_redirect_url();
+		$url = $this->google_auth->get_google_auth_url( $this->state );
 		wp_redirect( $url );
 		exit;
 	}
