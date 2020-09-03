@@ -679,7 +679,7 @@ class Sign_In_With_Google_Admin {
 	 * @since 1.2.0
 	 */
 	protected function set_user_info() {
-		$this->user = $this->get_user_by_token();
+		$this->user = $this->get_user_by_token( $this->access_token );
 	}
 
 	/**
@@ -774,12 +774,18 @@ class Sign_In_With_Google_Admin {
 	 * Get the user's info.
 	 *
 	 * @since 1.2.0
+	 *
+	 * @param string $token The user's token for authentication.
 	 */
-	protected function get_user_by_token() {
+	protected function get_user_by_token( $token ) {
+
+		if ( ! $token ) {
+			return;
+		}
 
 		$args = array(
 			'headers' => array(
-				'Authorization' => 'Bearer ' . $this->access_token,
+				'Authorization' => 'Bearer ' . $token,
 			),
 		);
 
