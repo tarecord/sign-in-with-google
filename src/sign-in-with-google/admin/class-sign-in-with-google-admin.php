@@ -762,7 +762,7 @@ class Sign_In_With_Google_Admin {
 		$new_user = wp_insert_user( $user );
 
 		if ( is_wp_error( $new_user ) ) {
-			error_log( $new_user->get_error_message() );
+			wp_die( $new_user->get_error_message() . ' <a href="' . wp_login_url() . '">Return to Log In</a>' );
 			return false;
 		} else {
 			return get_user_by( 'id', $new_user );
