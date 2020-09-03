@@ -87,7 +87,7 @@ class Sign_In_With_Google_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-		$this->google_auth = new GoogleAuth( get_option( 'siwg_google_client_id' ) );
+		$this->google_auth = new SIWG_GoogleAuth( get_option( 'siwg_google_client_id' ) );
 
 	}
 

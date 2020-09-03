@@ -1,6 +1,6 @@
 <?php
 /**
- * Defines the GoogleAuth class.
+ * Defines the SIWG_GoogleAuth class.
  *
  * @link       http://www.northstarmarketing.com
  * @since      1.5.2
@@ -10,11 +10,11 @@
  */
 
 /**
- * The GoogleAuth class.
+ * The SIWG_GoogleAuth class.
  *
  * Handles the entire Google Authentication process.
  */
-class GoogleAuth {
+class SIWG_GoogleAuth {
 
 	/**
 	 * The base API url.

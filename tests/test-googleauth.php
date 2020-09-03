@@ -1,6 +1,6 @@
 <?php
 /**
- * Class GoogleAuthTest
+ * Class SIWG_GoogleAuthTest
  *
  * @package Sign_In_With_Google
  */
@@ -8,7 +8,7 @@
 /**
  * GoogleAuth test case.
  */
-class GoogleAuthTest extends WP_UnitTestCase {
+class SIWG_GoogleAuthTest extends WP_UnitTestCase {
 
 	/**
 	 * The faked google account response.
@@ -27,7 +27,7 @@ class GoogleAuthTest extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->google_auth    = new GoogleAuth();
+		$this->google_auth    = new SIWG_GoogleAuth();
 		$this->google_account = (object) array(
 			'id'             => 1,
 			'email'          => 'john.smith@gmail.com',
