@@ -551,7 +551,7 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function domain_restriction_error( $message ) {
 		// translators: The required domain.
-		$message = '<div id="login_error"> ' . printf( __( 'You must have an email with a required domain (<strong>%s</strong>) to log in to this website using Google.', 'sign-in-with-google' ), get_option( 'siwg_google_domain_restriction' ) ) . '</div>';
+		$message = '<div id="login_error"> ' . sprintf( __( 'You must have an email with a required domain (<strong>%s</strong>) to log in to this website using Google.', 'sign-in-with-google' ), get_option( 'siwg_google_domain_restriction' ) ) . '</div>';
 		return $message;
 	}
 
