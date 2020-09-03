@@ -137,7 +137,7 @@ class Sign_In_With_Google {
 		/**
 		 * Handles all the Google Authentication methods.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-google-auth.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-googleauth.php';
 
 		$this->loader = new Sign_In_With_Google_Loader();
 
