@@ -22,7 +22,7 @@ class SIWG_GoogleAuth {
 	 * @since 1.5.2
 	 * @var string
 	 */
-	private $base_url = 'https://accounts.google.com/o/oauth2/v2/auth';
+	public $base_url = 'https://accounts.google.com/o/oauth2/v2/auth';
 
 	/**
 	 * The client ID.
@@ -30,7 +30,7 @@ class SIWG_GoogleAuth {
 	 * @since 1.5.2
 	 * @var string
 	 */
-	private $client_id;
+	public $client_id;
 
 	/**
 	 * The scopes needed to access user information
@@ -38,7 +38,7 @@ class SIWG_GoogleAuth {
 	 * @since 1.5.2
 	 * @var array
 	 */
-	private $scopes;
+	public $scopes;
 
 	/**
 	 * The URL to redirect back to after authentication.
@@ -46,7 +46,7 @@ class SIWG_GoogleAuth {
 	 * @since 1.5.2
 	 * @var string
 	 */
-	private $redirect_uri;
+	public $redirect_uri;
 
 	/**
 	 * Set up the class.
@@ -58,8 +58,9 @@ class SIWG_GoogleAuth {
 	public function __construct( $client_id ) {
 		$this->client_id = $client_id;
 
-		$this->scopes[] = 'https://www.googleapis.com/auth/userinfo.email';
-		$this->scopes[] = 'https://www.googleapis.com/auth/userinfo.profile';
+		$scopes[]     = 'https://www.googleapis.com/auth/userinfo.email';
+		$scopes[]     = 'https://www.googleapis.com/auth/userinfo.profile';
+		$this->scopes = urlencode( implode( ' ', $scopes ) );
 
 		$this->redirect_uri = site_url( '?google_response' );
 	}
@@ -85,11 +86,9 @@ class SIWG_GoogleAuth {
 	private function google_auth_url( $state ) {
 		$scopes = apply_filters( 'siwg_scopes', $this->scopes );
 
-		$scope        = urlencode( implode( ' ', $scopes ) );
-		$redirect_uri = urlencode( $this->redirect_uri );
-
+		$redirect_uri  = urlencode( $this->redirect_uri );
 		$encoded_state = base64_encode( json_encode( $state ) );
 
-		return $this->base_url . '?scope=' . $scope . '&redirect_uri=' . $redirect_uri . '&response_type=code&client_id=' . $this->client_id . '&state=' . $encoded_state;
+		return $this->base_url . '?scope=' . $scopes . '&redirect_uri=' . $redirect_uri . '&response_type=code&client_id=' . $this->client_id . '&state=' . $encoded_state;
 	}
 }
