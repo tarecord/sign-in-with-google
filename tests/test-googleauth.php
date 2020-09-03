@@ -28,38 +28,6 @@ class SIWG_GoogleAuthTest extends WP_UnitTestCase {
 		parent::setUp();
 
 		$this->google_auth    = new SIWG_GoogleAuth( get_option( 'siwg_google_client_id' ) );
-		$this->google_account = (object) array(
-			'id'             => 1,
-			'email'          => 'john.smith@gmail.com',
-			'verified_email' => 'true',
-			'name'           => 'John Smith',
-			'given_name'     => 'John',
-			'family_name'    => 'Smith',
-			'picture'        => null,
-			'local'          => 'en',
-			'hd'             => 'gmail.com',
-		);
-	}
-
-	/**
-	 * Test authenticating the user.
-	 */
-	public function test_authenticate_user() {
-		$this->markTestSkipped();
-
-		$user_id = $this->factory->user->create(
-			array(
-				'user_login' => 'jsmith',
-				'role'       => 'subscriber',
-			)
-		);
-		add_user_meta( $user_id, 'siwg_google_account', $this->google_account->email, true );
-
-		$siwg_admin = new Sign_In_With_Google_Admin( 'sign-in-with-google', '1.5.2' );
-
-		$result = $siwg_admin->authenticate_user();
-
-		$this->assertEquals( $result, $user_id );
 	}
 
 	/**
@@ -78,11 +46,23 @@ class SIWG_GoogleAuthTest extends WP_UnitTestCase {
 		$client_id     = '&client_id=' . urlencode( $this->google_auth->client_id );
 		$url_state     = '&state=' . base64_encode( json_encode( $state ) );
 
-		$this->assertStringContainsString( $base_url, $result );
-		$this->assertStringContainsString( $scope, $result );
-		$this->assertStringContainsString( $redirect_uri, $result );
-		$this->assertStringContainsString( $response_type, $result );
-		$this->assertStringContainsString( $client_id, $result );
-		$this->assertStringContainsString( $url_state, $result );
+		$this->assertTrue( $this->stringContainsString( $base_url, $result ) );
+		$this->assertTrue( $this->stringContainsString( $scope, $result ) );
+		$this->assertTrue( $this->stringContainsString( $redirect_uri, $result ) );
+		$this->assertTrue( $this->stringContainsString( $response_type, $result ) );
+		$this->assertTrue( $this->stringContainsString( $client_id, $result ) );
+		$this->assertTrue( $this->stringContainsString( $url_state, $result ) );
+	}
+
+	/**
+	 * Check if a string is within another.
+	 *
+	 * @param string $needle   The value to search for.
+	 * @param string $haystack The string to look within.
+	 */
+	private function stringContainsString( $needle, $haystack ) {
+		$result = strpos( $haystack, $needle );
+
+		return -1 !== $result;
 	}
 }
