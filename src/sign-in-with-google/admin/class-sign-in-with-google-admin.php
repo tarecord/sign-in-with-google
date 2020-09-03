@@ -739,18 +739,16 @@ class Sign_In_With_Google_Admin {
 			return $user;
 		}
 
-		$user_pass       = wp_generate_password( 12 );
-		$user_email      = $user_data->email;
-		$user_email_data = explode( '@', $user_email );
-		$user_login      = $user_email_data[0];
-		$first_name      = $user_data->given_name;
-		$last_name       = $user_data->family_name;
-		$display_name    = $first_name . ' ' . $last_name;
-		$role            = get_option( 'siwg_google_user_default_role', 'subscriber' );
+		$user_pass    = wp_generate_password( 12 );
+		$user_email   = $user_data->email;
+		$first_name   = $user_data->given_name;
+		$last_name    = $user_data->family_name;
+		$display_name = $first_name . ' ' . $last_name;
+		$role         = get_option( 'siwg_google_user_default_role', 'subscriber' );
 
 		$user = array(
 			'user_pass'       => $user_pass,
-			'user_login'      => $user_login,
+			'user_login'      => $user_email,
 			'user_email'      => $user_email,
 			'display_name'    => $display_name,
 			'first_name'      => $first_name,
