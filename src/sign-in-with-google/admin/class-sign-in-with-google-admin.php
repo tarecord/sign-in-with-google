@@ -68,6 +68,15 @@ class Sign_In_With_Google_Admin {
 	private $state;
 
 	/**
+	 * GoogleAuth class
+	 *
+	 * @since 1.5.2
+	 * @access private
+	 * @var object
+	 */
+	private $google_auth;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -78,6 +87,7 @@ class Sign_In_With_Google_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
+		$this->google_auth = new SIWG_GoogleAuth( get_option( 'siwg_google_client_id' ) );
 
 	}
 
@@ -459,33 +469,9 @@ class Sign_In_With_Google_Admin {
 			'redirect_to' => $redirect_to,
 		);
 
-		$url = $this->build_google_redirect_url();
+		$url = $this->google_auth->get_google_auth_url( $this->state );
 		wp_redirect( $url );
 		exit;
-	}
-
-	/**
-	 * Builds out the Google redirect URL
-	 *
-	 * @since    1.0.0
-	 */
-	public function build_google_redirect_url() {
-
-		// Build the API redirect url.
-		$google_client_id = get_option( 'siwg_google_client_id' );
-		$base_url         = 'https://accounts.google.com/o/oauth2/v2/auth';
-
-		$scopes[] = 'https://www.googleapis.com/auth/userinfo.email';
-		$scopes[] = 'https://www.googleapis.com/auth/userinfo.profile';
-
-		$scopes = apply_filters( 'siwg_scopes', $scopes ); // Allow scopes to be adjusted.
-
-		$scope        = urlencode( implode( ' ', $scopes ) );
-		$redirect_uri = urlencode( site_url( '?google_response' ) );
-
-		$state = base64_encode( json_encode( $this->state ) );
-
-		return $base_url . '?scope=' . $scope . '&redirect_uri=' . $redirect_uri . '&response_type=code&client_id=' . $google_client_id . '&state=' . $state;
 	}
 
 	/**
@@ -565,7 +551,7 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function domain_restriction_error( $message ) {
 		// translators: The required domain.
-		$message = '<div id="login_error"> ' . printf( __( 'You must have an email with a required domain (<strong>%s</strong>) to log in to this website using Google.', 'sign-in-with-google' ), get_option( 'siwg_google_domain_restriction' ) ) . '</div>';
+		$message = '<div id="login_error"> ' . sprintf( __( 'You must have an email with a required domain (<strong>%s</strong>) to log in to this website using Google.', 'sign-in-with-google' ), get_option( 'siwg_google_domain_restriction' ) ) . '</div>';
 		return $message;
 	}
 
@@ -693,7 +679,7 @@ class Sign_In_With_Google_Admin {
 	 * @since 1.2.0
 	 */
 	protected function set_user_info() {
-		$this->user = $this->get_user_by_token();
+		$this->user = $this->get_user_by_token( $this->access_token );
 	}
 
 	/**
@@ -788,12 +774,18 @@ class Sign_In_With_Google_Admin {
 	 * Get the user's info.
 	 *
 	 * @since 1.2.0
+	 *
+	 * @param string $token The user's token for authentication.
 	 */
-	protected function get_user_by_token() {
+	protected function get_user_by_token( $token ) {
+
+		if ( ! $token ) {
+			return;
+		}
 
 		$args = array(
 			'headers' => array(
-				'Authorization' => 'Bearer ' . $this->access_token,
+				'Authorization' => 'Bearer ' . $token,
 			),
 		);
 
