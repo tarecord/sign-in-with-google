@@ -5,7 +5,6 @@
  * @package Sign_In_With_Google
  */
 
-use Sign_In_With_Google_Utility;
 /**
  * Utility test case.
  */
