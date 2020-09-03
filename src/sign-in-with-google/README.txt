@@ -63,6 +63,7 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 * Added more useful error messages when users aren't logged in properly.
 * New user accounts now use email address as user_login to prevent unique username issues.
 * Fixed bug with domain restriction not evaluating correctly.
+* Fixed bug where user was redirected if only signed into a single google account with a domain not in the restricted domains list.
 * Added Internationalization (I18n).
 
 = 1.5.1 =
