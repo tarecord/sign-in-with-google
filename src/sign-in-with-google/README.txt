@@ -3,7 +3,7 @@ Contributors: tarecord, chrismkindred
 Tags: Google, sign in, users, registration, register, Google Apps, G Suite, OAuth
 Requires at least: 4.8.1
 Tested up to: 5.5.1
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -58,6 +58,12 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 2. This is the second screen shot
 
 == Changelog ==
+
+= 1.5.2 =
+* Added more useful error messages when users aren't logged in properly.
+* New user accounts now use email address as user_login to prevent unique username issues.
+* Fixed bug with domain restriction not evaluating correctly.
+* Added Internationalization (I18n).
 
 = 1.5.1 =
 * Fixed an issue where leaving the "Restrict To Domain" field blank would cause issues logging some issues in.
