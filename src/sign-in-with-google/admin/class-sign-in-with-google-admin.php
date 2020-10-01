@@ -733,6 +733,12 @@ class Sign_In_With_Google_Admin {
 
 		$user = get_user_by( 'email', $user_data->email );
 
+		// Redirect the user if registrations are disabled.
+		if ( false === $user && ! get_option( 'users_can_register' ) ) {
+			wp_redirect( site_url( 'wp-login.php?registration=disabled' ) );
+			exit;
+		}
+
 		if ( false !== $user ) {
 			update_user_meta( $user->ID, 'first_name', $user_data->given_name );
 			update_user_meta( $user->ID, 'last_name', $user_data->family_name );
