@@ -77,6 +77,10 @@ class Sign_In_With_Google {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
+		// If WordPress is running in WP_CLI.
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			$this->register_cli_commands();
+		}
 	}
 
 	/**
@@ -110,6 +114,16 @@ class Sign_In_With_Google {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sign-in-with-google-i18n.php';
 
 		/**
+		 * The class responsible for registering custom CLI commands.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sign-in-with-google-wpcli.php';
+
+		/**
+		 * A helpful ultility class.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sign-in-with-google-utility.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sign-in-with-google-admin.php';
@@ -119,6 +133,11 @@ class Sign_In_With_Google {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-sign-in-with-google-public.php';
+
+		/**
+		 * Handles all the Google Authentication methods.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-siwg-googleauth.php';
 
 		$this->loader = new Sign_In_With_Google_Loader();
 
@@ -156,6 +175,12 @@ class Sign_In_With_Google {
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'settings_menu_init' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'process_settings_export' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'process_settings_import' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+		$this->loader->add_action( 'show_user_profile', $plugin_admin, 'add_connect_button_to_profile' );
+
+		if ( isset( $_POST['_siwg_account_nonce'] ) ) {
+			$this->loader->add_action( 'admin_init', $plugin_admin, 'disconnect_account' );
+		}
 
 		if ( isset( $_GET['google_redirect'] ) ) {
 			$this->loader->add_action( 'template_redirect', $plugin_admin, 'google_auth_redirect' );
@@ -194,6 +219,20 @@ class Sign_In_With_Google {
 		$this->loader->add_action( 'login_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'login_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'login_form', $plugin_public, 'add_signin_button' );
+
+	}
+
+	/**
+	 * Register the WP_CLI commands.
+	 *
+	 * @since  1.2.0
+	 * @access private
+	 */
+	private function register_cli_commands() {
+
+		$plugin_cli = new Sign_In_With_Google_WPCLI();
+
+		WP_CLI::add_command( 'siwg', $plugin_cli );
 
 	}
 

@@ -2,13 +2,13 @@
 Contributors: tarecord, chrismkindred
 Tags: Google, sign in, users, registration, register, Google Apps, G Suite, OAuth
 Requires at least: 4.8.1
-Tested up to: 5.0.3
-Stable tag: 1.2.1
+Tested up to: 5.5.1
+Stable tag: 1.5.2
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Adds a "Sign in with Google" option to the login form so users can sign in with their G Suite account.
+Adds a "Log in with Google" option to the login form so users can sign in with their G Suite account.
 
 == Description ==
 
@@ -16,14 +16,15 @@ This plugin gives your users the ability to sign in with their G Suite account. 
 This is great for Agencies or sites that have lots of users and need a way to make signing in a quick and painless process.
 
 = Features =
-* Show/Hide the "Sign In with Google" button on the login form
+* Show/Hide the "Log In with Google" button on the login form
 * Restrict user logins to a specific domain
 * If a user is already logged in to Google, they will be automatically redirected without much fuss
+* Connect existing user accounts with a Google account
 * A custom login parameter can be added to the URL of the site as a "hidden" login. For example adding `?mysitename_login` to your url (for example: `https://mysitename.com/?mysitename_login`) will log in the user, or redirect them to log in with Google.
 
 = WARNING =
 
-If you leave the "Sign in with Google" button shown on the login form, make sure that you are comfortable with the new user role that is set. Since this plugin creates user accounts for those that do not already have an account on the site, use domain restriction or set a low level role to the users.
+If you leave the "Log in with Google" button shown on the login form, make sure that you are comfortable with the new user role that is set. Since this plugin creates user accounts for those that do not already have an account on the site, use domain restriction or set a low level role to the users.
 
 == Development ==
 
@@ -53,10 +54,35 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 
 == Screenshots ==
 
-1. The login form with the "Sign in with Google" button added.
+1. The login form with the "Log in with Google" button added.
 2. This is the second screen shot
 
 == Changelog ==
+
+= 1.5.2 =
+* Added more useful error messages when users aren't logged in properly.
+* New user accounts now use email address as user_login to prevent unique username issues.
+* Fixed bug with domain restriction not evaluating correctly.
+* Fixed bug where user was redirected if only signed into a single google account with a domain not in the restricted domains list.
+* Added Internationalization (I18n).
+
+= 1.5.1 =
+* Fixed an issue where leaving the "Restrict To Domain" field blank would cause issues logging some issues in.
+* Fixed improper implementation of `apply_filters`
+* Replaced deprecated `get_usermeta` function with `get_user_meta`
+
+= 1.5.0 =
+* Fixed failures with plugins that rely on the 'wp_login' action
+
+= 1.4.0 =
+* Updated verbiage of button to "Log In With Google".
+* Added ability to link/unlink Google account in user profile.
+
+= 1.3.0 =
+* Added WP-CLI functionality
+
+= 1.2.2 =
+* Fixed bug where user was not redirected properly.
 
 = 1.2.1 =
 * Removed Google+ API Dependency
