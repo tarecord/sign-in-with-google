@@ -265,7 +265,7 @@ class Sign_In_With_Google_Admin {
 	 * @since    1.0.0
 	 */
 	public function siwg_google_client_secret() {
-		echo '<input name="siwg_google_client_secret" id="siwg_google_client_secret" type="text" size="50" value="' . get_option( 'siwg_google_client_secret' ) . '"/>';
+		echo '<input name="siwg_google_client_secret" id="siwg_google_client_secret" type="password" size="50" value="' . get_option( 'siwg_google_client_secret' ) . '"/>';
 	}
 
 	/**
