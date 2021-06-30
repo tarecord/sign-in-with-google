@@ -34,7 +34,7 @@ if ( ! defined( 'WPINC' ) ) {
  * This action is documented in includes/class-sign-in-with-google-activator.php
  */
 function sign_in_with_google_activate() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-sign-in-with-google-activator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'src/includes/class-sign-in-with-google-activator.php';
 	Sign_In_With_Google_Activator::activate();
 }
 
@@ -43,7 +43,7 @@ function sign_in_with_google_activate() {
  * This action is documented in includes/class-sign-in-with-google-deactivator.php
  */
 function sign_in_with_google_deactivate() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-sign-in-with-google-deactivator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'src/includes/class-sign-in-with-google-deactivator.php';
 	Sign_In_With_Google_Deactivator::deactivate();
 }
 
@@ -54,7 +54,7 @@ register_deactivation_hook( __FILE__, 'sign_in_with_google_deactivate' );
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-sign-in-with-google.php';
+require plugin_dir_path( __FILE__ ) . 'src/includes/class-sign-in-with-google.php';
 
 /**
  * Begins execution of the plugin.
