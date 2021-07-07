@@ -33,4 +33,17 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
+	$( function() {
+		$('#sign-in-with-google').on('click', function(event) {
+			console.log(screen);
+			event.preventDefault();
+			var height = 550;
+			var width = 500;
+			var left = (screen.width/2)-(width/2);
+			var top = (screen.height/2)-(height/2);
+			var authWindow = window.open( siwg.redirect_url, 'authWindow', 'width='+width+',height='+height+',top='+top+',left='+left );
+			return false;
+		});
+	});
+
 })( jQuery );
