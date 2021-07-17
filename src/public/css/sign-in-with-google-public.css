@@ -1,13 +1,13 @@
 #sign-in-with-google-container {
 	background-color: #FFF;
-	margin: 30px 0 0;
+	margin: 40px 0 0;
 	position: relative;
 }
 
 #sign-in-with-google-container::before {
 	content: 'OR';
     position: absolute;
-    top: -25px;
+    top: -30px;
     left: calc(50% - 10px);
     padding: 0 5px;
 }
@@ -42,4 +42,9 @@
 	margin: 20px 0 0;
 	border: none;
 	box-shadow: none;
+}
+
+.no-js #sign-in-with-google-container::before {
+	top: -25px;
+	color: rgba(0,0,0,.54);
 }
