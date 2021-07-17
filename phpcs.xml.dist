@@ -2,8 +2,8 @@
 <ruleset name="North Star Marketing Coding Standards">
 	<description>A custom set of rules to check for a WordPress project</description>
 
-	<!-- Check all files in plugin src -->
-	<file>./src/sign-in-with-google</file>
+	<!-- Check all files in plugin -->
+	<file>./src</file>
 
 	<!-- Exclude the Node Modules directory. -->
 	<exclude-pattern>/node_modules/*</exclude-pattern>
