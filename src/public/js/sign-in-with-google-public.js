@@ -33,4 +33,8 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
+	$( window ).load( function () {
+		$('#sign-in-with-google-container').insertAfter( $('#sign-in-with-google-container').parent() );
+	});
+
 })( jQuery );
