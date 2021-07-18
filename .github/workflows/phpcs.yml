@@ -29,14 +29,6 @@ jobs:
             src:
               - added|modified: '**/*.php'
 
-      - name: Cache PHP extensions
-        if: ${{ steps.filter.outputs.src == 'true' }}
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.cache-php-extensions.outputs.dir }}
-          key: ${{ steps.cache-php-extensions.outputs.key }}
-          restore-keys: ${{ steps.cache-php-extensions.outputs.key }}
-
       - name: Setup PHP
         if: ${{ steps.filter.outputs.src == 'true' }}
         uses: shivammathur/setup-php@v2
