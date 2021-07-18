@@ -1,0 +1,51 @@
+#sign-in-with-google-container {
+	background-color: #FFF;
+	margin: 40px 0 0;
+	position: relative;
+}
+
+/* Only include the "OR" on the login page. */
+.login #sign-in-with-google-container::before {
+	content: 'OR';
+    position: absolute;
+    top: -30px;
+    left: calc(50% - 10px);
+    padding: 0 5px;
+}
+
+#sign-in-with-google {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	padding: 8px;
+	margin: 0 auto 15px;
+	background: none;
+	border: 1px solid rgba(0,0,0,.25);
+	color: rgba(0,0,0,.54);
+	border-radius: 4px;
+}
+
+#sign-in-with-google:hover {
+	background-color: #eee;
+	color: #6d6d6d;
+	cursor: pointer;
+}
+
+#sign-in-with-google img {
+	margin-right: 10px;
+	width: 24px;
+}
+
+.no-js #sign-in-with-google-container {
+	margin: 20px 0 0;
+	border: none;
+	box-shadow: none;
+}
+
+.no-js #sign-in-with-google-container::before {
+	top: -25px;
+	color: rgba(0,0,0,.54);
+}
