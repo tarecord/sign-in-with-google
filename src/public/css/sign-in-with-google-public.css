@@ -38,3 +38,14 @@
 	margin-right: 10px;
 	width: 24px;
 }
+
+.no-js #sign-in-with-google-container {
+	margin: 20px 0 0;
+	border: none;
+	box-shadow: none;
+}
+
+.no-js #sign-in-with-google-container::before {
+	top: -25px;
+	color: rgba(0,0,0,.54);
+}
