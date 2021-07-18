@@ -3,7 +3,7 @@ name: PHP Codesniffer
 on: pull_request
 
 jobs:
-  sniff:
+  phpcs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
