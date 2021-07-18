@@ -66,9 +66,7 @@ jobs:
 
       - name: Install composer dependencies
         if: ${{ steps.filter.outputs.src == 'true' }}
-        run: |
-          echo "${{ secrets.COMPOSER_ENV }}" > .env
-          composer install --prefer-dist --no-progress --no-suggest --optimize-autoloader
+        run: composer install --prefer-dist --no-progress --no-suggest --optimize-autoloader
       - name: PHPCS
         if: ${{ steps.filter.outputs.src == 'true' }}
         run: ./vendor/bin/phpcs --standard=./phpcs.xml.dist ${{ steps.filter.outputs.src_files }}
