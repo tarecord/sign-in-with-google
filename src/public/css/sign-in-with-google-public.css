@@ -4,7 +4,8 @@
 	position: relative;
 }
 
-#sign-in-with-google-container::before {
+/* Only include the "OR" on the login page. */
+.login #sign-in-with-google-container::before {
 	content: 'OR';
     position: absolute;
     top: -30px;
