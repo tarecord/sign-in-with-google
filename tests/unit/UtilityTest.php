@@ -8,7 +8,7 @@
 /**
  * Utility test case.
  */
-class UtilityTest extends WP_UnitTestCase {
+class UtilityTest extends \Codeception\Test\Unit {
 
 	/**
 	 * Tests the domain input validation. Users must provide a correct domain or comma

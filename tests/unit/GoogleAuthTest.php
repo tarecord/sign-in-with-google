@@ -8,7 +8,7 @@
 /**
  * GoogleAuth test case.
  */
-class SIWG_GoogleAuthTest extends WP_UnitTestCase {
+class GoogleAuthTest extends \Codeception\Test\Unit {
 
 	/**
 	 * The faked google account response.
@@ -25,8 +25,6 @@ class SIWG_GoogleAuthTest extends WP_UnitTestCase {
 	protected $google_account;
 
 	public function setUp() {
-		parent::setUp();
-
 		$this->google_auth    = new SIWG_GoogleAuth( get_option( 'siwg_google_client_id' ) );
 	}
 
