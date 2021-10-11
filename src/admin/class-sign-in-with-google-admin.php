@@ -535,9 +535,7 @@ class Sign_In_With_Google_Admin {
 			$redirect = admin_url(); // Send users to the dashboard by default.
 		}
 
-		$redirect = apply_filters( 'siwg_auth_redirect', $redirect ); // Allow the redirect to be adjusted.
-
-		wp_redirect( $redirect );
+		wp_redirect( apply_filters( 'login_redirect', $redirect ) ); //phpcs:ignore
 		exit;
 
 	}
