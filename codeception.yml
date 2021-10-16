@@ -11,3 +11,5 @@ extensions:
 bootstrap: bootstrap.php
 settings:
     backup_globals: false
+params:
+    - .env
