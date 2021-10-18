@@ -1,3 +1,6 @@
 <?php
 $I = new AcceptanceTester($scenario);
-$I->wantTo('perform actions and see result');
+$I->wantTo('Activate Sign In With Google');
+$I->loginAsAdmin();
+$I->amOnPluginsPage();
+$I->activatePlugin('sign-in-with-google');
