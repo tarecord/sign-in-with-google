@@ -2,7 +2,6 @@
 /**
  * An assortment of functions for themes to utilize.
  *
- * @link       http://www.northstarmarketing.com
  * @since      1.6.0
  *
  * @package    Sign_In_With_Google

@@ -1,12 +1,12 @@
 {
-    "name": "north-star-marketing/sign-in-with-google",
+    "name": "tarecord/sign-in-with-google",
     "description": "Adds a \"Sign in with Google\" button to the login page, and allows users to sign up and login using Google.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
     "authors": [
         {
-            "name": "North Star Marketing",
-            "email": "tech@northstarmarketing.com"
+            "name": "Tanner Record",
+            "email": "tanner.record@gmail.com"
         }
     ],
     "require": {
