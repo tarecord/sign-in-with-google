@@ -2,7 +2,6 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
  * @package    Sign_In_With_Google
@@ -17,7 +16,7 @@
  *
  * @package    Sign_In_With_Google
  * @subpackage Sign_In_With_Google/admin
- * @author     Tanner Record <tanner.record@northstarmarketing.com>
+ * @author     Tanner Record <tanner.record@gmail.com>
  */
 class Sign_In_With_Google_Admin {
 

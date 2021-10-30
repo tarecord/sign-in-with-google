@@ -28,7 +28,7 @@ If you leave the "Log in with Google" button shown on the login form, make sure 
 
 == Development ==
 
-Active plugin development is handled on [Github](https://www.github.com/NorthStarMarketing/sign-in-with-google). Bugs and issues will be tracked and handled there.
+Active plugin development is handled on [Github](https://www.github.com/tarecord/sign-in-with-google). Bugs and issues will be tracked and handled there.
 
 == Installation ==
 
