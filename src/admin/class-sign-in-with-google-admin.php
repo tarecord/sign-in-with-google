@@ -210,6 +210,14 @@ class Sign_In_With_Google_Admin {
 		);
 
 		add_settings_field(
+			'siwg_google_email_sanitization',
+			__( 'Sanitize email addresses', 'sign-in-with-google' ),
+			array( $this, 'siwg_google_email_sanitization' ),
+			'siwg_settings',
+			'siwg_section'
+		);
+
+		add_settings_field(
 			'siwg_allow_domain_user_registration',
 			__( 'Allow domain user registrations', 'sign-in-with-google' ),
 			array( $this, 'siwg_allow_domain_user_registration' ),
@@ -237,6 +245,7 @@ class Sign_In_With_Google_Admin {
 		register_setting( 'siwg_settings', 'siwg_google_client_secret', array( $this, 'input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_google_user_default_role' );
 		register_setting( 'siwg_settings', 'siwg_google_domain_restriction', array( $this, 'domain_input_validation' ) );
+		register_setting( 'siwg_settings', 'siwg_google_email_sanitization' );
 		register_setting( 'siwg_settings', 'siwg_allow_domain_user_registration' );
 		register_setting( 'siwg_settings', 'siwg_custom_login_param', array( $this, 'custom_login_input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_show_on_login' );
@@ -327,6 +336,21 @@ class Sign_In_With_Google_Admin {
 			?>
 		</p>
 		<?php
+	}
+
+	/**
+	 * Callback function for Email Sanitize
+	 *
+	 * @since    1.0.0
+	 */
+	public function siwg_google_email_sanitization() {
+
+		echo sprintf(
+			'<input type="checkbox" name="%1$s" id="%1$s" value="1" %2$s /><p class="description">%3$s</p>',
+			'siwg_google_email_sanitization',
+			checked( get_option( 'siwg_google_email_sanitization' ), true, false ),
+			__( 'If enabled, user emails will be sanitized during registration to the base unique account (like <code>james.figard+123@gmail.com</code> to <code>jamesfigard@gmail.com</code> so you can avoid unlimited duplicate/spam registration from gmail aliases).', 'sign-in-with-google' ),
+		);
 	}
 
 	/**
@@ -597,6 +621,7 @@ class Sign_In_With_Google_Admin {
 			'siwg_google_client_secret'           => get_option( 'siwg_google_client_secret' ),
 			'siwg_google_user_default_role'       => get_option( 'siwg_google_user_default_role' ),
 			'siwg_google_domain_restriction'      => get_option( 'siwg_google_domain_restriction' ),
+			'siwg_google_email_sanitization'      => get_option( 'siwg_google_email_sanitization' ),
 			'siwg_allow_domain_user_registration' => get_option( 'siwg_allow_domain_user_registration' ),
 			'siwg_custom_login_param'             => get_option( 'siwg_custom_login_param' ),
 			'siwg_show_on_login'                  => get_option( 'siwg_show_on_login' ),
@@ -752,7 +777,13 @@ class Sign_In_With_Google_Admin {
 	 */
 	protected function find_by_email_or_create( $user_data ) {
 
-		$user                           = get_user_by( 'email', $user_data->email );
+		$user_email = $user_data->email;
+		$siwg_google_email_sanitization = (bool) get_option( 'siwg_google_email_sanitization' );
+		if ($siwg_google_email_sanitization) {
+			$user_email = Sign_In_With_Google_Utility::sanitize_google_email( $user_email );
+		}
+
+		$user                           = get_user_by( 'email', $user_email );
 		$allow_domain_user_registration = (bool) get_option( 'siwg_allow_domain_user_registration' );
 		$allow_user_registration        = (bool) get_option( 'users_can_register' );
 
