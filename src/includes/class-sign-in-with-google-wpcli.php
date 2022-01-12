@@ -189,6 +189,19 @@ class Sign_In_With_Google_WPCLI {
 	}
 
 	/**
+	 * Handles updating siwg_show_unlink_in_profile.
+	 *
+	 * @param bool $show Show the Unlink Account button in user profile page.
+	 */
+	private function update_show_unlink_in_profile( $show = 0 ) {
+		$result = update_option( 'siwg_show_unlink_in_profile', boolval( $show ) );
+
+		if ( ! $result ) {
+			WP_CLI::warning( 'Skipping Show Unlink in Profile - Setting already matches' );
+		}
+	}
+
+	/**
 	 * Sanitize command arguments
 	 *
 	 * @since 1.2.2
