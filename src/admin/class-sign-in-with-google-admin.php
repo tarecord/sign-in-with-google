@@ -202,6 +202,14 @@ class Sign_In_With_Google_Admin {
 		);
 
 		add_settings_field(
+			'siwg_use_google_profile_picture',
+			__( 'Use google profile images for user', 'sign-in-with-google' ),
+			array( $this, 'siwg_use_google_profile_picture' ),
+			'siwg_settings',
+			'siwg_section'
+		);
+
+		add_settings_field(
 			'siwg_google_domain_restriction',
 			__( 'Restrict To Domain', 'sign-in-with-google' ),
 			array( $this, 'siwg_google_domain_restriction' ),
@@ -236,6 +244,7 @@ class Sign_In_With_Google_Admin {
 		register_setting( 'siwg_settings', 'siwg_google_client_id', array( $this, 'input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_google_client_secret', array( $this, 'input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_google_user_default_role' );
+		register_setting( 'siwg_settings', 'siwg_use_google_profile_picture' );
 		register_setting( 'siwg_settings', 'siwg_google_domain_restriction', array( $this, 'domain_input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_allow_domain_user_registration' );
 		register_setting( 'siwg_settings', 'siwg_custom_login_param', array( $this, 'custom_login_input_validation' ) );
@@ -400,6 +409,17 @@ class Sign_In_With_Google_Admin {
 		}
 
 		return $sanitized_input;
+	}
+
+	/**
+	 * Callback function for Use Google Profile Image
+	 *
+	 * @since    1.0.0
+	 */
+	public function siwg_use_google_profile_picture() {
+
+		echo '<input type="checkbox" name="siwg_use_google_profile_picture" id="siwg_use_google_profile_picture" value="1" ' . checked( get_option( 'siwg_use_google_profile_picture' ), true, false ) . ' />';
+
 	}
 
 	/**
@@ -596,6 +616,7 @@ class Sign_In_With_Google_Admin {
 			'siwg_google_client_id'               => get_option( 'siwg_google_client_id' ),
 			'siwg_google_client_secret'           => get_option( 'siwg_google_client_secret' ),
 			'siwg_google_user_default_role'       => get_option( 'siwg_google_user_default_role' ),
+			'siwg_use_google_profile_picture'     => get_option( 'siwg_use_google_profile_picture' ),
 			'siwg_google_domain_restriction'      => get_option( 'siwg_google_domain_restriction' ),
 			'siwg_allow_domain_user_registration' => get_option( 'siwg_allow_domain_user_registration' ),
 			'siwg_custom_login_param'             => get_option( 'siwg_custom_login_param' ),
@@ -765,6 +786,7 @@ class Sign_In_With_Google_Admin {
 		if ( false !== $user ) {
 			update_user_meta( $user->ID, 'first_name', $user_data->given_name );
 			update_user_meta( $user->ID, 'last_name', $user_data->family_name );
+			$this->check_and_update_profile_pic ($user->ID, $user_data);
 			return $user;
 		}
 
@@ -792,9 +814,28 @@ class Sign_In_With_Google_Admin {
 			wp_die( $new_user->get_error_message() . ' <a href="' . wp_login_url() . '">Return to Log In</a>' );
 			return false;
 		} else {
+			$this->check_and_update_profile_pic ($new_user, $user_data);
 			return get_user_by( 'id', $new_user );
 		}
 
+	}
+
+
+	/**
+	 * Check & update user's profile pic
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param string $user_id The user's id
+	 * @param object $user_data Obtained user-data from google
+	 */
+	protected function check_and_update_profile_pic( $user_id, $user_data ) {
+		// add profile image from google, that can be used as alternative to gravatar
+		if( (bool) get_option( 'siwg_use_google_profile_picture' ) ) {
+			if ( ! get_user_meta($user_id, 'siwg_profile_image', true) && property_exists( $user_data, 'picture' ) ) {
+				update_user_meta($user_id, 'siwg_profile_image', $user_data->picture);
+			}
+		}
 	}
 
 	/**
