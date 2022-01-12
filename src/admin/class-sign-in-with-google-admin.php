@@ -752,24 +752,46 @@ class Sign_In_With_Google_Admin {
 	 */
 	protected function find_by_email_or_create( $user_data ) {
 
-		$user                           = get_user_by( 'email', $user_data->email );
+		$user_email = $user_data->email;
+		$user                           = get_user_by( 'email', $user_email );
 		$allow_domain_user_registration = (bool) get_option( 'siwg_allow_domain_user_registration' );
 		$allow_user_registration        = (bool) get_option( 'users_can_register' );
 
 		// Redirect the user if registrations are disabled and there is no domain user registration override.
-		if ( false === $user && ! $allow_domain_user_registration && ! $allow_user_registration ) {
-			wp_redirect( site_url( 'wp-login.php?registration=disabled' ) );
+		$redirect = false === $user && ! $allow_domain_user_registration && ! $allow_user_registration;
+		if ( apply_filters ('sigw_redirect_if_no_registrations', $redirect, $allow_domain_user_registration, $allow_user_registration) ) {
+			wp_redirect( apply_filters( 'sigw_registration_disabled_redirect_link', site_url( 'wp-login.php?registration=disabled' ) ) );
 			exit;
 		}
 
+		// allow to be hooked to disallow specific user login/registration (i.e. banned emails)
+		$allow_auth = apply_filters( 'siwg_allow_authorization', true, $user_data, $user, $user_email );
+		if ( ! $allow_auth ) {
+			wp_redirect( apply_filters( 'sigw_disallowed_user_redirect_link', site_url( 'wp-login.php?registration=disabled&userstatus=disallowed' ) ) );
+			exit;
+		}
+	
 		if ( false !== $user ) {
-			update_user_meta( $user->ID, 'first_name', $user_data->given_name );
-			update_user_meta( $user->ID, 'last_name', $user_data->family_name );
-			return $user;
+			// allow explicit hooks to take action
+			$filter_result = apply_filters ('sigw_user_found_on_login', null);
+			if ( $filter_result ) {
+				return $filter_result;
+			}
+			else {
+				update_user_meta( $user->ID, 'first_name', $user_data->given_name );
+				update_user_meta( $user->ID, 'last_name', $user_data->family_name );
+				return $user;
+			}
 		}
 
 		$user_pass    = wp_generate_password( 12 );
 		$user_email   = $user_data->email;
+		// set username as friendly as possible
+		$user_email_data = explode( '@', $user_email );
+		$user_login      = $user_email_data[0];
+		while ( username_exists($user_login) ) {
+			$user_login  = $user_login . rand(1,10);
+		}
 		$first_name   = $user_data->given_name;
 		$last_name    = $user_data->family_name;
 		$display_name = $first_name . ' ' . $last_name;
@@ -777,7 +799,7 @@ class Sign_In_With_Google_Admin {
 
 		$user = array(
 			'user_pass'       => $user_pass,
-			'user_login'      => $user_email,
+			'user_login'      => $user_email, //$user_login
 			'user_email'      => $user_email,
 			'display_name'    => $display_name,
 			'first_name'      => $first_name,
@@ -786,12 +808,15 @@ class Sign_In_With_Google_Admin {
 			'role'            => $role,
 		);
 
+		$user = apply_filters ('sigw_pre_insert_user', $user, $user_data);
 		$new_user = wp_insert_user( $user );
 
 		if ( is_wp_error( $new_user ) ) {
+			do_action ('sigw_new_user_creation_error', $new_user );
 			wp_die( $new_user->get_error_message() . ' <a href="' . wp_login_url() . '">Return to Log In</a>' );
 			return false;
 		} else {
+			do_action ('sigw_new_user_inserted', $new_user );
 			return get_user_by( 'id', $new_user );
 		}
 
