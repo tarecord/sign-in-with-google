@@ -180,6 +180,7 @@ class Sign_In_With_Google {
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'process_settings_export' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'process_settings_import' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'disallow_email_changes' );
 		$this->loader->add_action( 'show_user_profile', $plugin_admin, 'add_connect_button_to_profile' );
 
 		if ( isset( $_POST['_siwg_account_nonce'] ) ) {
