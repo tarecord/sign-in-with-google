@@ -146,7 +146,7 @@ class Sign_In_With_Google_WPCLI {
 	/**
 	 * Handles updating siwg_google_email_sanitization in the options table.
 	 *
-	 * @param string $domains The boolean to control email sanitization
+	 * @param string $show Email sanitization option
 	 */
 	private function update_google_email_sanitization( $show = 0 ) {
 		$result = update_option( 'siwg_google_email_sanitization', boolval( $show ) );
