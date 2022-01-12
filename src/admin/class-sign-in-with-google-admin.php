@@ -768,7 +768,7 @@ class Sign_In_With_Google_Admin {
 			return $user;
 		}
 
-		$user_pass    = wp_generate_password( 12 );
+		$user_pass    = wp_generate_password( apply_filters( 'siwg_password_length', 18 ) );
 		$user_email   = $user_data->email;
 		$first_name   = $user_data->given_name;
 		$last_name    = $user_data->family_name;
