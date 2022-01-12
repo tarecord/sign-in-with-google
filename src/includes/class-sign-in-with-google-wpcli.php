@@ -144,11 +144,25 @@ class Sign_In_With_Google_WPCLI {
 	}
 
 	/**
+	 * Handles updating siwg_google_email_sanitization in the options table.
+	 *
+	 * @param string $domains The boolean to control email sanitization
+	 */
+	private function update_google_email_sanitization( $show = 0 ) {
+		$result = update_option( 'siwg_google_email_sanitization', boolval( $show ) );
+
+		if ( ! $result ) {
+			WP_CLI::warning( 'Skipping option - Setting already matches' );
+		}
+
+	}
+
+	/**
 	 * Handles updating siwg_google_domain_restriction in the options table.
 	 *
 	 * @param string $domains The string of domains to verify and use.
 	 */
-	private function update_domains( $domains = '' ) {
+	private function update_domains( $param = true ) {
 
 		if ( ! Sign_In_With_Google_Utility::verify_domain_list( $domains ) ) {
 			WP_CLI::error( 'Please use a valid list of domains' );
