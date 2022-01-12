@@ -232,6 +232,14 @@ class Sign_In_With_Google_Admin {
 			'siwg_settings',
 			'siwg_section'
 		);
+	
+		add_settings_field(
+			'siwg_disable_login_page',
+			__( 'Disable WP login page and reditect users to Goolge Sign In', 'sign-in-with-google' ),
+			array( $this, 'siwg_disable_login_page' ),
+			'siwg_settings',
+			'siwg_section'
+		);
 
 		register_setting( 'siwg_settings', 'siwg_google_client_id', array( $this, 'input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_google_client_secret', array( $this, 'input_validation' ) );
@@ -240,6 +248,7 @@ class Sign_In_With_Google_Admin {
 		register_setting( 'siwg_settings', 'siwg_allow_domain_user_registration' );
 		register_setting( 'siwg_settings', 'siwg_custom_login_param', array( $this, 'custom_login_input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_show_on_login' );
+		register_setting( 'siwg_settings', 'siwg_disable_login_page' );
 	}
 
 	/**
@@ -361,6 +370,17 @@ class Sign_In_With_Google_Admin {
 	public function siwg_show_on_login() {
 
 		echo '<input type="checkbox" name="siwg_show_on_login" id="siwg_show_on_login" value="1" ' . checked( get_option( 'siwg_show_on_login' ), true, false ) . ' />';
+
+	}
+
+	/**
+	 * Callback function for Show Google Signup Button on Login Form
+	 *
+	 * @since    1.0.0
+	 */
+	public function siwg_disable_login_page() {
+
+		echo '<input type="checkbox" name="siwg_disable_login_page" id="siwg_disable_login_page" value="1" ' . checked( get_option( 'siwg_disable_login_page' ), true, false ) . ' />';
 
 	}
 
@@ -600,6 +620,7 @@ class Sign_In_With_Google_Admin {
 			'siwg_allow_domain_user_registration' => get_option( 'siwg_allow_domain_user_registration' ),
 			'siwg_custom_login_param'             => get_option( 'siwg_custom_login_param' ),
 			'siwg_show_on_login'                  => get_option( 'siwg_show_on_login' ),
+			'siwg_disable_login_page'             => get_option( 'siwg_disable_login_page' ),
 		);
 
 		ignore_user_abort( true );
@@ -834,6 +855,21 @@ class Sign_In_With_Google_Admin {
 		if ( ! empty( $domains ) && ! in_array( $user_domain[1], $domains, true ) ) {
 			wp_redirect( wp_login_url() . '?google_login=incorrect_domain' );
 			exit;
+		}
+	}
+		
+	/**
+	 * Disable Login page & redirect directly to google login
+	 *
+	 * @since 1.3.1
+	 */ 
+	public function check_login_redirection()
+	{
+		if ( boolval( get_option( 'siwg_disable_login_page' ) ) ) 
+		{
+			// Skip only logout action
+			if ( trim( strtolower( $_REQUEST['action'] ) ) !== "logout")
+				$this->google_auth_redirect();
 		}
 	}
 }
