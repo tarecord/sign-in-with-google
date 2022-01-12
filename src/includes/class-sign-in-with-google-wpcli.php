@@ -197,7 +197,7 @@ class Sign_In_With_Google_WPCLI {
 		$result = update_option( 'siwg_show_unlink_in_profile', boolval( $show ) );
 
 		if ( ! $result ) {
-			WP_CLI::warning( 'Skipping Show Unlink in Profile - Setting already matches' );
+			WP_CLI::warning( 'Skipping option - Setting already matches' );
 		}
 	}
 
