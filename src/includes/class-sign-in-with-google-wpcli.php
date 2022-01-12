@@ -49,6 +49,9 @@ class Sign_In_With_Google_WPCLI {
 	 *     https://www.example.com/my-custom-post?logmein // Log the user in and redirect to my-custom-post
 	 * ---
 	 *
+	 * [--show_unlink_in_profile=<1|0>]
+	 * : Show the Unlink button for users in their profile
+	 *
 	 * [--show_on_login=<1|0>]
 	 * : Show the "Sign In With Google" button on the login form.
 	 *
