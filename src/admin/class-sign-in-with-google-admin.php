@@ -832,8 +832,11 @@ class Sign_In_With_Google_Admin {
 	protected function check_and_update_profile_pic( $user_id, $user_data ) {
 		// add profile image from google, that can be used as alternative to gravatar
 		if( (bool) get_option( 'siwg_use_google_profile_picture' ) ) {
-			if ( ! get_user_meta($user_id, 'siwg_profile_image', true) && property_exists( $user_data, 'picture' ) ) {
-				update_user_meta($user_id, 'siwg_profile_image', $user_data->picture);
+			if ( property_exists( $user_data, 'picture' ) ) {
+				update_user_meta( $user_id, 'siwg_profile_image', $user_data->picture);
+			}
+			else {
+				delete_user_meta( $user_id, 'siwg_profile_image');
 			}
 		}
 	}
