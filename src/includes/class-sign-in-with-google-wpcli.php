@@ -49,6 +49,9 @@ class Sign_In_With_Google_WPCLI {
 	 *     https://www.example.com/my-custom-post?logmein // Log the user in and redirect to my-custom-post
 	 * ---
 	 *
+	 * [--google_email_sanitization=<1|0>]
+	 * : Sanitize emails to unique google account, to avoid duplicate/spammy aliases of gmail.
+	 *
 	 * [--show_on_login=<1|0>]
 	 * : Show the "Sign In With Google" button on the login form.
 	 *
