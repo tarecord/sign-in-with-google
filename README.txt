@@ -59,6 +59,11 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 
 == Changelog ==
 
+= 1.7.0 =
+* Add setting that allows users, who have an approved domain, to bypass the "Anyone can register" checkbox on the General Settings page.
+* Update to use login_redirect filter after user authenticates.
+* Update changelog to reflect new ownership.
+
 = 1.6.0 =
 * Fixed overflow issue with import/export meta boxes.
 * Fixed issue with users being registered when user registration was disabled in site settings.
