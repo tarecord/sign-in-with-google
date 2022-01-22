@@ -332,7 +332,7 @@ class Sign_In_With_Google_Admin {
 	/**
 	 * Callback function for Allow users with the approved domain register accounts
 	 *
-	 * @since    [NEXT]
+	 * @since 1.7.0
 	 */
 	public function siwg_allow_domain_user_registration() {
 
