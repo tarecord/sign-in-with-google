@@ -5,7 +5,6 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
  * @package    Sign_In_With_Google
@@ -24,7 +23,7 @@
  * @since      1.0.0
  * @package    Sign_In_With_Google
  * @subpackage Sign_In_With_Google/includes
- * @author     Tanner Record <tanner.record@northstarmarketing.com>
+ * @author     Tanner Record <tanner.record@gmail.com>
  */
 class Sign_In_With_Google {
 
