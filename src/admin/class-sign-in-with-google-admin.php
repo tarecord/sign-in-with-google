@@ -869,7 +869,7 @@ class Sign_In_With_Google_Admin {
 		{
 			// Skip only logout action
 			$action = trim( strtolower( $_REQUEST['action'] ) );
-			if ( !in_array( $action, ["logout", "registration"] ) ) {
+			if ( ! in_array( $action, ["logout", "registration"] ) ) {
 				$this->google_auth_redirect();
 			}
 		}
