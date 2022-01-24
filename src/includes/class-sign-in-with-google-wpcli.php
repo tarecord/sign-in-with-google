@@ -189,6 +189,19 @@ class Sign_In_With_Google_WPCLI {
 	}
 
 	/**
+	 * Handles updating siwg_password_length.
+	 *
+	 * @param bool $length Set default registration password length.
+	 */
+	private function update_password_length( $length = 12 ) {
+		$result = update_option( 'siwg_password_length', (int) $length );
+
+		if ( ! $result ) {
+			WP_CLI::warning( 'Skipping Show On Login - Setting already matches' );
+		}
+	}
+
+	/**
 	 * Sanitize command arguments
 	 *
 	 * @since 1.2.2
