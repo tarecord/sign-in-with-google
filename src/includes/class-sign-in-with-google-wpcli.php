@@ -197,7 +197,7 @@ class Sign_In_With_Google_WPCLI {
 		$result = update_option( 'siwg_password_length', (int) $length );
 
 		if ( ! $result ) {
-			WP_CLI::warning( 'Skipping Show On Login - Setting already matches' );
+			WP_CLI::warning( 'Skipping - Setting already matches' );
 		}
 	}
 
