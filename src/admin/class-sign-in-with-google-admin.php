@@ -525,9 +525,9 @@ class Sign_In_With_Google_Admin {
 	 *
 	 * @since 1.3.1
 	 */
-	public function sanitized_email( $email ) {
+	public function check_to_sanitize( $email ) {
 		if ( (bool) get_option( 'siwg_google_email_sanitization' ) ) {
-			return Sign_In_With_Google_Utility::sanitize_google_email( $user_email );
+			return Sign_In_With_Google_Utility::sanitize_google_email( $email );
 		} else {
 			return $email;
 		}
@@ -547,7 +547,7 @@ class Sign_In_With_Google_Admin {
 		// If the user is logged in, just connect the authenticated Google account.
 		if ( is_user_logged_in() ) {
 			// link the account.
-			$this->connect_account( $this->sanitized_email( $this->user->email ) );
+			$this->connect_account( $this->check_to_sanitize( $this->user->email ) );
 
 			// redirect back to the profile edit page.
 			wp_redirect( admin_url( 'profile.php' ) );
@@ -562,7 +562,7 @@ class Sign_In_With_Google_Admin {
 		$linked_user = get_users(
 			array(
 				'meta_key'   => 'siwg_google_account',
-				'meta_value' => $this->sanitized_email( $this->user->email ),
+				'meta_value' => $this->check_to_sanitize( $this->user->email ),
 			)
 		);
 
@@ -759,7 +759,7 @@ class Sign_In_With_Google_Admin {
 			return false;
 		}
 
-		return add_user_meta( $current_user->ID, 'siwg_google_account', $this->sanitized_email( $email ) , true );
+		return add_user_meta( $current_user->ID, 'siwg_google_account', $this->check_to_sanitize( $email ) , true );
 	}
 
 	/**
