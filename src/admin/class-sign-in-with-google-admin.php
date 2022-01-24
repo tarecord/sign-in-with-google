@@ -519,6 +519,19 @@ class Sign_In_With_Google_Admin {
 		wp_redirect( $url );
 		exit;
 	}
+	
+	/**
+	 * To sanitize email
+	 *
+	 * @since 1.3.1
+	 */
+	public function sanitized_email( $email ) {
+		if ( (bool) get_option( 'siwg_google_email_sanitization' ) ) {
+			return Sign_In_With_Google_Utility::sanitize_google_email( $user_email );
+		} else {
+			return $email;
+		}
+	}
 
 	/**
 	 * Uses the code response from Google to authenticate the user.
@@ -534,7 +547,7 @@ class Sign_In_With_Google_Admin {
 		// If the user is logged in, just connect the authenticated Google account.
 		if ( is_user_logged_in() ) {
 			// link the account.
-			$this->connect_account( $this->user->email );
+			$this->connect_account( $this->sanitized_email( $this->user->email ) );
 
 			// redirect back to the profile edit page.
 			wp_redirect( admin_url( 'profile.php' ) );
@@ -549,7 +562,7 @@ class Sign_In_With_Google_Admin {
 		$linked_user = get_users(
 			array(
 				'meta_key'   => 'siwg_google_account',
-				'meta_value' => $this->user->email,
+				'meta_value' => $this->sanitized_email( $this->user->email ),
 			)
 		);
 
@@ -746,7 +759,7 @@ class Sign_In_With_Google_Admin {
 			return false;
 		}
 
-		return add_user_meta( $current_user->ID, 'siwg_google_account', $email, true );
+		return add_user_meta( $current_user->ID, 'siwg_google_account', $this->sanitized_email( $email ) , true );
 	}
 
 	/**
@@ -777,12 +790,7 @@ class Sign_In_With_Google_Admin {
 	 */
 	protected function find_by_email_or_create( $user_data ) {
 
-		$user_email = $user_data->email;
-		$siwg_google_email_sanitization = (bool) get_option( 'siwg_google_email_sanitization' );
-		if ($siwg_google_email_sanitization) {
-			$user_email = Sign_In_With_Google_Utility::sanitize_google_email( $user_email );
-		}
-
+		$user_email                     = $this->check_to_sanitize( $user_data->email );
 		$user                           = get_user_by( 'email', $user_email );
 		$allow_domain_user_registration = (bool) get_option( 'siwg_allow_domain_user_registration' );
 		$allow_user_registration        = (bool) get_option( 'users_can_register' );
@@ -800,7 +808,6 @@ class Sign_In_With_Google_Admin {
 		}
 
 		$user_pass    = wp_generate_password( 12 );
-		$user_email   = $user_data->email;
 		$first_name   = $user_data->given_name;
 		$last_name    = $user_data->family_name;
 		$display_name = $first_name . ' ' . $last_name;
