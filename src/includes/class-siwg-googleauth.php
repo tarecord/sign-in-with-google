@@ -61,7 +61,7 @@ class SIWG_GoogleAuth {
 		$scopes[]     = 'https://www.googleapis.com/auth/userinfo.profile';
 		$this->scopes = urlencode( implode( ' ', $scopes ) );
 
-		$this->redirect_uri = site_url( '?google_response' );
+		$this->redirect_uri = apply_filters( 'siwg_redirect_uri', site_url( '?google_response' ) ) ;
 	}
 
 	/**
