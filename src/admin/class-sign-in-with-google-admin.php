@@ -759,21 +759,21 @@ class Sign_In_With_Google_Admin {
 
 		// Redirect the user if registrations are disabled and there is no domain user registration override.
 		$redirect = false === $user && ! $allow_domain_user_registration && ! $allow_user_registration;
-		if ( apply_filters ('sigw_redirect_if_no_registrations', $redirect, $allow_domain_user_registration, $allow_user_registration) ) {
-			wp_redirect( apply_filters( 'sigw_registration_disabled_redirect_link', site_url( 'wp-login.php?registration=disabled' ) ) );
+		if ( apply_filters ('siwg_redirect_if_no_registrations', $redirect, $allow_domain_user_registration, $allow_user_registration) ) {
+			wp_redirect( apply_filters( 'siwg_registration_disabled_redirect_link', site_url( 'wp-login.php?registration=disabled' ) ) );
 			exit;
 		}
 
 		// allow to be hooked to disallow specific user login/registration (i.e. banned emails)
 		$allow_auth = apply_filters( 'siwg_allow_authorization', true, $user_data, $user, $user_email );
 		if ( ! $allow_auth ) {
-			wp_redirect( apply_filters( 'sigw_disallowed_user_redirect_link', site_url( 'wp-login.php?registration=disabled&userstatus=disallowed' ) ) );
+			wp_redirect( apply_filters( 'siwg_disallowed_user_redirect_link', site_url( 'wp-login.php?registration=disabled&userstatus=disallowed' ) ) );
 			exit;
 		}
 	
 		if ( false !== $user ) {
 			// allow explicit hooks to take action
-			$filter_result = apply_filters ('sigw_user_found_on_login', null);
+			$filter_result = apply_filters ('siwg_user_found_on_login', null);
 			if ( $filter_result ) {
 				return $filter_result;
 			}
@@ -808,15 +808,15 @@ class Sign_In_With_Google_Admin {
 			'role'            => $role,
 		);
 
-		$user = apply_filters ('sigw_pre_insert_user', $user, $user_data);
+		$user = apply_filters ('siwg_pre_insert_user', $user, $user_data);
 		$new_user = wp_insert_user( $user );
 
 		if ( is_wp_error( $new_user ) ) {
-			do_action ('sigw_new_user_creation_error', $new_user );
+			do_action ('siwg_new_user_creation_error', $new_user );
 			wp_die( $new_user->get_error_message() . ' <a href="' . wp_login_url() . '">Return to Log In</a>' );
 			return false;
 		} else {
-			do_action ('sigw_new_user_inserted', $new_user );
+			do_action ('siwg_new_user_inserted', $new_user );
 			return get_user_by( 'id', $new_user );
 		}
 
