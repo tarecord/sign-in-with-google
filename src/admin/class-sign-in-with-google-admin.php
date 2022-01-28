@@ -752,13 +752,16 @@ class Sign_In_With_Google_Admin {
 	 */
 	protected function find_by_email_or_create( $user_data ) {
 
-		$user                           = get_user_by( 'email', $user_data->email );
+		$user_email                     = $user_data->email;
+		$user                           = get_user_by( 'email', $user_email );
 		$allow_domain_user_registration = (bool) get_option( 'siwg_allow_domain_user_registration' );
 		$allow_user_registration        = (bool) get_option( 'users_can_register' );
 
 		// Redirect the user if registrations are disabled and there is no domain user registration override.
-		if ( false === $user && ! $allow_domain_user_registration && ! $allow_user_registration ) {
-			wp_redirect( site_url( 'wp-login.php?registration=disabled' ) );
+		$redirect_bool = false === $user && ! $allow_domain_user_registration && ! $allow_user_registration;
+		$redirect = apply_filters ('siwg_redirect_if_no_registrations', $redirect_bool, $allow_domain_user_registration, $allow_user_registration);
+		if ( $redirect ) {
+			wp_redirect( apply_filters( 'siwg_registration_disabled_redirect_link', site_url( 'wp-login.php?registration=disabled' ) ) );
 			exit;
 		}
 
@@ -785,8 +788,10 @@ class Sign_In_With_Google_Admin {
 			'user_registered' => gmdate( 'Y-m-d H:i:s' ),
 			'role'            => $role,
 		);
-
+		
+		$user = apply_filters ('siwg_pre_insert_user', $user, $user_data);
 		$new_user = wp_insert_user( $user );
+		do_action ('siwg_after_new_user_insert', $new_user );
 
 		if ( is_wp_error( $new_user ) ) {
 			wp_die( $new_user->get_error_message() . ' <a href="' . wp_login_url() . '">Return to Log In</a>' );
