@@ -501,7 +501,7 @@ class Sign_In_With_Google_Admin {
 	 *
 	 * @since 1.0.0
 	 */
-	public function authenticate_user( $use_redirect = true ) {
+	public function authenticate_user() {
 
 		$params = apply_filters ('sigw_authenticate_user_params', null);
 		if ( $params === null ){
@@ -564,12 +564,12 @@ class Sign_In_With_Google_Admin {
 			$redirect = admin_url(); // Send users to the dashboard by default.
 		}
 
-		$redirect = apply_filters( 'login_redirect', $redirect );
-		if ( $use_redirect ) {
-			wp_redirect( $redirect  ); //phpcs:ignore
+		$redirect_url = apply_filters( 'siwg_login_redirect_url', $redirect );
+		if ( apply_filters( 'siwg_redirect_after_authenticate', true ) ) {
+			wp_redirect( $redirect_url  ); //phpcs:ignore
 			exit;
 		} else {
-			return $redirect;
+			return $redirect_url;
 		}
 
 	}
