@@ -13,7 +13,7 @@
  *
  * @return void
  */
-function siwg_instance() {
+function siwg_get_instance() {
 	global $instance_variable;
 	return $instance_variable;
 }
