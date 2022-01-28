@@ -677,7 +677,7 @@ class Sign_In_With_Google_Admin {
 				'code'          => $code,
 				'client_id'     => get_option( 'siwg_google_client_id' ),
 				'client_secret' => get_option( 'siwg_google_client_secret' ),
-				'redirect_uri'  => site_url( '?google_response' ),
+				'redirect_uri'  => site_url( '?' . apply_filters( 'sigw_google_response_slug', 'google_response' ) ),
 				'grant_type'    => 'authorization_code',
 			),
 		);
