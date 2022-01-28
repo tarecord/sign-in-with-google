@@ -508,6 +508,7 @@ class Sign_In_With_Google_Admin {
 			$params = [];
 			$params['code'] = $_GET['code'];
 			$params['state'] = ( isset( $_GET['state'] ) ) ? $_GET['state'] : '';
+			$params['redirect_after_login'] = true;
 		}
 		$this->set_access_token( $params['code'] );
 
@@ -564,12 +565,14 @@ class Sign_In_With_Google_Admin {
 			$redirect = admin_url(); // Send users to the dashboard by default.
 		}
 
-		$redirect_url = apply_filters( 'siwg_login_redirect_url', $redirect );
-		if ( apply_filters( 'siwg_redirect_after_authenticate', true ) ) {
-			wp_redirect( $redirect_url  ); //phpcs:ignore
+		if ( !array_key_exists('redirect_url', $params) ) {
+			$params['redirect_url'] = $redirect;
+		}
+		if ( $params['redirect_after_login'] ) {
+			wp_redirect( $params['redirect_url'] ); //phpcs:ignore
 			exit;
 		} else {
-			return $redirect_url;
+			return $params['redirect_url'];
 		}
 
 	}
