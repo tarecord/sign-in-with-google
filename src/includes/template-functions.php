@@ -9,6 +9,16 @@
  */
 
 /**
+ * Get SIWG instance, to do access 'authenticate_user' or any other puglic method of 'plugin_admin'
+ *
+ * @return void
+ */
+function siwg_instance() {
+	global $instance_variable;
+	return $instance_variable;
+}
+
+/**
  * Output the sign in button.
  *
  * @return void
