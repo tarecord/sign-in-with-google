@@ -501,9 +501,15 @@ class Sign_In_With_Google_Admin {
 	 *
 	 * @since 1.0.0
 	 */
-	public function authenticate_user() {
+	public function authenticate_user( $use_redirect = true ) {
 
-		$this->set_access_token( $_GET['code'] );
+		$params = apply_filters ('sigw_authenticate_user_params', null);
+		if ( $params === null ){
+			$params = [];
+			$params['code'] = $_GET['code'];
+			$params['state'] = ( isset( $_GET['state'] ) ) ? $_GET['state'] : '';
+		}
+		$this->set_access_token( $params['code'] );
 
 		$this->set_user_info();
 
@@ -518,7 +524,7 @@ class Sign_In_With_Google_Admin {
 		}
 
 		// Decode passed back state.
-		$raw_state = ( isset( $_GET['state'] ) ) ? $_GET['state'] : '';
+		$raw_state = $params['state'];
 		$state     = json_decode( base64_decode( $raw_state ) );
 
 		// Check if a user is linked to this Google account.
@@ -558,8 +564,13 @@ class Sign_In_With_Google_Admin {
 			$redirect = admin_url(); // Send users to the dashboard by default.
 		}
 
-		wp_redirect( apply_filters( 'login_redirect', $redirect ) ); //phpcs:ignore
-		exit;
+		$redirect = apply_filters( 'login_redirect', $redirect );
+		if ( $use_redirect ) {
+			wp_redirect( $redirect  ); //phpcs:ignore
+			exit;
+		} else {
+			return $redirect;
+		}
 
 	}
 
