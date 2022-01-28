@@ -132,7 +132,7 @@ class Sign_In_With_Google_Admin {
 				<td>
 				<?php if ( $linked_account ) : ?>
 					<?php echo $linked_account; ?>
-					<?php if ( current_user_can( 'manage_options' ) || get_option( 'siwg_show_unlink_in_profile' ) ) { ?>
+					<?php if ( current_user_can( 'manage_options' ) || get_option( 'siwg_allow_unlink_by_user' ) ) { ?>
 						<form method="post">
 							<input type="submit" role="button" value="<?php esc_html_e( 'Unlink Account', 'sign-in-with-google' ); ?>">
 							<?php wp_nonce_field( 'siwg_unlink_account', '_siwg_account_nonce' ); ?>
@@ -228,9 +228,9 @@ class Sign_In_With_Google_Admin {
 		);
 
 		add_settings_field(
-			'siwg_show_unlink_in_profile',
+			'siwg_allow_unlink_by_user',
 			__( 'Allow users to unlink their email from their profile page', 'sign-in-with-google' ),
-			array( $this, 'siwg_show_unlink_in_profile' ),
+			array( $this, 'siwg_allow_unlink_by_user' ),
 			'siwg_settings',
 			'siwg_section'
 		);
@@ -248,7 +248,7 @@ class Sign_In_With_Google_Admin {
 		register_setting( 'siwg_settings', 'siwg_google_user_default_role' );
 		register_setting( 'siwg_settings', 'siwg_google_domain_restriction', array( $this, 'domain_input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_allow_domain_user_registration' );
-		register_setting( 'siwg_settings', 'siwg_show_unlink_in_profile' );
+		register_setting( 'siwg_settings', 'siwg_allow_unlink_by_user' );
 		register_setting( 'siwg_settings', 'siwg_custom_login_param', array( $this, 'custom_login_input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_show_on_login' );
 	}
@@ -360,12 +360,12 @@ class Sign_In_With_Google_Admin {
 	 *
 	 * @since    [NEXT]
 	 */
-	public function siwg_show_unlink_in_profile() {
+	public function siwg_allow_unlink_by_user() {
 
 		echo sprintf(
 			'<input type="checkbox" name="%1$s" id="%1$s" value="1" %2$s /><p class="description">%3$s</p>',
-			'siwg_show_unlink_in_profile',
-			checked( get_option( 'siwg_show_unlink_in_profile' ), true, false ),
+			'siwg_allow_unlink_by_user',
+			checked( get_option( 'siwg_allow_unlink_by_user' ), true, false ),
 			__( 'Allow users to unlink their account from google (when you do not want users could control themselves, you should uncheck this option).', 'sign-in-with-google' ),
 		);
 	}
@@ -624,7 +624,7 @@ class Sign_In_With_Google_Admin {
 			'siwg_google_user_default_role'       => get_option( 'siwg_google_user_default_role' ),
 			'siwg_google_domain_restriction'      => get_option( 'siwg_google_domain_restriction' ),
 			'siwg_allow_domain_user_registration' => get_option( 'siwg_allow_domain_user_registration' ),
-			'siwg_show_unlink_in_profile'         => get_option( 'siwg_show_unlink_in_profile' ),
+			'siwg_allow_unlink_by_user'         => get_option( 'siwg_allow_unlink_by_user' ),
 			'siwg_custom_login_param'             => get_option( 'siwg_custom_login_param' ),
 			'siwg_show_on_login'                  => get_option( 'siwg_show_on_login' ),
 		);
@@ -759,7 +759,7 @@ class Sign_In_With_Google_Admin {
 	public function disconnect_account() {
 
 		// if user not allowed to unlink, then return
-		if ( ! current_user_can( 'manage_options' ) && ! get_option( 'siwg_show_unlink_in_profile' ) ) 
+		if ( ! current_user_can( 'manage_options' ) && ! get_option( 'siwg_allow_unlink_by_user' ) ) 
 			return;
 
 		if ( ! isset( $_POST['_siwg_account_nonce'] ) || ! wp_verify_nonce( $_POST['_siwg_account_nonce'], 'siwg_unlink_account' ) ) {
