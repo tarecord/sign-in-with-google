@@ -671,13 +671,13 @@ class Sign_In_With_Google_Admin {
 
 		// Sanitize auth code.
 		$code = sanitize_text_field( $code );
-
+		$redirect_url = site_url( '?' . apply_filters( 'siwg_google_response_slug', 'google_response' ) );
 		$args = array(
 			'body' => array(
 				'code'          => $code,
 				'client_id'     => get_option( 'siwg_google_client_id' ),
 				'client_secret' => get_option( 'siwg_google_client_secret' ),
-				'redirect_uri'  => site_url( '?google_response' ),
+				'redirect_uri'  => apply_filters( 'siwg_google_redirect_uri', $redirect_url ),
 				'grant_type'    => 'authorization_code',
 			),
 		);
