@@ -174,6 +174,7 @@ class Sign_In_With_Google {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Sign_In_With_Google_Admin( $this->get_plugin_name(), $this->get_version() );
+		add_action( 'sigw_plugin_admin_inited', $plugin_admin );
 
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'settings_api_init' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'settings_menu_init' );
