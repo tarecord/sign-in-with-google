@@ -752,6 +752,7 @@ class Sign_In_With_Google_Admin {
 	 */
 	protected function find_by_email_or_create( $user_data ) {
 
+		$user_email                     = $user_data->email;
 		$user                           = get_user_by( 'email', $user_data->email );
 		$allow_domain_user_registration = (bool) get_option( 'siwg_allow_domain_user_registration' );
 		$allow_user_registration        = (bool) get_option( 'users_can_register' );
@@ -759,6 +760,14 @@ class Sign_In_With_Google_Admin {
 		// Redirect the user if registrations are disabled and there is no domain user registration override.
 		if ( false === $user && ! $allow_domain_user_registration && ! $allow_user_registration ) {
 			wp_redirect( site_url( 'wp-login.php?registration=disabled' ) );
+			exit;
+		}
+
+		// allow to be hooked to disallow specific user login/registration (i.e. banned emails)
+		$forbidden_usermail = apply_filters( 'siwg_allow_authorization', true, $user_data, $user, $user_email );
+		if ( $forbidden_usermail ) {
+			$url = site_url( 'wp-login.php?registration=disabled&userstatus=disallowed' );
+			wp_redirect( apply_filters( 'siwg_disallowed_user_redirect_link', $url ) );
 			exit;
 		}
 
