@@ -143,6 +143,7 @@ class Sign_In_With_Google {
 		/**
 		 * Loads theme template functions.
 		 */
+		$instance_variable = $this;
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/template-functions.php';
 
 	}
