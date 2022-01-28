@@ -165,7 +165,7 @@ class Sign_In_With_Google_WPCLI {
 	 *
 	 * @param string $domains The string of domains to verify and use.
 	 */
-	private function update_domains( $param = true ) {
+	private function update_domains( $domains = '' ) {
 
 		if ( ! Sign_In_With_Google_Utility::verify_domain_list( $domains ) ) {
 			WP_CLI::error( 'Please use a valid list of domains' );
