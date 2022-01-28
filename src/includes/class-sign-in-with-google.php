@@ -175,7 +175,7 @@ class Sign_In_With_Google {
 
 		$plugin_admin = new Sign_In_With_Google_Admin( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'settings_api_init' );		
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'settings_api_init' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'settings_menu_init' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'process_settings_export' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'process_settings_import' );
