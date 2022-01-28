@@ -684,7 +684,7 @@ class Sign_In_With_Google_Admin {
 
 		$response = wp_remote_post( 'https://www.googleapis.com/oauth2/v4/token', $args );
 
-		$body = json_decode( $response['body'] );
+		$body = json_decode( wp_retrieve_body( $response ) );
 
 		if ( '' !== $body->access_token ) {
 			$this->access_token = $body->access_token;
@@ -843,7 +843,7 @@ class Sign_In_With_Google_Admin {
 
 		$result = wp_remote_request( 'https://www.googleapis.com/userinfo/v2/me', $args );
 
-		return json_decode( $result['body'] );
+		return json_decode( wp_retrieve_body( $result ) );
 	}
 
 	/**
