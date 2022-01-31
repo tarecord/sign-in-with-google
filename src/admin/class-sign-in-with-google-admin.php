@@ -578,7 +578,8 @@ class Sign_In_With_Google_Admin {
 			do_action( 'wp_login', $validUser->user_login, $validUser ); // phpcs:ignore
 
 			if ( (bool) get_option ('siwg_save_google_userinfo') ) {
-				update_user_meta ( $validUser->ID, 'siwg_google_userinfo', $this->user );
+				$savedUserInfo = apply_filters( 'siwg_saved_google_userinfo', $this->user );
+				update_user_meta ( $validUser->ID, 'siwg_google_userinfo', $savedUserInfo );
 				/* ### example data ###
 					'id' => '110835733123456789123'
 					'email' => 'someone@gmail.com'
