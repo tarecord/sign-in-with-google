@@ -519,9 +519,16 @@ class Sign_In_With_Google_Admin {
 			// link the account.
 			$this->connect_account( $this->user->email );
 
-			// redirect back to the profile edit page.
-			wp_redirect( admin_url( 'profile.php' ) );
-			exit;
+			if ( !array_key_exists('redirect_after_login_url', $params) ) {
+				$params['redirect_after_login_url'] = admin_url( 'profile.php' );
+			}
+			if ( $params['redirect_after_login'] ) {
+				// redirect back to the profile edit page.
+				wp_redirect( $params['redirect_after_login_url'] );
+				exit;
+			} else {
+				return $params['redirect_after_login_url'];
+			}
 		}
 
 		// Decode passed back state.
@@ -565,14 +572,14 @@ class Sign_In_With_Google_Admin {
 			$redirect = admin_url(); // Send users to the dashboard by default.
 		}
 
-		if ( !array_key_exists('redirect_url', $params) ) {
-			$params['redirect_url'] = $redirect;
+		if ( !array_key_exists('redirect_after_login_url', $params) ) {
+			$params['redirect_after_login_url'] = $redirect;
 		}
 		if ( $params['redirect_after_login'] ) {
-			wp_redirect( $params['redirect_url'] ); //phpcs:ignore
+			wp_redirect( $params['redirect_after_login_url'] ); //phpcs:ignore
 			exit;
 		} else {
-			return $params['redirect_url'];
+			return $params['redirect_after_login_url'];
 		}
 
 	}
