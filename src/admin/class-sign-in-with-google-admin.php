@@ -714,10 +714,9 @@ class Sign_In_With_Google_Admin {
 
 		// Sanitize auth code.
 		$code = sanitize_text_field( $code );
-		$redirect_url = site_url( '?' . get_option( 'siwg_google_response_query_slug', 'google_response') );
-		if ($customSiteUrl = get_option ( 'siwg_custom_home_url' )) {
-			$redirect_url = str_replace ( site_url(), $customSiteUrl, $redirect_url );
-		}
+		$responseSlug = get_option( 'siwg_google_response_query_slug', 'google_response');
+		$customSiteUrl = get_option ( 'siwg_custom_home_url' );
+		$redirect_url = $customSiteUrl ? $customSiteUrl . '?' . $responseSlug :  site_url( '?' . $responseSlug );
 		$args = array(
 			'body' => array(
 				'code'          => $code,
