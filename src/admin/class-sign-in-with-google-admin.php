@@ -234,6 +234,14 @@ class Sign_In_With_Google_Admin {
 		);
 
 		add_settings_field(
+			'siwg_custom_home_url',
+			__( 'Custom home url override', 'sign-in-with-google' ),
+			array( $this, 'siwg_custom_home_url' ),
+			'siwg_settings',
+			'siwg_section'
+		);
+
+		add_settings_field(
 			'siwg_show_on_login',
 			__( 'Show Google Signup Button on Login Form', 'sign-in-with-google' ),
 			array( $this, 'siwg_show_on_login' ),
@@ -248,6 +256,7 @@ class Sign_In_With_Google_Admin {
 		register_setting( 'siwg_settings', 'siwg_allow_domain_user_registration' );
 		register_setting( 'siwg_settings', 'siwg_custom_login_param', array( $this, 'custom_login_input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_google_response_query_slug', 'sanitize_key' );
+		register_setting( 'siwg_settings', 'siwg_custom_home_url', 'sanitize_text_field' );
 		register_setting( 'siwg_settings', 'siwg_show_on_login' );
 	}
 
@@ -363,12 +372,26 @@ class Sign_In_With_Google_Admin {
 	}
 
 	/**
-	 * Callback function for Google Domain Restriction
+	 * Callback function for Custom response slug
 	 *
 	 * @since    1.0.0
 	 */
 	public function siwg_google_response_query_slug() {
 		echo '<input name="siwg_google_response_query_slug" id="siwg_google_response_query_slug" type="text" size="50" value="' . get_option( 'siwg_google_response_query_slug', 'google_response' ) . '"/>';
+	}
+
+	/**
+	 * Callback function for Custom home-url override
+	 *
+	 * @since    1.0.0
+	 */
+	public function siwg_custom_home_url() {
+		echo '<input name="siwg_custom_home_url" id="siwg_custom_home_url" type="text" size="50" value="' . get_option( 'siwg_custom_home_url', '' ) . '"/>';
+		echo sprintf(
+			'<p class="description">%1$s : %2$s</p>',
+			__( 'Default site-url will is' ),
+			site_url(),
+		);
 	}
 
 	/**
@@ -618,6 +641,7 @@ class Sign_In_With_Google_Admin {
 			'siwg_allow_domain_user_registration' => get_option( 'siwg_allow_domain_user_registration' ),
 			'siwg_custom_login_param'             => get_option( 'siwg_custom_login_param' ),
 			'siwg_google_response_query_slug'     => get_option( 'siwg_google_response_query_slug' ),
+			'siwg_custom_home_url'     			  => get_option( 'siwg_custom_home_url' ),
 			'siwg_show_on_login'                  => get_option( 'siwg_show_on_login' ),
 		);
 
@@ -691,12 +715,15 @@ class Sign_In_With_Google_Admin {
 		// Sanitize auth code.
 		$code = sanitize_text_field( $code );
 		$redirect_url = site_url( '?' . get_option( 'siwg_google_response_query_slug', 'google_response') );
+		if ($customSiteUrl = get_option ( 'siwg_custom_home_url' )) {
+			$redirect_url = str_replace ( site_url(), $customSiteUrl, $redirect_url );
+		}
 		$args = array(
 			'body' => array(
 				'code'          => $code,
 				'client_id'     => get_option( 'siwg_google_client_id' ),
 				'client_secret' => get_option( 'siwg_google_client_secret' ),
-				'redirect_uri'  => apply_filters( 'siwg_google_redirect_uri', $redirect_url ),
+				'redirect_uri'  => $redirect_url,
 				'grant_type'    => 'authorization_code',
 			),
 		);

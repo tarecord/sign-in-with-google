@@ -188,6 +188,20 @@ class Sign_In_With_Google_WPCLI {
 		}
 	}
 
+
+	/**
+	 * Handles updating siwg_custom_home_url.
+	 *
+	 * @param string $param The string to use as the site url.
+	 */
+	private function update_custom_home_url( $param ) {
+		$result = update_option( 'siwg_custom_home_url', $param );
+
+		if ( ! $result ) {
+			WP_CLI::warning( 'Skipping - Setting already matches' );
+		}
+	}
+
 	/**
 	 * Handles updating siwg_show_on_login.
 	 *
