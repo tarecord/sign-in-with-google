@@ -390,7 +390,7 @@ class Sign_In_With_Google_Admin {
 		echo sprintf(
 			'<p class="description">%1$s : %2$s</p>',
 			__( 'Use this field, if you have different home-url. Note, your current site-url is' ),
-			site_url('/'),
+			site_url(),
 		);
 	}
 
