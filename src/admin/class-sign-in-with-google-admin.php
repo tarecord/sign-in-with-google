@@ -389,8 +389,8 @@ class Sign_In_With_Google_Admin {
 		echo '<input name="siwg_custom_home_url" id="siwg_custom_home_url" type="text" size="50" value="' . get_option( 'siwg_custom_home_url', '' ) . '"/>';
 		echo sprintf(
 			'<p class="description">%1$s : %2$s</p>',
-			__( 'Default site-url will is' ),
-			site_url(),
+			__( 'Use this field, if you have different home-url. Note, your current site-url is' ),
+			site_url('/'),
 		);
 	}
 
