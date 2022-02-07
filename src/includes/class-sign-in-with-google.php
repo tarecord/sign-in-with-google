@@ -191,7 +191,7 @@ class Sign_In_With_Google {
 		}
 
 		// Handle Google's response before anything is rendered.
-		$slug = apply_filters( 'siwg_google_response_slug', 'google_response' );
+		$slug = get_option( 'siwg_google_response_query_slug', 'google_response');
 		if ( isset( $_GET[$slug] ) && isset( $_GET['code'] ) ) {
 			$this->loader->add_action( 'init', $plugin_admin, 'authenticate_user' );
 		}

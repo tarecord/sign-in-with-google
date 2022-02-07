@@ -176,6 +176,19 @@ class Sign_In_With_Google_WPCLI {
 	}
 
 	/**
+	 * Handles updating siwg_google_response_query_slug.
+	 *
+	 * @param string $param The string to use as the query slug.
+	 */
+	private function update_google_response_query_slug( $param ) {
+		$result = update_option( 'siwg_google_response_query_slug', $param );
+
+		if ( ! $result ) {
+			WP_CLI::warning( 'Skipping - Setting already matches' );
+		}
+	}
+
+	/**
 	 * Handles updating siwg_show_on_login.
 	 *
 	 * @param bool $show Show the Sign In With Google button on the login form.

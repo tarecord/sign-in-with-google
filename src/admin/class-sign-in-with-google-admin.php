@@ -226,6 +226,14 @@ class Sign_In_With_Google_Admin {
 		);
 
 		add_settings_field(
+			'siwg_google_response_query_slug',
+			__( 'Custom query slug', 'sign-in-with-google' ),
+			array( $this, 'siwg_google_response_query_slug' ),
+			'siwg_settings',
+			'siwg_section'
+		);
+
+		add_settings_field(
 			'siwg_show_on_login',
 			__( 'Show Google Signup Button on Login Form', 'sign-in-with-google' ),
 			array( $this, 'siwg_show_on_login' ),
@@ -239,6 +247,7 @@ class Sign_In_With_Google_Admin {
 		register_setting( 'siwg_settings', 'siwg_google_domain_restriction', array( $this, 'domain_input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_allow_domain_user_registration' );
 		register_setting( 'siwg_settings', 'siwg_custom_login_param', array( $this, 'custom_login_input_validation' ) );
+		register_setting( 'siwg_settings', 'siwg_google_response_query_slug', 'sanitize_key' );
 		register_setting( 'siwg_settings', 'siwg_show_on_login' );
 	}
 
@@ -351,6 +360,15 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function siwg_custom_login_param() {
 		echo '<input name="siwg_custom_login_param" id="siwg_custom_login_param" type="text" size="50" value="' . get_option( 'siwg_custom_login_param' ) . '"/>';
+	}
+
+	/**
+	 * Callback function for Google Domain Restriction
+	 *
+	 * @since    1.0.0
+	 */
+	public function siwg_google_response_query_slug() {
+		echo '<input name="siwg_google_response_query_slug" id="siwg_google_response_query_slug" type="text" size="50" value="' . get_option( 'siwg_google_response_query_slug', 'google_response' ) . '"/>';
 	}
 
 	/**
@@ -671,7 +689,7 @@ class Sign_In_With_Google_Admin {
 
 		// Sanitize auth code.
 		$code = sanitize_text_field( $code );
-		$redirect_url = site_url( '?' . apply_filters( 'siwg_google_response_slug', 'google_response' ) );
+		$redirect_url = site_url( '?' . get_option( 'siwg_google_response_query_slug', 'google_response') );
 		$args = array(
 			'body' => array(
 				'code'          => $code,
