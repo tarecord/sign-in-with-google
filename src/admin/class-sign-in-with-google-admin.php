@@ -578,7 +578,7 @@ class Sign_In_With_Google_Admin {
 			do_action( 'wp_login', $validUser->user_login, $validUser ); // phpcs:ignore
 
 			if ( (bool) get_option ('siwg_save_google_userinfo') ) {
-				$savedUserInfo = apply_filters( 'siwg_saved_google_userinfo', $this->user );
+				$savedUserInfo = json_encode($this->user); // dont store directly, because this is 3rd party data, so, avoids possible unserialization vulnerability from 'get_user_meta'
 				update_user_meta ( $validUser->ID, 'siwg_google_userinfo', $savedUserInfo );
 				/* ### example data ###
 					'id' => '110835733123456789123'
