@@ -617,6 +617,7 @@ class Sign_In_With_Google_Admin {
 			'siwg_google_domain_restriction'      => get_option( 'siwg_google_domain_restriction' ),
 			'siwg_allow_domain_user_registration' => get_option( 'siwg_allow_domain_user_registration' ),
 			'siwg_custom_login_param'             => get_option( 'siwg_custom_login_param' ),
+			'siwg_google_response_query_slug'     => get_option( 'siwg_google_response_query_slug' ),
 			'siwg_show_on_login'                  => get_option( 'siwg_show_on_login' ),
 		);
 
