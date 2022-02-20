@@ -19,7 +19,7 @@ class UtilityTest extends WP_UnitTestCase {
 	 * @param string $input    The domain list to validate.
 	 * @param bool   $expected The result of validation.
 	 */
-	function test_verify_domain_list( $input, $expected ) {
+	public function test_verify_domain_list( $input, $expected ) {
 		$result = Sign_In_With_Google_Utility::verify_domain_list( $input );
 		$this->assertEquals( $result, $expected );
 	}
@@ -27,7 +27,7 @@ class UtilityTest extends WP_UnitTestCase {
 	/**
 	 * Provides an array of data to check domain validation.
 	 */
-	function domain_test_array() {
+	public function domain_test_array() {
 		return [
 			[ 'thisisatest.com', true ],
 			[ 'thisisatest.com, another.com', true ],
@@ -46,11 +46,11 @@ class UtilityTest extends WP_UnitTestCase {
 	 * @param string $dirty The original email to sanitize
 	 * @param string $clean The sanitized email
 	 */
-	function test_google_account_email_sanitize( $dirty = '', $clean = '' ) {
+	public function test_google_account_email_sanitize( $dirty = '', $clean = '' ) {
 		$this->assertEquals( $clean, Sign_In_With_Google_Utility::sanitize_google_account_email( $dirty ) );
 	}
 
-	function email_test_array() {
+	public function email_test_array() {
 		return [
 			[ 't.e.s.t+stripthis.123@gmail.com', 'test@gmail.com' ],
 			[ 't.e.s.t+stripthis@gmail.com', 'test@gmail.com' ],
