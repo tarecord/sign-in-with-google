@@ -701,6 +701,15 @@ class Sign_In_With_Google_Admin {
 	 */
 	protected function set_user_info() {
 		$this->user = $this->get_user_by_token( $this->access_token );
+
+		/**
+		 * Provides sanitization for google account emails.
+		 *
+		 * @param bool Sanitize Google account emails.
+		 */
+		if ( apply_filters( 'siwg_sanitize_google_account_email', true ) ) {
+			$this->user->email = Sign_In_With_Google_Utility::sanitize_google_account_email( $this->user->email );
+		}
 	}
 
 	/**
