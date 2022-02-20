@@ -33,4 +33,25 @@ class Sign_In_With_Google_Utility {
 		return false;
 	}
 
+	/**
+	 * For removing .(dot) and +(plus) parts from gmail to avoid abuse and manipulations
+	 * i.e.    'jos.hu.a+is.cheating.32@gmail.com'   -->  'joshua@gmail.com'
+	 * https://stackoverflow.com/a/41313340/2377343
+	 *
+	 * @since [NEXT]
+	 *
+	 * @param string $email The Google account email address.
+	 */
+	public static function sanitize_google_account_email( $email = '' ) {
+		$sanitized_email = preg_replace_callback(
+			'/(.*)\@/si',
+			function( $matches ) {
+				return str_replace( '.', '', $matches[0] );
+			},
+			preg_replace( '/\+.*\@/s', '@', $email )
+		);
+
+		return $sanitized_email;
+	}
+
 }
