@@ -37,4 +37,25 @@ class UtilityTest extends WP_UnitTestCase {
 			[ 'somedomain, another', false ],
 		];
 	}
+
+	/**
+	 * Tests the Google account email sanitization.
+	 *
+	 * @dataProvider email_test_array
+	 *
+	 * @param string $dirty The original email to sanitize
+	 * @param string $clean The sanitized email
+	 */
+	function test_google_account_email_sanitize( $dirty = '', $clean = '' ) {
+		$this->assertEquals( $clean, Sign_In_With_Google_Utility::sanitize_google_account_email( $dirty ) );
+	}
+
+	function email_test_array() {
+		return [
+			[ 't.e.s.t+stripthis.123@gmail.com', 'test@gmail.com' ],
+			[ 't.e.s.t+stripthis@gmail.com', 'test@gmail.com' ],
+			[ 't-e-s-t+stripthis@gmail.com', 't-e-s-t@gmail.com' ],
+			[ 't_e_s_t+stripthis@gmail.com', 't_e_s_t@gmail.com' ],
+		];
+	}
 }
