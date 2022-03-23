@@ -768,8 +768,7 @@ class Sign_In_With_Google_Admin {
 			return $user;
 		}
 
-		$pass_length = (int) apply_filters( 'siwg_password_length', 12 );
-
+		$pass_length  = (int) apply_filters( 'siwg_password_length', 12 );
 		$user_pass    = wp_generate_password( ( $pass_length < 12 ) ? 12 : $pass_length );
 		$user_email   = $user_data->email;
 		$first_name   = $user_data->given_name;
