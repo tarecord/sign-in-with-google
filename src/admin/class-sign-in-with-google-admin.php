@@ -771,6 +771,8 @@ class Sign_In_With_Google_Admin {
 		/**
 		 * Provides the ability to change the generated password length.
 		 *
+		 * Note: Passwords must be a minimum of 12 characters.
+		 *
 		 * @param int The character length of the generated password.
 		 */
 		$pass_length  = (int) apply_filters( 'siwg_password_length', 12 );
