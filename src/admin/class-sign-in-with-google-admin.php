@@ -768,6 +768,11 @@ class Sign_In_With_Google_Admin {
 			return $user;
 		}
 
+		/**
+		 * Provides the ability to change the generated password length.
+		 *
+		 * @param int The character length of the generated password.
+		 */
 		$pass_length  = (int) apply_filters( 'siwg_password_length', 12 );
 		$user_pass    = wp_generate_password( ( $pass_length < 12 ) ? 12 : $pass_length );
 		$user_email   = $user_data->email;
