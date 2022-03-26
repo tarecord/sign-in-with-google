@@ -2,8 +2,8 @@
 Contributors: tarecord, chrismkindred
 Tags: Google, sign in, users, registration, register, Google Apps, G Suite, OAuth
 Requires at least: 4.8.1
-Tested up to: 5.7.2
-Stable tag: 1.6.0
+Tested up to: 5.8.3
+Stable tag: 1.7.0
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -58,6 +58,11 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 2. This is the second screen shot
 
 == Changelog ==
+
+= 1.7.0 =
+* Add setting that allows users, who have an approved domain, to bypass the "Anyone can register" checkbox on the General Settings page.
+* Update to use login_redirect filter after user authenticates.
+* Update changelog to reflect new ownership.
 
 = 1.6.0 =
 * Fixed overflow issue with import/export meta boxes.
