@@ -503,7 +503,14 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function authenticate_user() {
 
-		$this->set_access_token( $_GET['code'] );
+		$params = apply_filters ('sigw_authenticate_user_params', null);
+		if ( $params === null ){
+			$params = [];
+			$params['code'] = $_GET['code'];
+			$params['state'] = ( isset( $_GET['state'] ) ) ? $_GET['state'] : '';
+			$params['redirect_after_login'] = true;
+		}
+		$this->set_access_token( $params['code'] );
 
 		$this->set_user_info();
 
@@ -512,13 +519,20 @@ class Sign_In_With_Google_Admin {
 			// link the account.
 			$this->connect_account( $this->user->email );
 
-			// redirect back to the profile edit page.
-			wp_redirect( admin_url( 'profile.php' ) );
-			exit;
+			if ( !array_key_exists('redirect_after_login_url', $params) ) {
+				$params['redirect_after_login_url'] = admin_url( 'profile.php' );
+			}
+			if ( $params['redirect_after_login'] ) {
+				// redirect back to the profile edit page.
+				wp_redirect( $params['redirect_after_login_url'] );
+				exit;
+			} else {
+				return $params['redirect_after_login_url'];
+			}
 		}
 
 		// Decode passed back state.
-		$raw_state = ( isset( $_GET['state'] ) ) ? $_GET['state'] : '';
+		$raw_state = $params['state'];
 		$state     = json_decode( base64_decode( $raw_state ) );
 
 		// Check if a user is linked to this Google account.
@@ -558,8 +572,15 @@ class Sign_In_With_Google_Admin {
 			$redirect = admin_url(); // Send users to the dashboard by default.
 		}
 
-		wp_redirect( apply_filters( 'login_redirect', $redirect ) ); //phpcs:ignore
-		exit;
+		if ( !array_key_exists('redirect_after_login_url', $params) ) {
+			$params['redirect_after_login_url'] = $redirect;
+		}
+		if ( $params['redirect_after_login'] ) {
+			wp_redirect( $params['redirect_after_login_url'] ); //phpcs:ignore
+			exit;
+		} else {
+			return $params['redirect_after_login_url'];
+		}
 
 	}
 
