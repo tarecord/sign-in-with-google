@@ -794,10 +794,10 @@ class Sign_In_With_Google_Admin {
 			'user_registered' => gmdate( 'Y-m-d H:i:s' ),
 			'role'            => $role,
 		);
-		
-		$user = apply_filters ('siwg_pre_insert_user', $user, $user_data);
+
+		$user     = apply_filters( 'siwg_pre_insert_user', $user, $user_data );
 		$new_user = wp_insert_user( $user );
-		do_action ('siwg_after_new_user_insert', $new_user );
+		do_action( 'siwg_after_new_user_insert', $new_user );
 
 		if ( is_wp_error( $new_user ) ) {
 			wp_die( $new_user->get_error_message() . ' <a href="' . wp_login_url() . '">Return to Log In</a>' );
