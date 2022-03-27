@@ -758,10 +758,16 @@ class Sign_In_With_Google_Admin {
 		$allow_user_registration        = (bool) get_option( 'users_can_register' );
 
 		// Redirect the user if registrations are disabled and there is no domain user registration override.
-		$redirect_bool = false === $user && ! $allow_domain_user_registration && ! $allow_user_registration;
-		$redirect = apply_filters ('siwg_redirect_if_no_registrations', $redirect_bool, $allow_domain_user_registration, $allow_user_registration);
-		if ( $redirect ) {
-			wp_redirect( apply_filters( 'siwg_registration_disabled_redirect_link', site_url( 'wp-login.php?registration=disabled' ) ) );
+		if ( false === $user && ! $allow_domain_user_registration && ! $allow_user_registration ) {
+			/**
+			 * Adjust where users are redirected if new user registrations are disabled.
+			 *
+			 * @since [NEXT]
+			 *
+			 * @param string The redirection URL.
+			 */
+			$redirect = apply_filters( 'siwg_registrations_disabled_redirect', site_url( 'wp-login.php?registration=disabled' ) );
+			wp_redirect( $redirect );
 			exit;
 		}
 
