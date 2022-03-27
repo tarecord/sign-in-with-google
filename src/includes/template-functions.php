@@ -27,11 +27,21 @@ function siwg_get_button() {
 }
 
 /**
- * Get the google auth url (for headless usage)
+ * Get the Google authentication URL.
+ *
+ * @since [NEXT]
+ *
+ * @param array $state Nonce to verify response from Google.
  *
  * @return string
  */
-function siwg_get_google_auth_url( $state = [] ) {
-	$google_auth = new SIWG_GoogleAuth( get_option( 'siwg_google_client_id' ) );
-	return $google_auth->get_google_auth_url( $state );
+function siwg_get_google_auth_url( $state = array() ) {
+	$client_id = get_option( 'siwg_google_client_id' );
+
+	// Bail if there is no client ID.
+	if ( ! $client_id ) {
+		return '';
+	}
+
+	return ( new SIWG_GoogleAuth( $client_id ) )->get_google_auth_url( $state );
 }
