@@ -752,8 +752,7 @@ class Sign_In_With_Google_Admin {
 	 */
 	protected function find_by_email_or_create( $user_data ) {
 
-		$user_email                     = $user_data->email;
-		$user                           = get_user_by( 'email', $user_email );
+		$user                           = get_user_by( 'email', $user_data->email );
 		$allow_domain_user_registration = (bool) get_option( 'siwg_allow_domain_user_registration' );
 		$allow_user_registration        = (bool) get_option( 'users_can_register' );
 
