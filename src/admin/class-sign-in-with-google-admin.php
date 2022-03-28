@@ -803,14 +803,14 @@ class Sign_In_With_Google_Admin {
 		 * @param array  The new user array.
 		 * @param object The user_data object returned by Google.
 		 */
-		$user     = apply_filters( 'siwg_pre_insert_user', $user, $user_data );
+		$user     = apply_filters( 'siwg_new_user_data', $user, $user_data );
 		$new_user = wp_insert_user( $user );
 		/**
 		 * Fires after a new user is created from a new Google account.
 		 *
 		 * @since [NEXT]
 		 */
-		do_action( 'siwg_after_new_user_insert', $new_user );
+		do_action( 'siwg_after_create_new_user', $new_user );
 
 		if ( is_wp_error( $new_user ) ) {
 			wp_die( $new_user->get_error_message() . ' <a href="' . wp_login_url() . '">Return to Log In</a>' );
