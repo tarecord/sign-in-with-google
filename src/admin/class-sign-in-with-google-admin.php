@@ -553,12 +553,25 @@ class Sign_In_With_Google_Admin {
 		}
 
 		if ( isset( $state->redirect_to ) && '' !== $state->redirect_to ) {
-			$redirect = $state->redirect_to;
+			$redirect_to = $state->redirect_to;
 		} else {
-			$redirect = admin_url(); // Send users to the dashboard by default.
+			$redirect_to = admin_url(); // Send users to the dashboard by default.
 		}
 
-		wp_redirect( apply_filters( 'siwg_login_redirect', $redirect ) );
+		$requested_redirect_to = isset( $_REQUEST['redirect_to'] ) ? $_REQUEST['redirect_to'] : '';
+
+		/**
+		 * Filters the login redirect URL.
+		 *
+		 * @since [NEXT]
+		 *
+		 * @param string        $redirect_to           The redirect destination URL.
+		 * @param string        $requested_redirect_to The requested redirect destination URL passed as a parameter.
+		 * @param WP_User|false $user                  WP_User object if login was successful, WP_Error object otherwise.
+		 */
+		$redirect_to = apply_filters( 'login_redirect', $redirect_to, $requested_redirect_to, $user );
+
+		wp_redirect( $redirect_to );
 		exit;
 
 	}
