@@ -52,7 +52,7 @@ class Sign_In_With_Google_Admin {
 	 *
 	 * @since 1.2.0
 	 * @access private
-	 * @var string $user The user data.
+	 * @var WP_User|false $user The user data.
 	 */
 	private $user;
 
