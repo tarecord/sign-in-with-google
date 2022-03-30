@@ -569,7 +569,7 @@ class Sign_In_With_Google_Admin {
 		 * @param string        $requested_redirect_to The requested redirect destination URL passed as a parameter.
 		 * @param WP_User|false $user                  WP_User object if login was successful, WP_Error object otherwise.
 		 */
-		$redirect_to = apply_filters( 'login_redirect', $redirect_to, $requested_redirect_to, $user );
+		$redirect_to = apply_filters( 'login_redirect', $redirect_to, $requested_redirect_to, $user ); // phpcs:ignore
 
 		wp_redirect( $redirect_to );
 		exit;
