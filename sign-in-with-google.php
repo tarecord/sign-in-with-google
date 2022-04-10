@@ -14,7 +14,7 @@
  * Plugin Name:       Sign In With Google
  * Plugin URI:        https://www.github.com/tarecord/sign-in-with-google
  * Description:       Adds a "Sign in with Google" button to the login page, and allows users to sign up and login using Google.
- * Version:           1.7.0
+ * Version:           1.8.0
  * Author:            Tanner Record
  * Author URI:        https://www.tannerrecord.com
  * License:           GPL-2.0+
@@ -67,7 +67,7 @@ require plugin_dir_path( __FILE__ ) . 'src/includes/class-sign-in-with-google.ph
 function sign_in_with_google_run() {
 
 	define( 'SIWG_PLUGIN_FILE', basename( dirname( __FILE__ ) ) . '/' . basename( __FILE__ ) );
-	$plugin = new Sign_In_With_Google( '1.7.0' );
+	$plugin = new Sign_In_With_Google( '1.8.0' );
 	$plugin->run();
 
 }

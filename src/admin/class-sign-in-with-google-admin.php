@@ -52,7 +52,7 @@ class Sign_In_With_Google_Admin {
 	 *
 	 * @since 1.2.0
 	 * @access private
-	 * @var string $user The user data.
+	 * @var WP_User|false $user The user data.
 	 */
 	private $user;
 
@@ -553,12 +553,25 @@ class Sign_In_With_Google_Admin {
 		}
 
 		if ( isset( $state->redirect_to ) && '' !== $state->redirect_to ) {
-			$redirect = $state->redirect_to;
+			$redirect_to = $state->redirect_to;
 		} else {
-			$redirect = admin_url(); // Send users to the dashboard by default.
+			$redirect_to = admin_url(); // Send users to the dashboard by default.
 		}
 
-		wp_redirect( apply_filters( 'login_redirect', $redirect ) ); //phpcs:ignore
+		$requested_redirect_to = isset( $_REQUEST['redirect_to'] ) ? $_REQUEST['redirect_to'] : '';
+
+		/**
+		 * Filters the login redirect URL.
+		 *
+		 * @since 1.8.0
+		 *
+		 * @param string        $redirect_to           The redirect destination URL.
+		 * @param string        $requested_redirect_to The requested redirect destination URL passed as a parameter.
+		 * @param WP_User|false $user                  WP_User object if login was successful, WP_Error object otherwise.
+		 */
+		$redirect_to = apply_filters( 'login_redirect', $redirect_to, $requested_redirect_to, $user ); // phpcs:ignore
+
+		wp_redirect( $redirect_to );
 		exit;
 
 	}
@@ -768,7 +781,17 @@ class Sign_In_With_Google_Admin {
 			return $user;
 		}
 
-		$user_pass    = wp_generate_password( 12 );
+		/**
+		 * Provides the ability to change the generated password length.
+		 *
+		 * Note: Passwords must be a minimum of 12 characters.
+		 *
+		 * @since 1.8.0
+		 *
+		 * @param int The character length of the generated password.
+		 */
+		$pass_length  = (int) apply_filters( 'siwg_password_length', 12 );
+		$user_pass    = wp_generate_password( ( $pass_length < 12 ) ? 12 : $pass_length );
 		$user_email   = $user_data->email;
 		$first_name   = $user_data->given_name;
 		$last_name    = $user_data->family_name;
