@@ -29,7 +29,7 @@ function siwg_get_button() {
 /**
  * Get the Google authentication URL.
  *
- * @since [NEXT]
+ * @since 1.8.0
  *
  * @param array $state Nonce to verify response from Google.
  *
