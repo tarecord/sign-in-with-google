@@ -762,7 +762,7 @@ class Sign_In_With_Google_Admin {
 	 *
 	 * @hook debug_information
 	 *
-	 * @since 1.7.1
+	 * @since 1.8.1
 	 * @param array $info The debug information to be added to the core information page.
 	 *
 	 * @return array $info Updated debug information to be added to the core information page.

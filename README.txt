@@ -59,7 +59,7 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 
 == Changelog ==
 
-= 1.7.1 (unreleased) =
+= 1.8.1 (unreleased) =
 * Added Debug information for Site Health Info section.
 
 = 1.7.0 =
