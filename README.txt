@@ -59,6 +59,9 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 
 == Changelog ==
 
+= 1.7.1 (unreleased) =
+* Added Debug information for Site Health Info section.
+
 = 1.7.0 =
 * Add setting that allows users, who have an approved domain, to bypass the "Anyone can register" checkbox on the General Settings page.
 * Update to use login_redirect filter after user authenticates.
