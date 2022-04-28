@@ -563,7 +563,7 @@ class Sign_In_With_Google_Admin {
 		/**
 		 * Filters the login redirect URL.
 		 *
-		 * @since [NEXT]
+		 * @since 1.8.0
 		 *
 		 * @param string        $redirect_to           The redirect destination URL.
 		 * @param string        $requested_redirect_to The requested redirect destination URL passed as a parameter.
@@ -828,6 +828,8 @@ class Sign_In_With_Google_Admin {
 		 * Provides the ability to change the generated password length.
 		 *
 		 * Note: Passwords must be a minimum of 12 characters.
+		 *
+		 * @since 1.8.0
 		 *
 		 * @param int The character length of the generated password.
 		 */
