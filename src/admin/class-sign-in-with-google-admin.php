@@ -758,6 +758,49 @@ class Sign_In_With_Google_Admin {
 	}
 
 	/**
+	 * Adds the Debug Infomation to the WordPress Site Health page.
+	 *
+	 * @hook debug_information
+	 *
+	 * @since 1.8.1
+	 * @param array $info The debug information to be added to the core information page.
+	 *
+	 * @return array $info Updated debug information to be added to the core information page.
+	 */
+	public function add_debug_info_to_site_health( $info ) {
+		$info['siwg-debug-information'] = array(
+			'label'  => __( 'Sign in with Google', 'sign-in-with-google' ),
+			'fields' => array(
+				'version'                             => array(
+					'label' => __( 'Version', 'sign-in-with-google' ),
+					'value' => $this->version,
+				),
+				'siwg_google_user_default_role'       => array(
+					'label' => __( 'Default New User Role', 'sign-in-with-google' ),
+					'value' => get_option( 'siwg_google_user_default_role', 'subscriber' ),
+				),
+				'siwg_google_domain_restriction'      => array(
+					'label' => __( 'Restrict To Domain', 'sign-in-with-google' ),
+					'value' => get_option( 'siwg_google_domain_restriction' ),
+				),
+				'siwg_allow_domain_user_registration' => array(
+					'label' => __( 'Allow Domain User Registrations', 'sign-in-with-google' ),
+					'value' => get_option( 'siwg_allow_domain_user_registration' ),
+				),
+				'siwg_custom_login_param'             => array(
+					'label' => __( 'Custom Login Parameter', 'sign-in-with-google' ),
+					'value' => get_option( 'siwg_custom_login_param' ),
+				),
+				'siwg_show_on_login'                  => array(
+					'label' => __( 'Show Button on Login Form', 'sign-in-with-google' ),
+					'value' => get_option( 'siwg_show_on_login' ),
+				),
+			),
+		);
+		return $info;
+	}
+
+	/**
 	 * Gets a user by email or creates a new user.
 	 *
 	 * @since 1.0.0

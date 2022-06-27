@@ -59,6 +59,9 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 
 == Changelog ==
 
+= 1.8.1 (unreleased) =
+* Added Debug information for Site Health Info section.
+
 = 1.8.0 =
 * fixed an incorrect use of the 'login_redirect' core filter.
 * Added siwg_password_length filter to allow adjusting the new user generated password length.
