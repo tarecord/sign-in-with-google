@@ -4,30 +4,17 @@
 # Perform tests in browser using the WebDriver or PhpBrowser.
 # If you need both WebDriver and PHPBrowser tests - create a separate suite.
 
-
 actor: AcceptanceTester
 modules:
     enabled:
-        - WPDb
-        - WPWebDriver
+        - WPBrowser
+        - \Helper\Acceptance
     config:
-        WPDb:
-            dsn: '%DSN%'
-            user: '%DB_USER%'
-            password: '%DB_PASSWORD%'
-            populate: false #import the dump before the tests
-            cleanup: false #import the dump between tests
-            url: '%WP_URL%'
-            urlReplacement: true #replace the hardcoded dump URL with the one above
-            tablePrefix: '%TABLE_PREFIX%'
-        WPWebDriver:
-            url: '%WP_URL%'
-            browser: chrome
-            window_size: false # disabled in ChromeDriver
-            port: 4444
-            adminUsername: '%ADMIN_USERNAME%'
-            adminPassword: '%ADMIN_PASSWORD%'
-            adminUrl: /wp-admin'
-            capabilities:
-                chromeOptions:
-                    args: ["--headless", "--disable-gpu", "--proxy-server='direct://'", "--proxy-bypass-list=*"]
+        WPBrowser:
+            url: 'http://wordpress.test'
+            adminUsername: 'admin'
+            adminPassword: 'password'
+            adminPath: '/wp-admin'
+            headers:
+                X_TEST_REQUEST: 1
+                X_WPBROWSER_REQUEST: 1
