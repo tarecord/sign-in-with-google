@@ -49,6 +49,9 @@ class Sign_In_With_Google_WPCLI {
 	 *     https://www.example.com/my-custom-post?logmein // Log the user in and redirect to my-custom-post
 	 * ---
 	 *
+	 * [--show_unlink_in_profile=<1|0>]
+	 * : Show the Unlink button for users in their profile
+	 *
 	 * [--show_on_login=<1|0>]
 	 * : Show the "Sign In With Google" button on the login form.
 	 *
@@ -185,6 +188,19 @@ class Sign_In_With_Google_WPCLI {
 
 		if ( ! $result ) {
 			WP_CLI::warning( 'Skipping Show On Login - Setting already matches' );
+		}
+	}
+
+	/**
+	 * Handles updating siwg_show_unlink_in_profile.
+	 *
+	 * @param bool $show Show the Unlink Account button in user profile page.
+	 */
+	private function update_show_unlink_in_profile( $show = 0 ) {
+		$result = update_option( 'siwg_show_unlink_in_profile', boolval( $show ) );
+
+		if ( ! $result ) {
+			WP_CLI::warning( 'Skipping option - Setting already matches' );
 		}
 	}
 
