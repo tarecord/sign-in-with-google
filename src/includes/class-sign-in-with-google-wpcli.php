@@ -38,6 +38,9 @@ class Sign_In_With_Google_WPCLI {
 	 *     wp siwg settings --domains=google.com,example.net,other.org
 	 * ---
 	 *
+	 * [--use_google_profile_picture=<1|0>]
+	 * : Set google profile image as user's profile pic.
+	 *
 	 * [--custom_login_param=<parameter>]
 	 * : The custom login parameter to be used.
 	 * ---
@@ -172,6 +175,19 @@ class Sign_In_With_Google_WPCLI {
 
 		if ( ! $result ) {
 			WP_CLI::warning( 'Skipping Custom Login Parameter - Setting already matches' );
+		}
+	}
+
+	/**
+	 * Handles updating siwg_use_google_profile_picture.
+	 *
+	 * @param bool $set Set google profile images as users profile pic
+	 */
+	private function update_use_google_profile_picture( $set = 0 ) {
+		$result = update_option( 'siwg_use_google_profile_picture', boolval( $set ) );
+
+		if ( ! $result ) {
+			WP_CLI::warning( 'Skipping option - Setting already matches' );
 		}
 	}
 
