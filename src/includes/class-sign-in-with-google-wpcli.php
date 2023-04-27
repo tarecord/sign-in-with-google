@@ -163,6 +163,19 @@ class Sign_In_With_Google_WPCLI {
 	}
 
 	/**
+	 * Handles updating siwg_save_google_userinfo.
+	 *
+	 * @param bool $enable The boolean, whether enable or not
+	 */
+	private function update_save_google_userinfo( $enable = 0 ) {
+		$result = update_option( 'siwg_save_google_userinfo', $enable );
+
+		if ( ! $result ) {
+			WP_CLI::warning( 'Skipping - Setting already matches' );
+		}
+	}
+
+	/**
 	 * Handles updating siwg_custom_login_param.
 	 *
 	 * @param string $param The string to use as the login parameter.
