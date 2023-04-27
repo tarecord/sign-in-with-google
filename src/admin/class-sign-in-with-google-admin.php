@@ -814,7 +814,15 @@ class Sign_In_With_Google_Admin {
 
 		// Redirect the user if registrations are disabled and there is no domain user registration override.
 		if ( false === $user && ! $allow_domain_user_registration && ! $allow_user_registration ) {
-			wp_redirect( site_url( 'wp-login.php?registration=disabled' ) );
+			/**
+			 * Adjust where users are redirected if new user registrations are disabled.
+			 *
+			 * @since [NEXT]
+			 *
+			 * @param string The redirection URL.
+			 */
+			$redirect = apply_filters( 'siwg_registrations_disabled_redirect', site_url( 'wp-login.php?registration=disabled' ) );
+			wp_redirect( $redirect );
 			exit;
 		}
 
@@ -852,7 +860,22 @@ class Sign_In_With_Google_Admin {
 			'role'            => $role,
 		);
 
+		/**
+		 * Adjust the user data before new user is created.
+		 *
+		 * @since [NEXT]
+		 *
+		 * @param array  The new user array.
+		 * @param object The user_data object returned by Google.
+		 */
+		$user     = apply_filters( 'siwg_new_user_data', $user, $user_data );
 		$new_user = wp_insert_user( $user );
+		/**
+		 * Fires after a new user is created from a new Google account.
+		 *
+		 * @since [NEXT]
+		 */
+		do_action( 'siwg_after_create_new_user', $new_user );
 
 		if ( is_wp_error( $new_user ) ) {
 			wp_die( $new_user->get_error_message() . ' <a href="' . wp_login_url() . '">Return to Log In</a>' );
