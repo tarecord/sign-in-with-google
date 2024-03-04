@@ -14,5 +14,6 @@ jobs:
       env:
         README_NAME: README.txt
         ASSETS_DIR: assets
+        IGNORE_OTHER_FILES: true
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
