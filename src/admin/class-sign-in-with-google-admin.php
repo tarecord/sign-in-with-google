@@ -329,7 +329,8 @@ class Sign_In_With_Google_Admin {
 		$siwg_urlparts    = parse_url( site_url() );
 		$siwg_domain      = $siwg_urlparts['host'];
 		$siwg_domainparts = explode( '.', $siwg_domain );
-		$siwg_domain      = $siwg_domainparts[ count( $siwg_domainparts ) - 2 ] . '.' . $siwg_domainparts[ count( $siwg_domainparts ) - 1 ];
+		// fix for localhost
+		$siwg_domain = count( $siwg_domainparts ) === 1 ? $siwg_domainparts[0] : $siwg_domainparts[ count( $siwg_domainparts ) - 2 ] . '.' . $siwg_domainparts[ count( $siwg_domainparts ) - 1 ];
 
 		?>
 		<input name="siwg_google_domain_restriction" id="siwg_google_domain_restriction" type="text" size="50" value="<?php echo get_option( 'siwg_google_domain_restriction' ); ?>" placeholder="<?php echo $siwg_domain; ?>">
