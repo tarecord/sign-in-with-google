@@ -233,6 +233,14 @@ class Sign_In_With_Google_Admin {
 			'siwg_section'
 		);
 
+		add_settings_field(
+			'siwg_google_custom_redir_url',
+			__( 'Custom redirect url (leave empty for default)', 'sign-in-with-google' ),
+			array( $this, 'siwg_google_custom_redir_url' ),
+			'siwg_settings',
+			'siwg_section'
+		);
+
 		register_setting( 'siwg_settings', 'siwg_google_client_id', array( $this, 'input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_google_client_secret', array( $this, 'input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_google_user_default_role' );
@@ -240,6 +248,7 @@ class Sign_In_With_Google_Admin {
 		register_setting( 'siwg_settings', 'siwg_allow_domain_user_registration' );
 		register_setting( 'siwg_settings', 'siwg_custom_login_param', array( $this, 'custom_login_input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_show_on_login' );
+		register_setting( 'siwg_settings', 'siwg_google_custom_redir_url' );
 	}
 
 	/**
@@ -274,6 +283,15 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function siwg_google_client_secret() {
 		echo '<input name="siwg_google_client_secret" id="siwg_google_client_secret" type="text" size="50" value="' . get_option( 'siwg_google_client_secret' ) . '"/>';
+	}
+
+	/**
+	 * Callback function for Custom redir url
+	 *
+	 * @since    1.0.0
+	 */
+	public function siwg_google_custom_redir_url() {
+		echo '<input name="siwg_google_custom_redir_url" id="siwg_google_custom_redir_url" type="text" size="50" value="' . get_option( 'siwg_google_custom_redir_url' ) . '"/>';
 	}
 
 	/**
@@ -613,6 +631,7 @@ class Sign_In_With_Google_Admin {
 			'siwg_allow_domain_user_registration' => get_option( 'siwg_allow_domain_user_registration' ),
 			'siwg_custom_login_param'             => get_option( 'siwg_custom_login_param' ),
 			'siwg_show_on_login'                  => get_option( 'siwg_show_on_login' ),
+			'siwg_google_custom_redir_url'        => get_option( 'siwg_google_custom_redir_url' ),
 		);
 
 		ignore_user_abort( true );
@@ -690,7 +709,7 @@ class Sign_In_With_Google_Admin {
 				'code'          => $code,
 				'client_id'     => get_option( 'siwg_google_client_id' ),
 				'client_secret' => get_option( 'siwg_google_client_secret' ),
-				'redirect_uri'  => site_url( '?google_response' ),
+				'redirect_uri'  => site_url( get_option( 'siwg_google_custom_redir_url', '?google_response' )),
 				'grant_type'    => 'authorization_code',
 			),
 		);

@@ -163,6 +163,23 @@ class Sign_In_With_Google_WPCLI {
 	}
 
 	/**
+	 * Handles updating siwg_google_custom_redir_url.
+	 *
+	 * @param string $client_secret The custom redirect url (leave empty for default)
+	 */
+	private function update_custom_redir_url( $redir_url = '' ) {
+		if ( '' === $redir_url ) {
+			WP_CLI::error( 'Please enter a valid string' );
+		}
+
+		$result = update_option( 'siwg_google_custom_redir_url', $redir_url );
+
+		if ( ! $result ) {
+			WP_CLI::warning( 'Skipping - Setting already matches' );
+		}
+	}
+
+	/**
 	 * Handles updating siwg_custom_login_param.
 	 *
 	 * @param string $param The string to use as the login parameter.
