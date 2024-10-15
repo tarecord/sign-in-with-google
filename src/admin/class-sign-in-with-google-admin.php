@@ -695,7 +695,13 @@ class Sign_In_With_Google_Admin {
 			),
 		);
 
+		// handle wp_remote_* returning a \WP_Error
 		$response = wp_remote_post( 'https://www.googleapis.com/oauth2/v4/token', $args );
+		if ( is_wp_error( $response ) ) {
+			$message = static::class . ": Remote post to fetch token failed. " . $response->get_error_code() . ": " . $response->get_error_message();
+			error_log( $message );
+			return false;
+		}
 
 		$body = json_decode( $response['body'] );
 
