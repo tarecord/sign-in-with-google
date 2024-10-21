@@ -503,7 +503,10 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function authenticate_user() {
 
-		$this->set_access_token( $_GET['code'] );
+		$result = $this->set_access_token( $_GET['code'] );
+		if ( is_wp_error($result) ) {
+			error_log("class-sign-in-with-google-admin.php: WP Error returned from set_access_token. '" . $result->get_error_message(). "'");
+		}
 
 		$this->set_user_info();
 
