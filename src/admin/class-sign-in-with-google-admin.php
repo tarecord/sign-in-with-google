@@ -503,7 +503,10 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function authenticate_user() {
 
-		$this->set_access_token( $_GET['code'] );
+		$result = $this->set_access_token( $_GET['code'] );
+		if ( is_wp_error($result) ) {
+			error_log("class-sign-in-with-google-admin.php: WP Error returned from set_access_token. '" . $result->get_error_message(). "'");
+		}
 
 		$this->set_user_info();
 
@@ -695,7 +698,11 @@ class Sign_In_With_Google_Admin {
 			),
 		);
 
+		// handle wp_remote_* returning a \WP_Error
 		$response = wp_remote_post( 'https://www.googleapis.com/oauth2/v4/token', $args );
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
 
 		$body = json_decode( $response['body'] );
 
@@ -704,7 +711,7 @@ class Sign_In_With_Google_Admin {
 			return $this->access_token;
 		}
 
-		return false;
+		return new WP_Error( 'No access token found in response body' );
 	}
 
 	/**
