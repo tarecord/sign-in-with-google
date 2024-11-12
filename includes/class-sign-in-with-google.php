@@ -5,6 +5,7 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
+ * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
  * @package    Sign_In_With_Google
@@ -23,7 +24,7 @@
  * @since      1.0.0
  * @package    Sign_In_With_Google
  * @subpackage Sign_In_With_Google/includes
- * @author     Tanner Record <tanner.record@gmail.com>
+ * @author     Tanner Record <tanner.record@northstarmarketing.com>
  */
 class Sign_In_With_Google {
 
@@ -140,11 +141,6 @@ class Sign_In_With_Google {
 
 		$this->loader = new Sign_In_With_Google_Loader();
 
-		/**
-		 * Loads theme template functions.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/template-functions.php';
-
 	}
 
 	/**
@@ -181,7 +177,6 @@ class Sign_In_With_Google {
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'process_settings_import' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'show_user_profile', $plugin_admin, 'add_connect_button_to_profile' );
-		$this->loader->add_filter( 'debug_information', $plugin_admin, 'add_debug_info_to_site_health', PHP_INT_MAX, 1 );
 
 		if ( isset( $_POST['_siwg_account_nonce'] ) ) {
 			$this->loader->add_action( 'admin_init', $plugin_admin, 'disconnect_account' );
@@ -222,7 +217,6 @@ class Sign_In_With_Google {
 		$plugin_public = new Sign_In_With_Google_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'login_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'login_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'login_form', $plugin_public, 'add_signin_button' );
 

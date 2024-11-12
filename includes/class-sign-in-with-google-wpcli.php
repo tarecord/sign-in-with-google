@@ -2,6 +2,7 @@
 /**
  * Register all wpcli commands for the plugin.
  *
+ * @link       http://www.northstarmarketing.com
  * @since      1.2.2
  *
  * @package    Sign_In_With_Google
@@ -13,7 +14,7 @@
  *
  * @package    Sign_In_With_Google
  * @subpackage Sign_In_With_Google/includes
- * @author     Tanner Record <tanner.record@gmail.com>
+ * @author     Tanner Record <tanner.record@northstarmarketing.com>
  */
 class Sign_In_With_Google_WPCLI {
 

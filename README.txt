@@ -2,12 +2,8 @@
 Contributors: tarecord, chrismkindred
 Tags: Google, sign in, users, registration, register, Google Apps, G Suite, OAuth
 Requires at least: 4.8.1
-<<<<<<< HEAD
-Tested up to: 6.1
-=======
-Tested up to: 6.0.3
->>>>>>> develop
-Stable tag: 1.8.0
+Tested up to: 5.5.1
+Stable tag: 1.5.2
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -32,7 +28,7 @@ If you leave the "Log in with Google" button shown on the login form, make sure 
 
 == Development ==
 
-Active plugin development is handled on [Github](https://www.github.com/tarecord/sign-in-with-google). Bugs and issues will be tracked and handled there.
+Active plugin development is handled on [Github](https://www.github.com/NorthStarMarketing/sign-in-with-google). Bugs and issues will be tracked and handled there.
 
 == Installation ==
 
@@ -62,24 +58,6 @@ You will need to sign in to the [Google Developer Console](https://console.devel
 2. This is the second screen shot
 
 == Changelog ==
-
-= 1.8.1 (unreleased) =
-* Added Debug information for Site Health Info section.
-
-= 1.8.0 =
-* fixed an incorrect use of the 'login_redirect' core filter.
-* Added siwg_password_length filter to allow adjusting the new user generated password length.
-* Added a global function to get the authentication url in template files.
-
-= 1.7.0 =
-* Add setting that allows users, who have an approved domain, to bypass the "Anyone can register" checkbox on the General Settings page.
-* Update to use login_redirect filter after user authenticates.
-* Update changelog to reflect new ownership.
-
-= 1.6.0 =
-* Fixed overflow issue with import/export meta boxes.
-* Fixed issue with users being registered when user registration was disabled in site settings.
-* Added template functions so the log in button can be used in themes and plugins (and custom login forms).
 
 = 1.5.2 =
 * Added more useful error messages when users aren't logged in properly.

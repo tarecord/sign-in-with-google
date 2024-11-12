@@ -5,6 +5,7 @@
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  *
+ * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
  * @package    Sign_In_With_Google
@@ -20,7 +21,7 @@
  * @since      1.0.0
  * @package    Sign_In_With_Google
  * @subpackage Sign_In_With_Google/includes
- * @author     Tanner Record <tanner.record@gmail.com>
+ * @author     North Star Marketing <tech@northstarmarketing.com>
  */
 class Sign_In_With_Google_I18n {
 
