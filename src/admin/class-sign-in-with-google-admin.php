@@ -2,7 +2,6 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       http://www.northstarmarketing.com
  * @since      1.0.0
  *
  * @package    Sign_In_With_Google
@@ -17,7 +16,7 @@
  *
  * @package    Sign_In_With_Google
  * @subpackage Sign_In_With_Google/admin
- * @author     Tanner Record <tanner.record@northstarmarketing.com>
+ * @author     Tanner Record <tanner.record@gmail.com>
  */
 class Sign_In_With_Google_Admin {
 
@@ -53,7 +52,7 @@ class Sign_In_With_Google_Admin {
 	 *
 	 * @since 1.2.0
 	 * @access private
-	 * @var string $user The user data.
+	 * @var WP_User|false $user The user data.
 	 */
 	private $user;
 
@@ -210,6 +209,14 @@ class Sign_In_With_Google_Admin {
 			'siwg_section'
 		);
 
+		// add_settings_field(
+		// 	'siwg_allow_domain_user_registration',
+		// 	__( 'Allow domain user registrations', 'sign-in-with-google' ),
+		// 	array( $this, 'siwg_allow_domain_user_registration' ),
+		// 	'siwg_settings',
+		// 	'siwg_section'
+		// );
+
 		add_settings_field(
 			'siwg_custom_login_param',
 			__( 'Custom Login Parameter', 'sign-in-with-google' ),
@@ -230,6 +237,7 @@ class Sign_In_With_Google_Admin {
 		register_setting( 'siwg_settings', 'siwg_google_client_secret', array( $this, 'input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_google_user_default_role' );
 		register_setting( 'siwg_settings', 'siwg_google_domain_restriction', array( $this, 'domain_input_validation' ) );
+		//register_setting( 'siwg_settings', 'siwg_allow_domain_user_registration' );
 		register_setting( 'siwg_settings', 'siwg_custom_login_param', array( $this, 'custom_login_input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_show_on_login' );
 	}
@@ -320,6 +328,21 @@ class Sign_In_With_Google_Admin {
 		</p>
 		<?php
 	}
+
+	/**
+	 * Callback function for Allow users with the approved domain register accounts
+	 *
+	 * @since 1.7.0
+	 */
+	// public function siwg_allow_domain_user_registration() {
+
+	// 	echo sprintf(
+	// 		'<input type="checkbox" name="%1$s" id="%1$s" value="1" %2$s /><p class="description">%3$s</p>',
+	// 		'siwg_allow_domain_user_registration',
+	// 		checked( get_option( 'siwg_allow_domain_user_registration' ), true, false ),
+	// 		__( 'If enabled, users with domains in the "Restrict to Domain" field will be allowed to register new user accounts even when new user registrations are disabled.', 'sign-in-with-google' ),
+	// 	);
+	// }
 
 	/**
 	 * Callback function for Google Domain Restriction
@@ -416,40 +439,39 @@ class Sign_In_With_Google_Admin {
 					<input name="submit" type="submit" id="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'sign-in-with-google' ); ?>" />
 				</p>
 			</form>
+			<div class="metabox-holder">
+				<div class="postbox">
+					<h3><span><?php esc_html_e( 'Export Settings', 'sign-in-with-google' ); ?></span></h3>
+					<div class="inside">
+						<p><?php esc_html_e( 'Export the plugin settings for this site as a .json file.', 'sign-in-with-google' ); ?></p>
+						<form method="post">
+							<p><input type="hidden" name="siwg_action" value="export_settings" /></p>
+							<p>
+								<?php wp_nonce_field( 'siwg_export_nonce', 'siwg_export_nonce' ); ?>
+								<?php submit_button( esc_html__( 'Export', 'sign-in-with-google' ), 'secondary', 'submit', false ); ?>
+							</p>
+						</form>
+					</div><!-- .inside -->
+				</div><!-- .postbox -->
+
+				<div class="postbox">
+					<h3><span><?php esc_html_e( 'Import Settings', 'sign-in-with-google' ); ?></span></h3>
+					<div class="inside">
+						<p><?php esc_html_e( 'Import the plugin settings from a .json file. This file can be obtained by exporting the settings on another site using the form above.', 'sign-in-with-google' ); ?></p>
+						<form method="post" enctype="multipart/form-data">
+							<p>
+								<input type="file" name="import_file"/>
+							</p>
+							<p>
+								<input type="hidden" name="siwg_action" value="import_settings" />
+								<?php wp_nonce_field( 'siwg_import_nonce', 'siwg_import_nonce' ); ?>
+								<?php submit_button( esc_html__( 'Import', 'sign-in-with-google' ), 'secondary', 'submit', false ); ?>
+							</p>
+						</form>
+					</div><!-- .inside -->
+				</div><!-- .postbox -->
+			</div><!-- .metabox-holder -->
 		</div>
-
-		<div class="metabox-holder">
-			<div class="postbox">
-				<h3><span><?php esc_html_e( 'Export Settings', 'sign-in-with-google' ); ?></span></h3>
-				<div class="inside">
-					<p><?php esc_html_e( 'Export the plugin settings for this site as a .json file.', 'sign-in-with-google' ); ?></p>
-					<form method="post">
-						<p><input type="hidden" name="siwg_action" value="export_settings" /></p>
-						<p>
-							<?php wp_nonce_field( 'siwg_export_nonce', 'siwg_export_nonce' ); ?>
-							<?php submit_button( esc_html__( 'Export', 'sign-in-with-google' ), 'secondary', 'submit', false ); ?>
-						</p>
-					</form>
-				</div><!-- .inside -->
-			</div><!-- .postbox -->
-
-			<div class="postbox">
-				<h3><span><?php esc_html_e( 'Import Settings', 'sign-in-with-google' ); ?></span></h3>
-				<div class="inside">
-					<p><?php esc_html_e( 'Import the plugin settings from a .json file. This file can be obtained by exporting the settings on another site using the form above.', 'sign-in-with-google' ); ?></p>
-					<form method="post" enctype="multipart/form-data">
-						<p>
-							<input type="file" name="import_file"/>
-						</p>
-						<p>
-							<input type="hidden" name="siwg_action" value="import_settings" />
-							<?php wp_nonce_field( 'siwg_import_nonce', 'siwg_import_nonce' ); ?>
-							<?php submit_button( esc_html__( 'Import', 'sign-in-with-google' ), 'secondary', 'submit', false ); ?>
-						</p>
-					</form>
-				</div><!-- .inside -->
-			</div><!-- .postbox -->
-		</div><!-- .metabox-holder -->
 
 		<?php
 
@@ -531,14 +553,25 @@ class Sign_In_With_Google_Admin {
 		}
 
 		if ( isset( $state->redirect_to ) && '' !== $state->redirect_to ) {
-			$redirect = $state->redirect_to;
+			$redirect_to = $state->redirect_to;
 		} else {
-			$redirect = admin_url(); // Send users to the dashboard by default.
+			$redirect_to = admin_url(); // Send users to the dashboard by default.
 		}
 
-		$redirect = apply_filters( 'siwg_auth_redirect', $redirect ); // Allow the redirect to be adjusted.
+		$requested_redirect_to = isset( $_REQUEST['redirect_to'] ) ? $_REQUEST['redirect_to'] : '';
 
-		wp_redirect( $redirect );
+		/**
+		 * Filters the login redirect URL.
+		 *
+		 * @since 1.8.0
+		 *
+		 * @param string        $redirect_to           The redirect destination URL.
+		 * @param string        $requested_redirect_to The requested redirect destination URL passed as a parameter.
+		 * @param WP_User|false $user                  WP_User object if login was successful, WP_Error object otherwise.
+		 */
+		$redirect_to = apply_filters( 'login_redirect', $redirect_to, $requested_redirect_to, $user ); // phpcs:ignore
+
+		wp_redirect( $redirect_to );
 		exit;
 
 	}
@@ -573,12 +606,13 @@ class Sign_In_With_Google_Admin {
 		}
 
 		$settings = array(
-			'siwg_google_client_id'          => get_option( 'siwg_google_client_id' ),
-			'siwg_google_client_secret'      => get_option( 'siwg_google_client_secret' ),
-			'siwg_google_user_default_role'  => get_option( 'siwg_google_user_default_role' ),
-			'siwg_google_domain_restriction' => get_option( 'siwg_google_domain_restriction' ),
-			'siwg_custom_login_param'        => get_option( 'siwg_custom_login_param' ),
-			'siwg_show_on_login'             => get_option( 'siwg_show_on_login' ),
+			'siwg_google_client_id'               => get_option( 'siwg_google_client_id' ),
+			'siwg_google_client_secret'           => get_option( 'siwg_google_client_secret' ),
+			'siwg_google_user_default_role'       => get_option( 'siwg_google_user_default_role' ),
+			'siwg_google_domain_restriction'      => get_option( 'siwg_google_domain_restriction' ),
+			//'siwg_allow_domain_user_registration' => get_option( 'siwg_allow_domain_user_registration' ),
+			'siwg_custom_login_param'             => get_option( 'siwg_custom_login_param' ),
+			'siwg_show_on_login'                  => get_option( 'siwg_show_on_login' ),
 		);
 
 		ignore_user_abort( true );
@@ -724,6 +758,49 @@ class Sign_In_With_Google_Admin {
 	}
 
 	/**
+	 * Adds the Debug Infomation to the WordPress Site Health page.
+	 *
+	 * @hook debug_information
+	 *
+	 * @since 1.8.1
+	 * @param array $info The debug information to be added to the core information page.
+	 *
+	 * @return array $info Updated debug information to be added to the core information page.
+	 */
+	public function add_debug_info_to_site_health( $info ) {
+		$info['siwg-debug-information'] = array(
+			'label'  => __( 'Sign in with Google', 'sign-in-with-google' ),
+			'fields' => array(
+				'version'                             => array(
+					'label' => __( 'Version', 'sign-in-with-google' ),
+					'value' => $this->version,
+				),
+				'siwg_google_user_default_role'       => array(
+					'label' => __( 'Default New User Role', 'sign-in-with-google' ),
+					'value' => get_option( 'siwg_google_user_default_role', 'subscriber' ),
+				),
+				'siwg_google_domain_restriction'      => array(
+					'label' => __( 'Restrict To Domain', 'sign-in-with-google' ),
+					'value' => get_option( 'siwg_google_domain_restriction' ),
+				),
+				// 'siwg_allow_domain_user_registration' => array(
+				// 	'label' => __( 'Allow Domain User Registrations', 'sign-in-with-google' ),
+				// 	'value' => get_option( 'siwg_allow_domain_user_registration' ),
+				// ),
+				'siwg_custom_login_param'             => array(
+					'label' => __( 'Custom Login Parameter', 'sign-in-with-google' ),
+					'value' => get_option( 'siwg_custom_login_param' ),
+				),
+				'siwg_show_on_login'                  => array(
+					'label' => __( 'Show Button on Login Form', 'sign-in-with-google' ),
+					'value' => get_option( 'siwg_show_on_login' ),
+				),
+			),
+		);
+		return $info;
+	}
+
+	/**
 	 * Gets a user by email or creates a new user.
 	 *
 	 * @since 1.0.0
@@ -731,7 +808,15 @@ class Sign_In_With_Google_Admin {
 	 */
 	protected function find_by_email_or_create( $user_data ) {
 
-		$user = get_user_by( 'email', $user_data->email );
+		$user                           = get_user_by( 'email', $user_data->email );
+		// $allow_domain_user_registration = (bool) get_option( 'siwg_allow_domain_user_registration' );
+		// $allow_user_registration        = (bool) get_option( 'users_can_register' );
+
+		// // Redirect the user if registrations are disabled and there is no domain user registration override.
+		// if ( false === $user && ! $allow_domain_user_registration && ! $allow_user_registration ) {
+		// 	wp_redirect( site_url( 'wp-login.php?registration=disabled' ) );
+		// 	exit;
+		// }
 
 		if ( false !== $user ) {
 			update_user_meta( $user->ID, 'first_name', $user_data->given_name );
@@ -739,7 +824,17 @@ class Sign_In_With_Google_Admin {
 			return $user;
 		}
 
-		$user_pass    = wp_generate_password( 12 );
+		/**
+		 * Provides the ability to change the generated password length.
+		 *
+		 * Note: Passwords must be a minimum of 12 characters.
+		 *
+		 * @since 1.8.0
+		 *
+		 * @param int The character length of the generated password.
+		 */
+		$pass_length  = (int) apply_filters( 'siwg_password_length', 12 );
+		$user_pass    = wp_generate_password( ( $pass_length < 12 ) ? 12 : $pass_length );
 		$user_email   = $user_data->email;
 		$first_name   = $user_data->given_name;
 		$last_name    = $user_data->family_name;

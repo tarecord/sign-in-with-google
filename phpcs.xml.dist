@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<ruleset name="Sign In With Google Coding Standards">
+	<arg name="basepath" value="."/>
+    <arg name="extensions" value="php"/>
+    <arg name="severity" value="4"/>
+    <arg name="tab-width" value="4"/>
+    <arg name="parallel" value="80"/>
+    <arg name="colors"/>
+
+	<description>A custom set of rules to check for a WordPress project</description>
+
+	<file>./</file>
+
+	<exclude-pattern>vendor</exclude-pattern>
+	<exclude-pattern>tests</exclude-pattern>
+
+	<!-- Let's check that everything is properly documented. -->
+	<rule ref="WordPress-Docs"/>
+
+	<!-- Add in general WordPress standards -->
+	<rule ref="WordPress-Core"/>
+
+	<!-- Add in some extra rules from other standards. -->
+	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
+	<rule ref="Generic.Commenting.Todo"/>
+
+	<!-- Check for PHP cross-version compatibility. -->
+	<!--
+	To enable this, the PHPCompatibility standard needs
+	to be installed.
+	See the readme for installation instructions:
+	https://github.com/wimg/PHPCompatibility
+	-->
+	<!--
+	<config name="testVersion" value="5.2-99.0"/>
+	<rule ref="PHPCompatibility"/>
+	-->
+
+	<!--
+	To get the optimal benefits of using WPCS, we should add a couple of
+	custom properties.
+	Adjust the values of these properties to fit our needs.
+	For information on additional custom properties available, check out
+	the wiki:
+	https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties
+	-->
+	<config name="minimum_supported_wp_version" value="4.9"/>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array" value="sign-in-with-google"/>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array" value="siwg, Sign_In_With_Google"/>
+		</properties>
+	</rule>
+
+</ruleset>

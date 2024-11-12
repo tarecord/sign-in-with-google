@@ -1,0 +1,21 @@
+{
+    "name": "tarecord/sign-in-with-google",
+    "description": "Adds a \"Sign in with Google\" button to the login page, and allows users to sign up and login using Google.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Tanner Record",
+            "email": "tanner.record@gmail.com"
+        }
+    ],
+    "require": {
+        "composer/installers": "^1.11"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.5",
+        "phpunit/phpunit": "^5.7",
+        "wp-coding-standards/wpcs": "^2.3",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1"
+    }
+}

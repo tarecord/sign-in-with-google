@@ -7,19 +7,17 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              http://www.northstarmarketing.com
  * @since             1.0.0
  * @package           Sign_In_With_Google
  *
  * @wordpress-plugin
- * Plugin Name:       Sign In With Google
- * Plugin URI:        http://www.northstarmarketing.com
+ * Plugin Name:       Sign In With Google - Pronto Group
+ * Plugin URI:        https://www.github.com/tarecord/sign-in-with-google
  * Description:       Adds a "Sign in with Google" button to the login page, and allows users to sign up and login using Google.
- * Version:           1.5.3
- * Author:            North Star Marketing
- * Author URI:        https://profiles.wordpress.org/northstarmarketing
+ * Version:           1.8.0
+ * Author:            Pronto Marketing
+ * Author URI:        https://prontomarketing.com/
  * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       sign-in-with-google
  * Domain Path:       /languages
  */
@@ -34,7 +32,7 @@ if ( ! defined( 'WPINC' ) ) {
  * This action is documented in includes/class-sign-in-with-google-activator.php
  */
 function sign_in_with_google_activate() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-sign-in-with-google-activator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'src/includes/class-sign-in-with-google-activator.php';
 	Sign_In_With_Google_Activator::activate();
 }
 
@@ -43,7 +41,7 @@ function sign_in_with_google_activate() {
  * This action is documented in includes/class-sign-in-with-google-deactivator.php
  */
 function sign_in_with_google_deactivate() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-sign-in-with-google-deactivator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'src/includes/class-sign-in-with-google-deactivator.php';
 	Sign_In_With_Google_Deactivator::deactivate();
 }
 
@@ -54,7 +52,7 @@ register_deactivation_hook( __FILE__, 'sign_in_with_google_deactivate' );
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-sign-in-with-google.php';
+require plugin_dir_path( __FILE__ ) . 'src/includes/class-sign-in-with-google.php';
 
 /**
  * Begins execution of the plugin.
@@ -68,7 +66,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-sign-in-with-google.php';
 function sign_in_with_google_run() {
 
 	define( 'SIWG_PLUGIN_FILE', basename( dirname( __FILE__ ) ) . '/' . basename( __FILE__ ) );
-	$plugin = new Sign_In_With_Google( '1.5.2' );
+	$plugin = new Sign_In_With_Google( '1.8.0' );
 	$plugin->run();
 
 }
