@@ -11,14 +11,13 @@
  * @package           Sign_In_With_Google
  *
  * @wordpress-plugin
- * Plugin Name:       Sign In With Google
+ * Plugin Name:       Sign In With Google - Pronto Group
  * Plugin URI:        https://www.github.com/tarecord/sign-in-with-google
  * Description:       Adds a "Sign in with Google" button to the login page, and allows users to sign up and login using Google.
  * Version:           1.8.0
- * Author:            Tanner Record
- * Author URI:        https://www.tannerrecord.com
+ * Author:            Pronto Marketing
+ * Author URI:        https://prontomarketing.com/
  * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       sign-in-with-google
  * Domain Path:       /languages
  */

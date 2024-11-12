@@ -209,13 +209,13 @@ class Sign_In_With_Google_Admin {
 			'siwg_section'
 		);
 
-		add_settings_field(
-			'siwg_allow_domain_user_registration',
-			__( 'Allow domain user registrations', 'sign-in-with-google' ),
-			array( $this, 'siwg_allow_domain_user_registration' ),
-			'siwg_settings',
-			'siwg_section'
-		);
+		// add_settings_field(
+		// 	'siwg_allow_domain_user_registration',
+		// 	__( 'Allow domain user registrations', 'sign-in-with-google' ),
+		// 	array( $this, 'siwg_allow_domain_user_registration' ),
+		// 	'siwg_settings',
+		// 	'siwg_section'
+		// );
 
 		add_settings_field(
 			'siwg_custom_login_param',
@@ -237,7 +237,7 @@ class Sign_In_With_Google_Admin {
 		register_setting( 'siwg_settings', 'siwg_google_client_secret', array( $this, 'input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_google_user_default_role' );
 		register_setting( 'siwg_settings', 'siwg_google_domain_restriction', array( $this, 'domain_input_validation' ) );
-		register_setting( 'siwg_settings', 'siwg_allow_domain_user_registration' );
+		//register_setting( 'siwg_settings', 'siwg_allow_domain_user_registration' );
 		register_setting( 'siwg_settings', 'siwg_custom_login_param', array( $this, 'custom_login_input_validation' ) );
 		register_setting( 'siwg_settings', 'siwg_show_on_login' );
 	}
@@ -334,15 +334,15 @@ class Sign_In_With_Google_Admin {
 	 *
 	 * @since 1.7.0
 	 */
-	public function siwg_allow_domain_user_registration() {
+	// public function siwg_allow_domain_user_registration() {
 
-		echo sprintf(
-			'<input type="checkbox" name="%1$s" id="%1$s" value="1" %2$s /><p class="description">%3$s</p>',
-			'siwg_allow_domain_user_registration',
-			checked( get_option( 'siwg_allow_domain_user_registration' ), true, false ),
-			__( 'If enabled, users with domains in the "Restrict to Domain" field will be allowed to register new user accounts even when new user registrations are disabled.', 'sign-in-with-google' ),
-		);
-	}
+	// 	echo sprintf(
+	// 		'<input type="checkbox" name="%1$s" id="%1$s" value="1" %2$s /><p class="description">%3$s</p>',
+	// 		'siwg_allow_domain_user_registration',
+	// 		checked( get_option( 'siwg_allow_domain_user_registration' ), true, false ),
+	// 		__( 'If enabled, users with domains in the "Restrict to Domain" field will be allowed to register new user accounts even when new user registrations are disabled.', 'sign-in-with-google' ),
+	// 	);
+	// }
 
 	/**
 	 * Callback function for Google Domain Restriction
@@ -610,7 +610,7 @@ class Sign_In_With_Google_Admin {
 			'siwg_google_client_secret'           => get_option( 'siwg_google_client_secret' ),
 			'siwg_google_user_default_role'       => get_option( 'siwg_google_user_default_role' ),
 			'siwg_google_domain_restriction'      => get_option( 'siwg_google_domain_restriction' ),
-			'siwg_allow_domain_user_registration' => get_option( 'siwg_allow_domain_user_registration' ),
+			//'siwg_allow_domain_user_registration' => get_option( 'siwg_allow_domain_user_registration' ),
 			'siwg_custom_login_param'             => get_option( 'siwg_custom_login_param' ),
 			'siwg_show_on_login'                  => get_option( 'siwg_show_on_login' ),
 		);
@@ -783,10 +783,10 @@ class Sign_In_With_Google_Admin {
 					'label' => __( 'Restrict To Domain', 'sign-in-with-google' ),
 					'value' => get_option( 'siwg_google_domain_restriction' ),
 				),
-				'siwg_allow_domain_user_registration' => array(
-					'label' => __( 'Allow Domain User Registrations', 'sign-in-with-google' ),
-					'value' => get_option( 'siwg_allow_domain_user_registration' ),
-				),
+				// 'siwg_allow_domain_user_registration' => array(
+				// 	'label' => __( 'Allow Domain User Registrations', 'sign-in-with-google' ),
+				// 	'value' => get_option( 'siwg_allow_domain_user_registration' ),
+				// ),
 				'siwg_custom_login_param'             => array(
 					'label' => __( 'Custom Login Parameter', 'sign-in-with-google' ),
 					'value' => get_option( 'siwg_custom_login_param' ),
@@ -809,14 +809,14 @@ class Sign_In_With_Google_Admin {
 	protected function find_by_email_or_create( $user_data ) {
 
 		$user                           = get_user_by( 'email', $user_data->email );
-		$allow_domain_user_registration = (bool) get_option( 'siwg_allow_domain_user_registration' );
-		$allow_user_registration        = (bool) get_option( 'users_can_register' );
+		// $allow_domain_user_registration = (bool) get_option( 'siwg_allow_domain_user_registration' );
+		// $allow_user_registration        = (bool) get_option( 'users_can_register' );
 
-		// Redirect the user if registrations are disabled and there is no domain user registration override.
-		if ( false === $user && ! $allow_domain_user_registration && ! $allow_user_registration ) {
-			wp_redirect( site_url( 'wp-login.php?registration=disabled' ) );
-			exit;
-		}
+		// // Redirect the user if registrations are disabled and there is no domain user registration override.
+		// if ( false === $user && ! $allow_domain_user_registration && ! $allow_user_registration ) {
+		// 	wp_redirect( site_url( 'wp-login.php?registration=disabled' ) );
+		// 	exit;
+		// }
 
 		if ( false !== $user ) {
 			update_user_meta( $user->ID, 'first_name', $user_data->given_name );
