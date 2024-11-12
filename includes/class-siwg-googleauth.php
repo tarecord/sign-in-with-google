@@ -2,6 +2,7 @@
 /**
  * Defines the SIWG_GoogleAuth class.
  *
+ * @link       http://www.northstarmarketing.com
  * @since      1.5.2
  *
  * @package    Sign_In_With_Google
