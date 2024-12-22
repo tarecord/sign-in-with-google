@@ -14,7 +14,7 @@
  * Plugin Name:       Sign In With Google
  * Plugin URI:        https://www.github.com/tarecord/sign-in-with-google
  * Description:       Adds a "Sign in with Google" button to the login page, and allows users to sign up and login using Google.
- * Version:           1.8.0
+ * Version:           1.8.1
  * Author:            Tanner Record
  * Author URI:        https://www.tannerrecord.com
  * License:           GPL-2.0+
