@@ -503,7 +503,19 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function authenticate_user() {
 
-		$this->set_access_token( $_GET['code'] );
+		$code = filter_input( INPUT_GET, 'code', FILTER_SANITIZE_STRING );
+
+		$token = $this->set_access_token( $code );
+
+		if ( is_wp_error( $token) || $token === false ) {
+
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( $token->get_error_message() );
+			}
+
+			wp_redirect( wp_login_url() );
+			exit;
+		}
 
 		$this->set_user_info();
 
@@ -523,10 +535,15 @@ class Sign_In_With_Google_Admin {
 
 		// Check if a user is linked to this Google account.
 		$linked_user = get_users(
-			array(
-				'meta_key'   => 'siwg_google_account',
-				'meta_value' => $this->user->email,
-			)
+			[
+				'meta_query' => [
+					[
+						'key'   => 'siwg_google_account',
+						'value' => $this->user->email,
+						'compare' => '=',
+					]
+				]
+			]
 		);
 
 		// If user is linked to Google account, sign them in. Otherwise, check the domain
@@ -696,8 +713,11 @@ class Sign_In_With_Google_Admin {
 		);
 
 		$response = wp_remote_post( 'https://www.googleapis.com/oauth2/v4/token', $args );
-
 		$body = json_decode( $response['body'] );
+
+		if ( wp_remote_retrieve_response_code( $response ) !== 200 ) {
+			return new WP_Error( $body->error, $body->error_description );
+		}
 
 		if ( '' !== $body->access_token ) {
 			$this->access_token = $body->access_token;
