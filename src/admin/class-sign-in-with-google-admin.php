@@ -308,7 +308,7 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function siwg_google_domain_restriction() {
 		// Get the TLD and domain.
-		$siwg_urlparts    = parse_url( site_url() );
+		$siwg_urlparts    = wp_parse_url( site_url() );
 		$siwg_domain      = $siwg_urlparts['host'];
 		$siwg_domainparts = explode( '.', $siwg_domain );
 		$siwg_domain      = $siwg_domainparts[ count( $siwg_domainparts ) - 2 ] . '.' . $siwg_domainparts[ count( $siwg_domainparts ) - 1 ];
@@ -371,11 +371,7 @@ class Sign_In_With_Google_Admin {
 	 * @param string $input The input supplied by the field.
 	 */
 	public function input_validation( $input ) {
-
-		// Strip all HTML and PHP tags and properly handle quoted strings.
-		$sanitized_input = strip_tags( stripslashes( $input ) );
-
-		return $sanitized_input;
+		return sanitize_text_field( $input );
 	}
 
 	/**
@@ -386,8 +382,7 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function domain_input_validation( $input ) {
 
-		// Strip all HTML and PHP tags and properly handle quoted strings.
-		$sanitized_input = strip_tags( stripslashes( $input ) );
+		$sanitized_input = sanitize_text_field( $input );
 
 		if ( '' !== $sanitized_input && ! Sign_In_With_Google_Utility::verify_domain_list( $sanitized_input ) ) {
 
@@ -409,10 +404,8 @@ class Sign_In_With_Google_Admin {
 	 * @param string $input The input supplied by the field.
 	 */
 	public function custom_login_input_validation( $input ) {
-		// Strip all HTML and PHP tags and properly handle quoted strings.
-		$sanitized_input = strip_tags( stripslashes( $input ) );
 
-		return $sanitized_input;
+		return sanitize_text_field( $input );
 	}
 
 	/**
@@ -640,7 +633,7 @@ class Sign_In_With_Google_Admin {
 		header( 'Content-Disposition: attachment; filename=siwg-settings-export-' . gmdate( 'm-d-Y' ) . '.json' );
 		header( 'Expires: 0' );
 
-		echo json_encode( $settings );
+		echo wp_json_encode( $settings );
 		exit;
 	}
 
