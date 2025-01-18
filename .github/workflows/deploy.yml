@@ -11,12 +11,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Install Subversion
+      run: sudo apt-get update && sudo apt-get install -y subversion
+
     - name: Build
       run: composer install -o --no-dev
 
     - name: WordPress Plugin Deploy
       id: deploy
-      uses: 10up/action-wordpress-plugin-deploy@2.2.2
+      uses: 10up/action-wordpress-plugin-deploy@stable
       with:
         generate-zip: true
       env:
