@@ -603,7 +603,7 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function domain_restriction_error( $message ) {
 		// Check if domain restrictions have kept a user from logging in.
-		if ( isset( $_GET['google_login'] ) && $_GET['google_login'] === 'incorrect_domain' ) {
+		if ( isset( $_GET['google_login'] ) && 'incorrect_domain' === $_GET['google_login'] ) {
 			// translators: %s: The required domain.
 			return '<div id="login_error"> ' . sprintf( __( 'You must have an email with a required domain (<strong>%s</strong>) to log in to this website using Google.', 'sign-in-with-google' ), esc_html( get_option( 'siwg_google_domain_restriction' ) ) ) . '</div>';
 		}
@@ -684,7 +684,7 @@ class Sign_In_With_Google_Admin {
 			require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
 		}
 
-		$filesystem = new WP_Filesystem_Direct( [] );
+		$filesystem = new WP_Filesystem_Direct( array() );
 
 		// Retrieve the settings from the file and convert the json object to an array.
 		$settings = json_decode( $filesystem->get_contents( $import_file ), true );

@@ -125,9 +125,9 @@ class Sign_In_With_Google_Public {
 
 		// Preserve the existing query string.
 		$url = add_query_arg(
-			[
+			array(
 				'google_redirect' => $query_string,
-			],
+			),
 			get_site_url()
 		);
 
