@@ -9,16 +9,8 @@ jobs:
       matrix:
         operating-system: [ ubuntu-latest ]
         php-versions: [ '7.4' ]
-    env:
-      cache_version: 0 # increment to flush all caches
-      php_extensions: tokenizer, xmlwriter, simplexml
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Add GitHub oAuth
-        env:
-          TOKEN: ${{ secrets.GH_TOKEN }}
-        run: composer config --global github-oauth.github.com $TOKEN
+      - uses: actions/checkout@v4
 
       - name: Detect File Changes
         uses: dorny/paths-filter@v2
@@ -34,13 +26,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          extensions: ${{ env.php_extensions }}
           coverage: none
-          tools: composer:v1
-
-      - name: Validate composer.json and composer.lock
-        if: ${{ steps.filter.outputs.src == 'true' }}
-        run: composer validate
 
       - name: Get composer cache directory
         if: ${{ steps.filter.outputs.src == 'true' }}
@@ -59,6 +45,7 @@ jobs:
       - name: Install composer dependencies
         if: ${{ steps.filter.outputs.src == 'true' }}
         run: composer install --prefer-dist --no-progress --no-suggest --optimize-autoloader
+
       - name: PHPCS
         if: ${{ steps.filter.outputs.src == 'true' }}
         run: ./vendor/bin/phpcs --standard=./phpcs.xml.dist ${{ steps.filter.outputs.src_files }}
