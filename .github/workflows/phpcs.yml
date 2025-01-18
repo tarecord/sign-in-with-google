@@ -22,23 +22,25 @@ jobs:
               - added|modified: '**/*.php'
 
       - name: Setup PHP
-        if: ${{ steps.filter.outputs.src == 'true' }}
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
           coverage: none
 
-      - name: Check for Cached Composer Dependencies
-        if: ${{ steps.filter.outputs.src == 'true' }}
+      - name: Get Composer cache dir
+        id: composer-cache-dir
+        run: echo dir=$(composer config cache-files-dir) >> $GITHUB_OUTPUT
+
+      - name: Cache Composer Dependencies
         id: cache-composer-dependencies
         uses: actions/cache@v4
         with:
-            path: vendor
-            key: composer-${{ hashFiles('composer.lock') }}
+            key: composer-cache-${{ hashFiles('**/composer.lock') }}
+            path: ${{ steps.composer-cache-dir.outputs.dir }}
+            restore-keys: composer-cache-
 
       - name: Install composer dependencies
-        if: ${{ steps.filter.outputs.src == 'true' }}
-        run: composer install --prefer-dist --no-progress --no-suggest --optimize-autoloader
+        run: composer install -q --no-interaction --no-progress
 
       - name: PHPCS
         if: ${{ steps.filter.outputs.src == 'true' }}

@@ -126,10 +126,10 @@ class Sign_In_With_Google_Public {
 		// Preserve the existing query string.
 		$url = add_query_arg(
 			[
-					'google_redirect' => $query_string,
-				],
-				get_site_url()
-			);
+				'google_redirect' => $query_string,
+			],
+			get_site_url()
+		);
 
 		echo sprintf(
 			'<div id="sign-in-with-google-container">
