@@ -24,6 +24,9 @@
 	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
 	<rule ref="Generic.Commenting.Todo"/>
 
+	<!-- Allow short array syntax. -->
+	<exclude name="Generic.Arrays.DisallowShortArraySyntax.Found" />
+
 	<!-- Check for PHP cross-version compatibility. -->
 	<!--
 	To enable this, the PHPCompatibility standard needs

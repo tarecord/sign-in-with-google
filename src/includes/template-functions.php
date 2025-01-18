@@ -11,10 +11,10 @@
 /**
  * Output the sign in button.
  *
- * @return void
+ * @return string
  */
 function siwg_button() {
-	echo siwg_get_button();
+	return siwg_get_button();
 }
 
 /**

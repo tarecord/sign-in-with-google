@@ -131,7 +131,7 @@ class Sign_In_With_Google_Admin {
 				<th><?php esc_html_e( 'Connect', 'sign-in-with-google' ); ?></th>
 				<td>
 				<?php if ( $linked_account ) : ?>
-					<?php echo $linked_account; ?>
+					<?php echo esc_html( $linked_account ); ?>
 					<form method="post">
 						<input type="submit" role="button" value="<?php esc_html_e( 'Unlink Account', 'sign-in-with-google' ); ?>">
 						<?php wp_nonce_field( 'siwg_unlink_account', '_siwg_account_nonce' ); ?>
@@ -252,9 +252,9 @@ class Sign_In_With_Google_Admin {
 	public function siwg_section() {
 		echo sprintf(
 			'<p>%s <a href="%s" rel="noopener" target="_blank">%s</a></p>',
-			__( 'Please paste in the necessary credentials so that we can authenticate your users.', 'sign-in-with-google' ),
+			esc_html__( 'Please paste in the necessary credentials so that we can authenticate your users.', 'sign-in-with-google' ),
 			'https://wordpress.org/plugins/sign-in-with-google/#where%20can%20i%20get%20a%20client%20id%20and%20client%20secret%3F',
-			__( 'Learn More', 'sign-in-with-google' )
+			esc_html__( 'Learn More', 'sign-in-with-google' )
 		);
 	}
 
@@ -264,7 +264,7 @@ class Sign_In_With_Google_Admin {
 	 * @since    1.0.0
 	 */
 	public function siwg_google_client_id() {
-		echo '<input name="siwg_google_client_id" id="siwg_google_client_id" type="text" size="50" value="' . get_option( 'siwg_google_client_id' ) . '"/>';
+		echo '<input name="siwg_google_client_id" id="siwg_google_client_id" type="text" size="50" value="' . esc_attr( get_option( 'siwg_google_client_id' ) ) . '"/>';
 	}
 
 	/**
@@ -273,7 +273,7 @@ class Sign_In_With_Google_Admin {
 	 * @since    1.0.0
 	 */
 	public function siwg_google_client_secret() {
-		echo '<input name="siwg_google_client_secret" id="siwg_google_client_secret" type="text" size="50" value="' . get_option( 'siwg_google_client_secret' ) . '"/>';
+		echo '<input name="siwg_google_client_secret" id="siwg_google_client_secret" type="text" size="50" value="' . esc_attr( get_option( 'siwg_google_client_secret' ) ) . '"/>';
 	}
 
 	/**
@@ -293,7 +293,7 @@ class Sign_In_With_Google_Admin {
 				}
 				?>
 
-				<option value="<?php echo $key; ?>" <?php echo $siwg_selected; ?>><?php echo $value['name']; ?></option>
+				<option value="<?php echo esc_attr( $key ); ?>" <?php echo esc_attr( $siwg_selected ); ?>><?php echo esc_html( $value['name'] ); ?></option>
 
 			<?php endforeach; ?>
 
@@ -308,21 +308,21 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function siwg_google_domain_restriction() {
 		// Get the TLD and domain.
-		$siwg_urlparts    = parse_url( site_url() );
+		$siwg_urlparts    = wp_parse_url( site_url() );
 		$siwg_domain      = $siwg_urlparts['host'];
 		$siwg_domainparts = explode( '.', $siwg_domain );
 		$siwg_domain      = $siwg_domainparts[ count( $siwg_domainparts ) - 2 ] . '.' . $siwg_domainparts[ count( $siwg_domainparts ) - 1 ];
 
 		?>
-		<input name="siwg_google_domain_restriction" id="siwg_google_domain_restriction" type="text" size="50" value="<?php echo get_option( 'siwg_google_domain_restriction' ); ?>" placeholder="<?php echo $siwg_domain; ?>">
-		<p class="description"><?php _e( 'Enter the domain you would like to restrict new users to or leave blank to allow anyone with a google account. (Separate multiple domains with commas)', 'sign-in-with-google' ); ?></p>
+		<input name="siwg_google_domain_restriction" id="siwg_google_domain_restriction" type="text" size="50" value="<?php echo esc_attr( get_option( 'siwg_google_domain_restriction' ) ); ?>" placeholder="<?php echo esc_attr( $siwg_domain ); ?>">
+		<p class="description"><?php echo esc_html__( 'Enter the domain you would like to restrict new users to or leave blank to allow anyone with a google account. (Separate multiple domains with commas)', 'sign-in-with-google' ); ?></p>
 		<p class="description">
 			<?php
 			printf(
 				// translators: An example of the required email domain users must have when logging in.
 				esc_html__( 'Entering %1$s will only allow Google users with an @%2$s email address to sign up.', 'sign-in-with-google' ),
-				$siwg_domain,
-				$siwg_domain
+				esc_html( $siwg_domain ),
+				esc_html( $siwg_domain )
 			);
 			?>
 		</p>
@@ -340,7 +340,7 @@ class Sign_In_With_Google_Admin {
 			'<input type="checkbox" name="%1$s" id="%1$s" value="1" %2$s /><p class="description">%3$s</p>',
 			'siwg_allow_domain_user_registration',
 			checked( get_option( 'siwg_allow_domain_user_registration' ), true, false ),
-			__( 'If enabled, users with domains in the "Restrict to Domain" field will be allowed to register new user accounts even when new user registrations are disabled.', 'sign-in-with-google' ),
+			esc_html__( 'If enabled, users with domains in the "Restrict to Domain" field will be allowed to register new user accounts even when new user registrations are disabled.', 'sign-in-with-google' ),
 		);
 	}
 
@@ -350,7 +350,7 @@ class Sign_In_With_Google_Admin {
 	 * @since    1.0.0
 	 */
 	public function siwg_custom_login_param() {
-		echo '<input name="siwg_custom_login_param" id="siwg_custom_login_param" type="text" size="50" value="' . get_option( 'siwg_custom_login_param' ) . '"/>';
+		echo '<input name="siwg_custom_login_param" id="siwg_custom_login_param" type="text" size="50" value="' . esc_attr( get_option( 'siwg_custom_login_param' ) ) . '"/>';
 	}
 
 	/**
@@ -371,11 +371,7 @@ class Sign_In_With_Google_Admin {
 	 * @param string $input The input supplied by the field.
 	 */
 	public function input_validation( $input ) {
-
-		// Strip all HTML and PHP tags and properly handle quoted strings.
-		$sanitized_input = strip_tags( stripslashes( $input ) );
-
-		return $sanitized_input;
+		return sanitize_text_field( $input );
 	}
 
 	/**
@@ -386,8 +382,7 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function domain_input_validation( $input ) {
 
-		// Strip all HTML and PHP tags and properly handle quoted strings.
-		$sanitized_input = strip_tags( stripslashes( $input ) );
+		$sanitized_input = sanitize_text_field( $input );
 
 		if ( '' !== $sanitized_input && ! Sign_In_With_Google_Utility::verify_domain_list( $sanitized_input ) ) {
 
@@ -409,10 +404,8 @@ class Sign_In_With_Google_Admin {
 	 * @param string $input The input supplied by the field.
 	 */
 	public function custom_login_input_validation( $input ) {
-		// Strip all HTML and PHP tags and properly handle quoted strings.
-		$sanitized_input = strip_tags( stripslashes( $input ) );
 
-		return $sanitized_input;
+		return sanitize_text_field( $input );
 	}
 
 	/**
@@ -483,17 +476,21 @@ class Sign_In_With_Google_Admin {
 	 * @since    1.0.0
 	 */
 	public function google_auth_redirect() {
+		$login_param = get_option( 'siwg_custom_login_param' );
 
-		// Gather necessary elements for 'state' parameter.
-		$redirect_to = isset( $_GET['redirect_to'] ) ? $_GET['redirect_to'] : '';
+		// Add custom URL param so we can add a custom login URL.
+		if ( isset( $_GET[ $login_param ] ) || isset( $_GET['google_redirect'] ) ) {
+			// Gather necessary elements for 'state' parameter.
+			$redirect_to = isset( $_GET['redirect_to'] ) ? wp_unslash( $_GET['redirect_to'] ) : '';
 
-		$this->state = array(
-			'redirect_to' => $redirect_to,
-		);
+			$this->state = array(
+				'redirect_to' => $redirect_to,
+			);
 
-		$url = $this->google_auth->get_google_auth_url( $this->state );
-		wp_redirect( $url );
-		exit;
+			$url = $this->google_auth->get_google_auth_url( $this->state );
+			wp_redirect( $url );
+			exit;
+		}
 	}
 
 	/**
@@ -502,6 +499,11 @@ class Sign_In_With_Google_Admin {
 	 * @since 1.0.0
 	 */
 	public function authenticate_user() {
+
+		// Handle Google's response before anything is rendered.
+		if ( ! isset( $_GET['google_response'] ) || ! isset( $_GET['code'] ) ) {
+			return;
+		}
 
 		$code = filter_input( INPUT_GET, 'code', FILTER_SANITIZE_STRING );
 
@@ -600,8 +602,12 @@ class Sign_In_With_Google_Admin {
 	 * @param string $message The message to show the user on the login screen.
 	 */
 	public function domain_restriction_error( $message ) {
-		// translators: The required domain.
-		$message = '<div id="login_error"> ' . sprintf( __( 'You must have an email with a required domain (<strong>%s</strong>) to log in to this website using Google.', 'sign-in-with-google' ), get_option( 'siwg_google_domain_restriction' ) ) . '</div>';
+		// Check if domain restrictions have kept a user from logging in.
+		if ( isset( $_GET['google_login'] ) && 'incorrect_domain' === $_GET['google_login'] ) {
+			// translators: %s: The required domain.
+			return '<div id="login_error"> ' . sprintf( __( 'You must have an email with a required domain (<strong>%s</strong>) to log in to this website using Google.', 'sign-in-with-google' ), esc_html( get_option( 'siwg_google_domain_restriction' ) ) ) . '</div>';
+		}
+
 		return $message;
 	}
 
@@ -640,7 +646,7 @@ class Sign_In_With_Google_Admin {
 		header( 'Content-Disposition: attachment; filename=siwg-settings-export-' . gmdate( 'm-d-Y' ) . '.json' );
 		header( 'Expires: 0' );
 
-		echo json_encode( $settings );
+		echo wp_json_encode( $settings );
 		exit;
 	}
 
@@ -664,17 +670,24 @@ class Sign_In_With_Google_Admin {
 		$extension = end( explode( '.', $_FILES['import_file']['name'] ) );
 
 		if ( 'json' !== $extension ) {
-			wp_die( __( 'Please upload a valid .json file', 'sign-in-with-google' ) );
+			wp_die( esc_html__( 'Please upload a valid .json file', 'sign-in-with-google' ) );
 		}
 
 		$import_file = $_FILES['import_file']['tmp_name'];
 
 		if ( empty( $import_file ) ) {
-			wp_die( __( 'Please upload a file to import', 'sign-in-with-google' ) );
+			wp_die( esc_html__( 'Please upload a file to import', 'sign-in-with-google' ) );
 		}
 
+		if ( ! class_exists( 'WP_Filesystem_Direct' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
+			require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
+		}
+
+		$filesystem = new WP_Filesystem_Direct( array() );
+
 		// Retrieve the settings from the file and convert the json object to an array.
-		$settings = (array) json_decode( file_get_contents( $import_file ) );
+		$settings = json_decode( $filesystem->get_contents( $import_file ), true );
 
 		foreach ( $settings as $key => $value ) {
 			update_option( $key, $value );
@@ -764,14 +777,18 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function disconnect_account() {
 
-		if ( ! isset( $_POST['_siwg_account_nonce'] ) || ! wp_verify_nonce( $_POST['_siwg_account_nonce'], 'siwg_unlink_account' ) ) {
-			wp_die( __( 'Unauthorized', 'sign-in-with-google' ) );
+		if ( ! isset( $_POST['_siwg_account_nonce'] ) ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( $_POST['_siwg_account_nonce'], 'siwg_unlink_account' ) ) {
+			wp_die( esc_html__( 'Unauthorized', 'sign-in-with-google' ) );
 		}
 
 		$current_user = wp_get_current_user();
 
 		if ( ! ( $current_user instanceof WP_User ) ) {
-			return false;
+			return;
 		}
 
 		return delete_user_meta( $current_user->ID, 'siwg_google_account' );
@@ -832,7 +849,7 @@ class Sign_In_With_Google_Admin {
 		$new_user = wp_insert_user( $user );
 
 		if ( is_wp_error( $new_user ) ) {
-			wp_die( $new_user->get_error_message() . ' <a href="' . wp_login_url() . '">Return to Log In</a>' );
+			wp_die( esc_html( $new_user->get_error_message() ) . ' <a href="' . esc_attr( wp_login_url() ) . '">Return to Log In</a>' );
 			return false;
 		} else {
 			return get_user_by( 'id', $new_user );

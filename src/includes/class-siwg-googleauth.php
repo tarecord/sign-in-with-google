@@ -86,7 +86,7 @@ class SIWG_GoogleAuth {
 		$scopes = apply_filters( 'siwg_scopes', $this->scopes );
 
 		$redirect_uri  = urlencode( $this->redirect_uri );
-		$encoded_state = base64_encode( json_encode( $state ) );
+		$encoded_state = base64_encode( wp_json_encode( $state ) );
 
 		return $this->base_url . '?scope=' . $scopes . '&redirect_uri=' . $redirect_uri . '&response_type=code&client_id=' . $this->client_id . '&state=' . $encoded_state . '&prompt=select_account';
 	}

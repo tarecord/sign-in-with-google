@@ -7,10 +7,13 @@ jobs:
     name: New release
     runs-on: ubuntu-latest
     steps:
+
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
+
     - name: Build
       run: composer install -o --no-dev
+
     - name: WordPress Plugin Deploy
       id: deploy
       uses: 10up/action-wordpress-plugin-deploy@stable
@@ -20,12 +23,10 @@ jobs:
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         SLUG: sign-in-with-google
+
     - name: Upload release asset
-      uses: actions/upload-release-asset@v1
+      uses: softprops/action-gh-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ${{github.workspace}}/${{ github.event.repository.name }}.zip
-        asset_name: ${{ github.event.repository.name }}.zip
-        asset_content_type: application/zip
+        files: ${{ steps.deploy.outputs.zip-path }}
