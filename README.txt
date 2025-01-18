@@ -1,6 +1,6 @@
 === Sign In With Google ===
 Contributors: tarecord, chrismkindred
-Tags: Google, sign in, users, registration, register, Google Apps, G Suite, OAuth
+Tags: Google, sign in, users, registration, G Suite
 Requires at least: 4.8.1
 Tested up to: 6.7.1
 Stable tag: 1.8.1
