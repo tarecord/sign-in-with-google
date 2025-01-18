@@ -3,7 +3,7 @@ Contributors: tarecord, chrismkindred
 Tags: Google, sign in, users, registration, G Suite
 Requires at least: 4.8.1
 Tested up to: 6.7.1
-Stable tag: 1.8.1
+Stable tag: 1.8.2
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
