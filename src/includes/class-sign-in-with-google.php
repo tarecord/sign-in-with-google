@@ -185,7 +185,7 @@ class Sign_In_With_Google {
 		$this->loader->add_action( 'init', $plugin_admin, 'authenticate_user' );
 		$this->loader->add_filter( 'plugin_action_links_' . $this->plugin_name . '/' . $this->plugin_name . '.php', $plugin_admin, 'add_action_links' );
 
-		// Redirections
+		// Redirections.
 		$this->loader->add_action( 'template_redirect', $plugin_admin, 'google_auth_redirect' );
 		$this->loader->add_action( 'init', $plugin_admin, 'google_auth_redirect' );
 		$this->loader->add_filter( 'login_message', $plugin_admin, 'domain_restriction_error' );

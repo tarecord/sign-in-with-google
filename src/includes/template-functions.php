@@ -11,7 +11,7 @@
 /**
  * Output the sign in button.
  *
- * @return void
+ * @return string
  */
 function siwg_button() {
 	return siwg_get_button();
