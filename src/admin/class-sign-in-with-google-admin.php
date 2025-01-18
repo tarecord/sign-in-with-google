@@ -476,17 +476,21 @@ class Sign_In_With_Google_Admin {
 	 * @since    1.0.0
 	 */
 	public function google_auth_redirect() {
+		$login_param = get_option( 'siwg_custom_login_param' );
 
-		// Gather necessary elements for 'state' parameter.
-		$redirect_to = isset( $_GET['redirect_to'] ) ? $_GET['redirect_to'] : '';
+		// Add custom URL param so we can add a custom login URL.
+		if ( isset( $_GET[ $login_param ] ) || isset( $_GET['google_redirect'] ) ) {
+			// Gather necessary elements for 'state' parameter.
+			$redirect_to = isset( $_GET['redirect_to'] ) ? wp_unslash( $_GET['redirect_to'] ) : '';
 
-		$this->state = array(
-			'redirect_to' => $redirect_to,
-		);
+			$this->state = array(
+				'redirect_to' => $redirect_to,
+			);
 
-		$url = $this->google_auth->get_google_auth_url( $this->state );
-		wp_redirect( $url );
-		exit;
+			$url = $this->google_auth->get_google_auth_url( $this->state );
+			wp_redirect( $url );
+			exit;
+		}
 	}
 
 	/**
@@ -495,6 +499,11 @@ class Sign_In_With_Google_Admin {
 	 * @since 1.0.0
 	 */
 	public function authenticate_user() {
+
+		// Handle Google's response before anything is rendered.
+		if ( ! isset( $_GET['google_response'] ) || ! isset( $_GET['code'] ) ) {
+			return;
+		}
 
 		$code = filter_input( INPUT_GET, 'code', FILTER_SANITIZE_STRING );
 
@@ -593,8 +602,12 @@ class Sign_In_With_Google_Admin {
 	 * @param string $message The message to show the user on the login screen.
 	 */
 	public function domain_restriction_error( $message ) {
-		// translators: The required domain.
-		$message = '<div id="login_error"> ' . sprintf( __( 'You must have an email with a required domain (<strong>%s</strong>) to log in to this website using Google.', 'sign-in-with-google' ), get_option( 'siwg_google_domain_restriction' ) ) . '</div>';
+		// Check if domain restrictions have kept a user from logging in.
+		if ( isset( $_GET['google_login'] ) && $_GET['google_login'] === 'incorrect_domain' ) {
+			// translators: %s: The required domain.
+			return '<div id="login_error"> ' . sprintf( __( 'You must have an email with a required domain (<strong>%s</strong>) to log in to this website using Google.', 'sign-in-with-google' ), esc_html( get_option( 'siwg_google_domain_restriction' ) ) ) . '</div>';
+		}
+
 		return $message;
 	}
 
@@ -764,14 +777,18 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function disconnect_account() {
 
-		if ( ! isset( $_POST['_siwg_account_nonce'] ) || ! wp_verify_nonce( $_POST['_siwg_account_nonce'], 'siwg_unlink_account' ) ) {
+		if ( ! isset( $_POST['_siwg_account_nonce'] ) ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( $_POST['_siwg_account_nonce'], 'siwg_unlink_account' ) ) {
 			wp_die( esc_html__( 'Unauthorized', 'sign-in-with-google' ) );
 		}
 
 		$current_user = wp_get_current_user();
 
 		if ( ! ( $current_user instanceof WP_User ) ) {
-			return false;
+			return;
 		}
 
 		return delete_user_meta( $current_user->ID, 'siwg_google_account' );

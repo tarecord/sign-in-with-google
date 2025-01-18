@@ -179,34 +179,16 @@ class Sign_In_With_Google {
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'settings_menu_init' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'process_settings_export' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'process_settings_import' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'disconnect_account' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'show_user_profile', $plugin_admin, 'add_connect_button_to_profile' );
-
-		if ( isset( $_POST['_siwg_account_nonce'] ) ) {
-			$this->loader->add_action( 'admin_init', $plugin_admin, 'disconnect_account' );
-		}
-
-		if ( isset( $_GET['google_redirect'] ) ) {
-			$this->loader->add_action( 'template_redirect', $plugin_admin, 'google_auth_redirect' );
-		}
-
-		// Handle Google's response before anything is rendered.
-		if ( isset( $_GET['google_response'] ) && isset( $_GET['code'] ) ) {
-			$this->loader->add_action( 'init', $plugin_admin, 'authenticate_user' );
-		}
-
-		// Add custom URL param so we can add a custom login URL.
-		if ( isset( $_GET[ get_option( 'siwg_custom_login_param' ) ] ) ) {
-			$this->loader->add_action( 'init', $plugin_admin, 'google_auth_redirect' );
-		}
-
+		$this->loader->add_action( 'init', $plugin_admin, 'authenticate_user' );
 		$this->loader->add_filter( 'plugin_action_links_' . $this->plugin_name . '/' . $this->plugin_name . '.php', $plugin_admin, 'add_action_links' );
 
-		// Check if domain restrictions have kept a user from logging in.
-		if ( isset( $_GET['google_login'] ) ) {
-			$this->loader->add_filter( 'login_message', $plugin_admin, 'domain_restriction_error' );
-		}
-
+		// Redirections
+		$this->loader->add_action( 'template_redirect', $plugin_admin, 'google_auth_redirect' );
+		$this->loader->add_action( 'init', $plugin_admin, 'google_auth_redirect' );
+		$this->loader->add_filter( 'login_message', $plugin_admin, 'domain_restriction_error' );
 	}
 
 	/**
