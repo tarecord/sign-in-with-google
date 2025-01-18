@@ -14,7 +14,7 @@
  * @return void
  */
 function siwg_button() {
-	echo siwg_get_button();
+	return siwg_get_button();
 }
 
 /**
