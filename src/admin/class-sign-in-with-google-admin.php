@@ -666,8 +666,15 @@ class Sign_In_With_Google_Admin {
 			wp_die( esc_html__( 'Please upload a file to import', 'sign-in-with-google' ) );
 		}
 
+		if ( ! class_exists( 'WP_Filesystem_Direct' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
+			require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
+		}
+
+		$filesystem = new WP_Filesystem_Direct( [] );
+
 		// Retrieve the settings from the file and convert the json object to an array.
-		$settings = (array) json_decode( file_get_contents( $import_file ) );
+		$settings = json_decode( $filesystem->get_contents( $import_file ), true );
 
 		foreach ( $settings as $key => $value ) {
 			update_option( $key, $value );
