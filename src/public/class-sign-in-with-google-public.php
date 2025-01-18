@@ -117,11 +117,18 @@ class Sign_In_With_Google_Public {
 	 * @return string
 	 */
 	public static function get_signin_button() {
+		if ( ! isset( $_SERVER['QUERY_STRING'] ) ) {
+			return;
+		}
+
+		$query_string = urlencode( sanitize_text_field( wp_unslash( $_SERVER['QUERY_STRING'] ) ) );
+
+		// Preserve the existing query string.
 		$url = add_query_arg(
 			[
-					'google_redirect' => $_SERVER['QUERY_STRING']
+					'google_redirect' => $query_string,
 				],
-				site_url()
+				get_site_url()
 			);
 
 		echo sprintf(
