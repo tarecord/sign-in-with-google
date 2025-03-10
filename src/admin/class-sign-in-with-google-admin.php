@@ -482,11 +482,11 @@ class Sign_In_With_Google_Admin {
 		if ( isset( $_GET[ $login_param ] ) || isset( $_GET['google_redirect'] ) ) {
 			// Gather necessary elements for 'state' parameter.
 			$redirect_to = isset( $_GET['redirect_to'] ) ? wp_unslash( $_GET['redirect_to'] ) : '';
-			$nonce = wp_create_nonce( 'siwg_google_auth' );
+			$nonce       = wp_create_nonce( 'siwg_google_auth' );
 
 			$this->state = array(
 				'redirect_to' => $redirect_to,
-				'nonce' => $nonce,
+				'nonce'       => $nonce,
 			);
 
 			$url = $this->google_auth->get_google_auth_url( $this->state );
@@ -537,7 +537,7 @@ class Sign_In_With_Google_Admin {
 		$raw_state = ( isset( $_GET['state'] ) ) ? $_GET['state'] : '';
 		$state     = json_decode( base64_decode( $raw_state ) );
 
-		// Verify the nonce
+		// Verify the nonce.
 		if ( ! isset( $state->nonce ) || ! wp_verify_nonce( $state->nonce, 'siwg_google_auth' ) ) {
 			wp_redirect( wp_login_url() . '?google_login=invalid_auth' );
 			exit;
@@ -611,7 +611,7 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function domain_restriction_error( $message ) {
 		// Check if domain restrictions have kept a user from logging in.
-		$google_login = isset($_GET['google_login']) ? sanitize_text_field($_GET['google_login']) : '';
+		$google_login = isset( $_GET['google_login'] ) ? sanitize_text_field( $_GET['google_login'] ) : '';
 
 		if ( $google_login ) {
 			if ( 'incorrect_domain' === $google_login ) {
