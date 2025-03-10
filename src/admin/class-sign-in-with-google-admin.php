@@ -482,9 +482,11 @@ class Sign_In_With_Google_Admin {
 		if ( isset( $_GET[ $login_param ] ) || isset( $_GET['google_redirect'] ) ) {
 			// Gather necessary elements for 'state' parameter.
 			$redirect_to = isset( $_GET['redirect_to'] ) ? wp_unslash( $_GET['redirect_to'] ) : '';
+			$nonce       = wp_create_nonce( 'siwg_google_auth' );
 
 			$this->state = array(
 				'redirect_to' => $redirect_to,
+				'nonce'       => $nonce,
 			);
 
 			$url = $this->google_auth->get_google_auth_url( $this->state );
@@ -534,6 +536,12 @@ class Sign_In_With_Google_Admin {
 		// Decode passed back state.
 		$raw_state = ( isset( $_GET['state'] ) ) ? $_GET['state'] : '';
 		$state     = json_decode( base64_decode( $raw_state ) );
+
+		// Verify the nonce.
+		if ( ! isset( $state->nonce ) || ! wp_verify_nonce( $state->nonce, 'siwg_google_auth' ) ) {
+			wp_redirect( wp_login_url() . '?google_login=invalid_auth' );
+			exit;
+		}
 
 		// Check if a user is linked to this Google account.
 		$linked_user = get_users(
@@ -603,9 +611,15 @@ class Sign_In_With_Google_Admin {
 	 */
 	public function domain_restriction_error( $message ) {
 		// Check if domain restrictions have kept a user from logging in.
-		if ( isset( $_GET['google_login'] ) && 'incorrect_domain' === $_GET['google_login'] ) {
-			// translators: %s: The required domain.
-			return '<div id="login_error"> ' . sprintf( __( 'You must have an email with a required domain (<strong>%s</strong>) to log in to this website using Google.', 'sign-in-with-google' ), esc_html( get_option( 'siwg_google_domain_restriction' ) ) ) . '</div>';
+		$google_login = isset( $_GET['google_login'] ) ? sanitize_text_field( $_GET['google_login'] ) : '';
+
+		if ( $google_login ) {
+			if ( 'incorrect_domain' === $google_login ) {
+				// translators: %s: The required domain.
+				return '<div id="login_error"> ' . sprintf( __( 'You must have an email with a required domain (<strong>%s</strong>) to log in to this website using Google.', 'sign-in-with-google' ), esc_html( get_option( 'siwg_google_domain_restriction' ) ) ) . '</div>';
+			} elseif ( 'invalid_auth' === $google_login ) {
+				return '<div id="login_error"> ' . esc_html__( 'Invalid authentication request. Please try again.', 'sign-in-with-google' ) . '</div>';
+			}
 		}
 
 		return $message;
